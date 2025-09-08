@@ -1,0 +1,276 @@
+﻿@page
+@{ Layout = "_Layout"; }
+@section Styles{
+<link rel="stylesheet" href="/sitefiles/assets/css/github-markdown.css">
+<style>
+  body {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  #plugin-banner {
+    background-color: #eff1f3;
+    padding: 25px 0;
+    font-size: 14px;
+  }
+
+  #plugin-banner .header {
+    font-size: 26px;
+  }
+
+  #plugin-banner .header small {
+    color: #666;
+  }
+
+  #plugin-banner .summary {
+    margin-top: 15px;
+  }
+
+  #plugin-banner .divider {
+    margin: 0 10px;
+    color: #999;
+  }
+
+  #plugin-banner a {
+    margin-top: -5px;
+  }
+
+  #plugin-content {
+    padding: 5px 25px 30px;
+  }
+
+  .el-tabs__item {
+    width: 120px;
+    text-align: center;
+  }
+</style>
+}
+
+<div id="plugin-banner">
+  <el-row :gutter="20">
+    <el-col :span="4" align="center">
+      <a :href="getPluginUrl()" target="_blank">
+        <el-badge :value="plugin ? '已安装' : '未安装'" :type="plugin ? 'primary' : 'info'">
+          <img :src="getIconUrl()" style="height: 128px; width: 128px;">
+        </el-badge>
+      </a>
+    </el-col>
+    <el-col :span="20">
+      <div class="header">
+        {{ getTitle() }}
+      </div>
+
+      <el-divider></el-divider>
+
+      <div class="summary">
+        <template>
+          插件Id：<el-link type="primary" :underline="false"> {{ getPluginId() }} </el-link>
+          <span style="color: #999; margin: 0 5px"> | </span>
+          版本：<el-link type="primary" :underline="false"> {{ getVersion() }} </el-link>
+          <template v-if="!plugin && extension && extension.price">
+            <span style="color: #999; margin: 0 5px"> | </span>
+            价格：
+            <el-link type="primary" :underline="false">
+              <el-badge v-if="isPurchased" value="已购">
+                ￥{{ extension.price.toFixed(2) }}
+              </el-badge>
+              <span v-else>
+                ￥{{ extension.price.toFixed(2) }}
+              </span>
+            </el-link>
+          </template>
+        </template>
+      </div>
+
+      <template v-if="extension && extension.tags">
+        <div class="summary">
+          标签：
+          <el-link type="primary" :underline="false" style="margin-right: 5px" v-for="tagName in getTagNames(extension)"
+            :href="utils.getPluginsUrl('add', {q: tagName})">
+            {{ tagName }}
+          </el-link>
+        </div>
+      </template>
+
+      <div class="summary">
+        {{ getDescription() }}
+      </div>
+
+      <div style="height: 10px"></div>
+
+      <el-alert v-if="extension && isShouldUpdate" style="margin-bottom: 15px;"
+        :title="'系统检测到插件新版本，当前版本：' + '，新版本：' + release.version" type="warning">
+      </el-alert>
+
+      <div class="summary">
+        <template v-if="plugin">
+          <el-button v-on:click="btnDisablePlugin(plugin)" type="warning" plain size="small">
+            {{ plugin.disabled ? '启用' : '禁用' }}
+          </el-button>
+          <el-button v-on:click="btnDeletePlugin(plugin)" type="danger" plain size="small">
+            卸载插件
+          </el-button>
+        </template>
+
+        <template v-if="extension">
+          <el-button type="primary" v-if="isShouldUpdate" v-on:click="btnUpdateClick" size="small">
+            升级插件
+          </el-button>
+          <el-button type="primary" v-else-if="!plugin && extension.price && !isPurchased" v-on:click="btnBuyClick"
+            size="small">
+            购买并安装插件
+          </el-button>
+          <el-button type="primary" v-else-if="!plugin" v-on:click="btnInstallClick" size="small">
+            安装插件
+          </el-button>
+        </template>
+
+        <el-link :href="getPluginUrl()" type="primary" style="margin-left: 5px;" :underline="false" size="small"
+          target="_blank">插件主页</el-link>
+      </div>
+    </el-col>
+  </el-row>
+</div>
+
+<div id="plugin-content">
+  <el-tabs v-model="activeName">
+    <el-tab-pane label="插件概述" name="overview">
+      <article class="markdown-body" v-html="getReadme()"></article>
+    </el-tab-pane>
+    <el-tab-pane v-if="getChangeLog()" label="发行说明" name="changelog">
+      <article class="markdown-body" v-html="getChangeLog()"></article>
+    </el-tab-pane>
+    <el-tab-pane v-if="extension" label="插件详情" name="Details"></el-tab-pane>
+  </el-tabs>
+
+  <template v-if="activeName == 'Details'">
+    <div class="el-table el-table--fit el-table--enable-row-hover el-table--enable-row-transition" style="width: 100%;">
+      <div class="el-table__body-wrapper is-scrolling-none">
+        <table cellspacing="0" cellpadding="0" border="0" class="el-table__body" width="100%">
+          <colgroup>
+            <col width="180" />
+            <col />
+          </colgroup>
+          <tbody>
+            <tr class="el-table__row">
+              <td rowspan="1" colspan="1">
+                <div class="cell">
+                  <strong>插件作者</strong>
+                </div>
+              </td>
+              <td rowspan="1" colspan="1">
+                <div class="cell">{{ extension.userName }}</div>
+              </td>
+            </tr>
+            <tr class="el-table__row">
+              <td rowspan="1" colspan="1">
+                <div class="cell">
+                  <strong>插件名称</strong>
+                </div>
+              </td>
+              <td rowspan="1" colspan="1">
+                <div class="cell">{{ extension.name }}</div>
+              </td>
+            </tr>
+            <tr class="el-table__row">
+              <td rowspan="1" colspan="1">
+                <div class="cell">
+                  <strong>显示名称</strong>
+                </div>
+              </td>
+              <td rowspan="1" colspan="1">
+                <div class="cell">{{ extension.displayName }}</div>
+              </td>
+            </tr>
+            <tr class="el-table__row">
+              <td rowspan="1" colspan="1">
+                <div class="cell">
+                  <strong>插件价格</strong>
+                </div>
+              </td>
+              <td rowspan="1" colspan="1">
+                <div class="cell">
+                  <span v-if="extension.price == 0">免 费</span>
+                  <span v-else>￥{{ extension.price.toFixed(2) }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr class="el-table__row">
+              <td rowspan="1" colspan="1">
+                <div class="cell">
+                  <strong>插件简介</strong>
+                </div>
+              </td>
+              <td rowspan="1" colspan="1">
+                <div class="cell">{{ extension.description }}</div>
+              </td>
+            </tr>
+            <tr class="el-table__row">
+              <td rowspan="1" colspan="1">
+                <div class="cell">
+                  <strong>开源许可</strong>
+                </div>
+              </td>
+              <td rowspan="1" colspan="1">
+                <div class="cell">{{ extension.license }}</div>
+              </td>
+            </tr>
+            <tr class="el-table__row">
+              <td rowspan="1" colspan="1">
+                <div class="cell">
+                  <strong>项目地址</strong>
+                </div>
+              </td>
+              <td rowspan="1" colspan="1">
+                <div class="cell">
+                  <el-link v-if="extension.projectUrl" type="primary" :underline="false" :href="extension.projectUrl"
+                    target="_blank">
+                    {{ extension.projectUrl }}
+                  </el-link>
+                </div>
+              </td>
+            </tr>
+            <tr class="el-table__row">
+              <td rowspan="1" colspan="1">
+                <div class="cell">
+                  <strong>分类</strong>
+                </div>
+              </td>
+              <td rowspan="1" colspan="1">
+                <div class="cell" v-if="extension.categories">
+                  <el-link v-for="category in extension.categories" type="primary" :underline="false"
+                    style="margin-right: 5px">
+                    {{ category }}
+                  </el-link>
+                </div>
+              </td>
+            </tr>
+            <tr class="el-table__row">
+              <td rowspan="1" colspan="1">
+                <div class="cell">
+                  <strong>标签</strong>
+                </div>
+              </td>
+              <td rowspan="1" colspan="1">
+                <div class="cell" v-if="extension.keywords">
+                  <el-link v-for="tag in extension.keywords" type="primary" :underline="false"
+                    style="margin-right: 5px">
+                    {{ tag }}
+                  </el-link>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="el-table__column-resize-proxy" style="display: none;"></div>
+    </div>
+  </template>
+
+</div>
+
+@section Scripts{
+<script src="/sitefiles/assets/js/admin/plugins/view.js" type="text/javascript"></script>
+}

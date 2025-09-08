@@ -1,0 +1,158 @@
+@page
+@{ Layout = "_LayoutHome"; }
+@section Styles{
+  <style>
+    .el-main {
+      padding: 5px;
+      overflow: hidden;
+    }
+    #commands .el-button {
+      margin-bottom: 5px;
+    }
+    #commands .el-button+.el-button {
+      margin-left: 0;
+    }
+    .table-expand-form .el-form-item__label {
+      width: 120px;
+      color: #909399;
+    }
+    .table-expand-form .el-form-item {
+      margin-right: 0;
+      margin-bottom: 0;
+      width: 50%;
+    }
+  </style>
+}
+
+<el-alert
+  v-if="pageType === 'Unauthorized'"
+  title="提示"
+  type="warning"
+  description="您的投稿权限尚未开通，请联系管理员解决。"
+  :closable="false"
+  show-icon>
+</el-alert>
+
+<el-container v-if="!pageType">
+  <el-main>
+    <el-row style="height: 80px; overflow: hidden;">
+      <el-col :span="20">
+        <el-form v-on:submit.native.prevent :inline="true" size="small" label-width="100px">
+          <el-form-item label="知识库" prop="siteId">
+            <el-cascader
+              ref="siteIds"
+              v-model="siteIds"
+              :options="sites"
+              :props="{ multiple: false, checkStrictly: true }"
+              v-on:change="handleSiteIdChange"
+              filterable
+              placeholder="请选择投稿知识库">
+            </el-cascader>
+          </el-form-item>
+          <el-form-item label="栏目" prop="channelIds">
+            <el-cascader
+              ref="channelIds"
+              v-model="channelIds"
+              :options="[root]"
+              :props="{ multiple: false, checkStrictly: true }"
+              v-on:change="btnSearchClick"
+              filterable
+              placeholder="请选择投稿栏目">
+              <span slot-scope="{ node, data }">
+                {{ node.label }} ({{ data.count }})
+              </span>
+            </el-cascader>
+          </el-form-item>
+          <el-form-item label="审核状态">
+            <el-checkbox-group v-model="checkedLevels" v-on:change="btnSearchClick">
+              <el-checkbox v-for="level in allCheckedLevels" v-key="level.label" :label="level.label">{{level.text}}</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+        </el-form>
+      </el-col>
+      <el-col :span="4" align="right">
+        <el-form v-on:submit.native.prevent :inline="true" size="small" label-width="100px">
+          <el-form-item>
+            <el-popover
+              id="sortColumns"
+              placement="top"
+              width="360"
+              trigger="click">
+              <div>
+                设置显示列
+              </div>
+              <el-table
+                :data="columns"
+                size="mini"
+                style="width: 100%; overflow: auto; max-height: 500px !important;">
+                <el-table-column prop="displayName"></el-table-column>
+                <el-table-column prop="attributeName"></el-table-column>
+                <el-table-column align="right" width="80">
+                  <template slot-scope="scope">
+                    <el-switch
+                      v-model="scope.row.isList"
+                      :disabled="scope.row.attributeName === 'Title'"
+                      v-on:change="handleColumnsChange"
+                      size="mini">
+                    </el-switch>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div slot="reference" class="el-dropdown" style="float: right;">
+                <span style="cursor: pointer;">
+                  显示列<i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+              </div>
+            </el-popover>
+          </el-form-item>
+        </el-form>
+      </el-col>
+    </el-row>
+    
+  </el-main>
+</el-container>
+
+<el-container v-if="!pageType">
+  <el-main>
+    <el-divider></el-divider>
+    <div style="height: 10px;"></div>
+
+    <div id="commands">
+
+      <el-button :disabled="channelId == 0 || !isAdd" size="mini" plain type="primary" icon="el-icon-circle-plus-outline" v-on:click="btnAddClick">
+        添加
+      </el-button>
+
+      <el-button :disabled="channelId == 0 || !isAdd" size="mini" icon="el-icon-tickets" v-on:click="btnLayerClick({title: '导入Word', name: 'Word', full: true})">
+        导入Word
+      </el-button>
+    
+      <el-button :disabled="total === 0 || !isContentChecked" size="mini" icon="el-icon-delete" 
+        v-on:click="btnLayerClick({title: '批量删除', name: 'Delete', full: true, withContents: true})">
+        删除
+      </el-button>
+    
+    </div>
+
+    <div style="height: 10px;"></div>
+
+    @await Html.PartialAsync("_PartialContents")
+
+    <el-row style="margin-top: 7px;">
+      <el-col :span="24" align="center">
+        <el-pagination
+        size="mini"
+        background
+        v-on:current-change="handleCurrentChange"
+        :current-page="page"
+        :page-size="pageSize"
+        layout="total, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
+      </el-col>
+    </el-row>
+  </el-main>
+</el-container>
+
+@section Scripts{
+<script src="/sitefiles/assets/js/home/write/contents.js" type="text/javascript"></script> }

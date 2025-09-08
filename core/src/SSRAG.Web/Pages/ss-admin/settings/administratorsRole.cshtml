@@ -1,0 +1,45 @@
+﻿@page
+@{ Layout = "_Layout"; }
+
+<el-table :data="roles" v-on:row-dblclick="btnEditClick" style="width: 100%">
+  <el-table-column prop="roleName" label="角色名称">
+  </el-table-column>
+  <el-table-column width="180" label="创建人">
+    <template slot-scope="scope">
+      <el-button-group>
+        <el-link :underline="false" type="primary"
+          v-on:click="btnAdminViewClick(scope.row.adminUuid)">{{scope.row.adminDisplay}}</el-link>
+      </el-button-group>
+    </template>
+  </el-table-column>
+  <el-table-column width="180" prop="createdDate" label="创建时间">
+  </el-table-column>
+  <el-table-column label="有权管理的知识库">
+    <template slot-scope="scope">
+      <el-tag v-for="siteName in scope.row.siteNames" :kye="siteName" style="margin-right: 5px; margin-bottom: 5px; ">
+        {{ siteName }}
+      </el-tag>
+    </template>
+  </el-table-column>
+  <el-table-column prop="description" label="备注">
+  </el-table-column>
+  <el-table-column label="操作" width="150">
+    <template slot-scope="scope">
+      <el-button-group>
+        <el-button size="mini" v-on:click="btnEditClick(scope.row)">编辑</el-button>
+        <el-button size="mini" type="danger" v-on:click="btnDeleteClick(scope.row)">删除</el-button>
+      </el-button-group>
+    </template>
+  </el-table-column>
+</el-table>
+
+<el-row>
+  <el-divider></el-divider>
+  <div style="height: 10px"></div>
+  <el-button size="small" plain type="primary" style="margin-left: 0px;" icon="el-icon-plus" v-on:click="btnAddClick">
+    添加角色
+  </el-button>
+</el-row>
+
+@section Scripts{
+<script src="/sitefiles/assets/js/admin/settings/administratorsRole.js" type="text/javascript"></script> }

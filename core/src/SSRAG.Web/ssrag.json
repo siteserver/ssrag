@@ -1,0 +1,22 @@
+﻿{
+  "IsProtectData": false,
+  "IsSafeMode": false,
+  "SecurityKey": "f8ca6f4a11aba05d98d781297ad38b15.dbd5c7fa1dc2f4fe783f70a0df5e20f4",
+  "Database": {
+    "Type": "PostgreSql",
+    "ConnectionString": "Server=pgm-2vcc3kuwi8k4q634eo.rwlb.cn-chengdu.rds.aliyuncs.com;User Id=ssrag;Password=y398xfP_RfcNU2h;Database=ssrag;Search Path=tenant1;"
+  },
+  "Redis": {
+    "ConnectionString": "r-2vc9dln7nxi2p2jxtnpd.redis.cn-chengdu.rds.aliyuncs.com:6379,password=y398xfP_RfcNU2h,ssl=false,db=0,prefix=tenant1"
+  },
+  "IsDisablePlugins": false,
+  "AdminRestriction": {
+    "Host": "",
+    "AllowList": [],
+    "BlockList": []
+  },
+  "Cors": {
+    "IsOrigins": false,
+    "Origins": []
+  }
+}

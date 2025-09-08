@@ -1,0 +1,48 @@
+﻿@page
+@{ Layout = "_Layout"; }
+
+<el-form v-on:submit.native.prevent :inline="true" :model="form" size="mini">
+  <el-form-item label="知识库">
+    <el-cascader ref="siteIds" v-model="siteIds" :options="sites" :props="{ checkStrictly: true, value: 'id',
+      label: 'siteName' }" filterable placeholder="请选择知识库">
+    </el-cascader>
+  </el-form-item>
+  <el-form-item label="从">
+    <el-date-picker v-model="form.dateFrom" type="date" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd"
+      placeholder="选择开始日期">
+    </el-date-picker>
+  </el-form-item>
+  <el-form-item label="到">
+    <el-date-picker v-model="form.dateTo" type="date" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd"
+      placeholder="选择结束日期">
+    </el-date-picker>
+  </el-form-item>
+
+  <el-form-item>
+    <el-button type="primary" v-on:click="btnSearchClick">统计</el-button>
+  </el-form-item>
+</el-form>
+
+<el-divider></el-divider>
+
+<line-chart :chart-data="chartData"></line-chart>
+
+<el-divider></el-divider>
+
+<el-table :data="adminStats" style="width: 100%">
+  <el-table-column label="管理员">
+    <template slot-scope="scope">
+      <el-link :underline="false" type="primary"
+        v-on:click="btnAdminView(scope.row.uuid)">{{scope.row.adminName}}</el-link>
+    </template>
+  </el-table-column>
+  <el-table-column prop="add" label="内容添加量">
+  </el-table-column>
+  <el-table-column prop="edit" label="内容更新量">
+  </el-table-column>
+</el-table>
+
+@section Scripts{
+<script src="/sitefiles/assets/lib/chartjs/chart-2.7.1.min.js"></script>
+<script src="/sitefiles/assets/lib/chartjs/vue-chartjs.min.js"></script>
+<script src="/sitefiles/assets/js/admin/settings/analysisSiteContent.js" type="text/javascript"></script> }

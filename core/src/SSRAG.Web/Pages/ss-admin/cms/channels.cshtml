@@ -1,0 +1,491 @@
+﻿@page
+@{ Layout = "_Layout"; }
+@section Styles{
+<link rel="stylesheet" href="/sitefiles/assets/lib/ueditor/third-party/custom/custom.css">
+<style>
+  .commands {
+    text-align: right;
+    padding-right: 10px;
+  }
+
+  .el-button-group .el-dropdown {
+    float: left;
+    margin-top: -1px;
+    margin-right: -1px;
+  }
+</style>
+}
+
+<el-row>
+  <el-col :span="20">
+    <el-form v-on:submit.native.prevent size="mini" :inline="true">
+      <el-form-item label="关键字">
+        <el-input v-model="filterText" placeholder="请输入栏目名称/栏目Id"></el-input>
+      </el-form-item>
+      <el-form-item label="栏目索引" v-if="indexNames && indexNames.length > 0">
+        <el-select v-model="filterIndexName" placeholder="选择栏目索引进行过滤">
+          <el-option label="<无筛选>" value=""></el-option>
+          <el-option v-for="indexName in indexNames" :key="indexName" :label="indexName" :value="indexName"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="栏目组" v-if="groupNames && groupNames.length > 0">
+        <el-select v-model="filterGroupName" placeholder="选择栏目组进行过滤">
+          <el-option label="<无筛选>" value=""></el-option>
+          <el-option v-for="groupName in groupNames" :key="groupName" :label="groupName" :value="groupName"></el-option>
+        </el-select>
+      </el-form-item>
+    </el-form>
+  </el-col>
+  <el-col :span="4" align="right">
+
+    <el-popover id="sortColumns" placement="top" width="360" trigger="click">
+      <div>
+        设置显示列
+      </div>
+      <el-table :data="columns" size="mini" style="width: 100%; overflow: auto; max-height: 500px !important">
+        <el-table-column prop="displayName"></el-table-column>
+        <el-table-column prop="attributeName"></el-table-column>
+        <el-table-column align="right" width="80">
+          <template slot-scope="scope">
+            <el-switch v-model="scope.row.isList" :disabled="scope.row.attributeName === 'ChannelName'"
+              v-on:change="handleColumnsChange" size="mini">
+            </el-switch>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div slot="reference" class="el-dropdown">
+        <span style="cursor: pointer;">
+          显示列<i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+      </div>
+    </el-popover>
+
+  </el-col>
+</el-row>
+
+<div class="el-table el-table--fit el-table--enable-row-hover el-table--enable-row-transition" style="width: 100%;">
+  <div class="hidden-columns">
+    <div></div>
+    <div v-for="column in columns" v-if="column.isList && column.attributeName !== 'ChannelName'"
+      :key="column.attributeName">
+    </div>
+    <div></div>
+  </div>
+  <div class="el-table__header-wrapper">
+    <table cellspacing="0" cellpadding="0" border="0" class="el-table__header" style="width: 100%;">
+      <colgroup>
+        <col>
+        <col v-for="column in columns" v-if="column.isList && column.attributeName !== 'ChannelName'"
+          :key="column.attributeName" :width="getColumnWidth(column.attributeName)">
+        <col :width="commandsWidth">
+      </colgroup>
+      <thead class="has-gutter">
+        <tr class="">
+          <th colspan="1" rowspan="1" class="is-leaf">
+            <div class="cell">栏目名称（提示：可以对栏目进行拖拽操作）</div>
+          </th>
+          <th v-for="column in columns" v-if="column.isList && column.attributeName !== 'ChannelName'"
+            :key="column.attributeName" colspan="1" rowspan="1" class="is-leaf">
+            <div class="cell">{{ column.displayName }}</div>
+          </th>
+          <th colspan="1" rowspan="1" class="is-leaf">
+            <div class="cell"></div>
+          </th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+  <div class="el-table__column-resize-proxy" style="display: none;"></div>
+</div>
+
+<el-tree ref="tree" class="tree" node-key="value" draggable show-checkbox check-strictly highlight-current :data="root"
+  :default-expanded-keys="expandedChannelIds" :filter-node-method="filterNode" :allow-drop="allowDrop"
+  :allow-drag="allowDrag" v-on:node-drop="handleDrop" v-on:check-change="handleCheckChange">
+  <div class="el-table__body-wrapper is-scrolling-none" slot-scope="{ node, data }">
+    <table v-on:dblclick="btnEditClick(data)" v-on:click.ctrl.stop="btnCheckClick(data)" cellspacing="0" cellpadding="0"
+      border="0" class="el-table__body" style="width: 100%;">
+      <colgroup>
+        <col>
+        <col v-for="column in columns" v-if="column.isList && column.attributeName !== 'ChannelName'"
+          :key="column.attributeName" :width="getColumnWidth(column.attributeName)">
+        <col :width="commandsWidth">
+      </colgroup>
+      <tbody>
+        <tr class="el-table__row">
+          <td rowspan="1" colspan="1">
+            <div class="cell">
+              <el-link :underline="false" :href="getChannelUrl(data)" v-on:click.stop.native target="_blank">
+                <i class="el-icon-link"></i>
+              </el-link>
+              {{ data.label }} ({{ data.count }})
+              <!-- imageUrl -->
+              <el-popover v-if="data.imageUrl" width="400" trigger="hover">
+                <el-image :src="data.imageUrl"></el-image>
+                <el-link slot="reference" :underline="false">
+                  <i class="el-icon-picture-outline"></i>
+                </el-link>
+              </el-popover>
+
+              <!-- linkType && linkUrl -->
+              <el-tooltip v-if="data.channel.linkType != 'None' || data.channel.linkUrl" effect="light" content="指定链接"
+                placement="top">
+                <i class="fa fa-external-link" style="top: 15px;margin-left: 5px;position: absolute;"></i>
+              </el-tooltip>
+
+            </div>
+          </td>
+          <td v-for="column in columns" v-if="column.isList && column.attributeName !== 'ChannelName'"
+            :key="column.attributeName" rowspan="1" colspan="1">
+            <div class="cell">
+              <template v-if="column.attributeName === 'IndexName'">
+                <el-tag size="mini" v-if="data.channel.indexName">
+                  {{ data.channel.indexName }}
+                </el-tag>
+              </template>
+              <template v-else-if="column.attributeName === 'GroupNames'">
+                <template v-if="data.groupNames && groupNames" v-for="groupName in data.groupNames">
+                  <el-tag v-if="groupNames.indexOf(groupName) !== -1" :key="groupName" size="mini" type="info">
+                    {{ groupName }}
+                  </el-tag>
+                </template>
+              </template>
+              <template v-else-if="column.attributeName === 'ChannelTemplateId'">
+                <el-link v-if="isTemplateEditable && data.channel.channelTemplateId > 0" :underline="false"
+                  :href="getTemplateEditorUrl(true, data.channel.channelTemplateId)" target="_blank" type="primary">
+                  {{ getTemplate(true, data.channel.channelTemplateId).templateName }}
+                </el-link>
+              </template>
+              <template v-else-if="column.attributeName === 'ContentTemplateId'">
+                <el-link v-if="isTemplateEditable && data.channel.contentTemplateId > 0" :underline="false"
+                  :href="getTemplateEditorUrl(false, data.channel.contentTemplateId)" target="_blank" type="primary">
+                  {{ getTemplate(false, data.channel.contentTemplateId).templateName }}
+                </el-link>
+              </template>
+              <template v-else>
+                <span v-html="data.channel.getEntityValue(column.attributeName)"></span>
+              </template>
+            </div>
+          </td>
+          <td rowspan="1" colspan="1" class="commands">
+            <div class="cell">
+
+              <el-link v-if="channelMenus" v-for="menu in channelMenus" :key="menu.id" :underline="false" type="primary"
+                size="small" style="margin-left: 5px" v-on:click.stop.native="btnMenuClick(menu, data)">
+                <i v-if="menu.iconClass" :class="menu.iconClass"></i>
+                {{ menu.text }}
+              </el-link>
+
+              <el-link :disabled="!data.channel.knowledge" :underline="false" type="primary" size="small"
+                style="margin-left: 5px" v-on:click.stop.native="btnKnowledgeClick(data)">
+                知识库
+              </el-link>
+              <el-link :underline="false" type="primary" size="small" style="margin-left: 5px"
+                v-on:click.stop.native="btnEditClick(data)">
+                编辑
+              </el-link>
+              <el-link :underline="false" type="primary" size="small" style="margin-left: 5px"
+                :disabled="siteId == data.value" v-on:click.stop.native="btnDeleteClick(data)">
+                删除
+              </el-link>
+
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</el-tree>
+
+<el-row>
+  <el-divider></el-divider>
+  <div style="height: 10px"></div>
+  <el-button size="small" type="primary" plain style="margin-left: 0px;" icon="el-icon-plus"
+    v-on:click="btnAppendClick">
+    添 加
+  </el-button>
+  <el-button size="small" type="primary" plain style="margin-left: 0px;" icon="el-icon-upload"
+    v-on:click="btnImportClick">
+    导 入
+  </el-button>
+  <el-button size="small" type="primary" plain style="margin-left: 0px;" :disabled="channelIds.length === 0"
+    icon="el-icon-download" v-on:click="btnExportClick">
+    导 出
+  </el-button>
+  <el-button size="small" type="primary" plain style="margin-left: 0px;" icon="el-icon-files"
+    :disabled="channelIds.length === 0" v-on:click="btnSetGroupClick">
+    分 组
+  </el-button>
+  <el-button size="small" type="primary" plain style="margin-left: 0px;" :disabled="channelIds.length === 0"
+    icon="el-icon-sort" v-on:click="btnSetTaxisClick">
+    排 序
+  </el-button>
+  <el-button size="small" type="primary" plain style="margin-left: 0px;" :disabled="channelIds.length === 0"
+    icon="el-icon-right" v-on:click="btnTranslateClick">
+    复 制
+  </el-button>
+  <el-button size="small" type="primary" plain style="margin-left: 0px;" :disabled="channelIds.length === 0"
+    icon="el-icon-magic-stick" v-on:click="btnCreateClick">
+    生 成
+  </el-button>
+
+  <div style="height: 5px"></div>
+</el-row>
+
+<el-drawer id="appendForm" v-if="appendForm" title="添加栏目" ref="appendPanel" :visible.sync="appendPanel" destroy-on-close
+  :wrapperClosable="false" direction="rtl" size="90%">
+  <div class="drawer__content">
+    <el-form v-on:submit.native.prevent ref="appendForm" :model="appendForm" size="small" label-width="120px">
+      <el-form-item label="父栏目" prop="parentIds" :rules="{ required: true, message: '请选择父栏目' }">
+        <el-cascader-panel v-model="appendForm.parentIds" :options="root" :props="{ checkStrictly: true }"
+          style="width: 100%;" placeholder="请选择父栏目">
+        </el-cascader-panel>
+      </el-form-item>
+      <el-form-item label="栏目" prop="channels" :rules="{ required: true, message: '请输入栏目名称' }">
+        <el-input v-model="appendForm.channels" type="textarea" rows="10" :autosize="{ minRows: 10, maxRows: 20}"
+          placeholder="栏目之间用换行分割，下级栏目在栏目前添加“-”字符，索引可以放到括号中，如：&#10;栏目一(栏目索引)&#10;-下级栏目(下级索引)&#10;--下下级栏目"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-checkbox label="启用知识库" v-model="appendForm.isKnowledge"></el-checkbox>
+        <el-checkbox label="采用父栏目模板" v-model="appendForm.isParentTemplates"></el-checkbox>
+        <el-checkbox label="将栏目名称作为栏目索引" v-model="appendForm.isIndexName"></el-checkbox>
+      </el-form-item>
+      <el-form-item v-if="!appendForm.isParentTemplates" label="栏目模板" prop="channels"
+        :rules="{ required: true, message: '请选择栏目模板' }">
+        <el-select v-model="appendForm.channelTemplateId" size="mini" placeholder="请选择栏目模板">
+          <el-option label="<默认>" :value="0"></el-option>
+          <el-option v-for="channelTemplate in channelTemplates" :key="channelTemplate.id"
+            :label="channelTemplate.templateName" :value="channelTemplate.id"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item v-if="!appendForm.isParentTemplates" label="内容模板" prop="channels"
+        :rules="{ required: true, message: '请选择内容模板' }">
+        <el-select v-model="appendForm.contentTemplateId" size="mini" placeholder="请选择内容模板">
+          <el-option label="<默认>" :value="0"></el-option>
+          <el-option v-for="contentTemplate in contentTemplates" :key="contentTemplate.id"
+            :label="contentTemplate.templateName" :value="contentTemplate.id"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-divider></el-divider>
+      <div class="drawer__footer">
+        <el-button type="primary" v-on:click="btnAppendSubmitClick" size="small">确 定</el-button>
+        <el-button size="small" v-on:click="btnCancelClick">取 消</el-button>
+      </div>
+    </el-form>
+  </div>
+</el-drawer>
+
+<el-drawer id="deleteForm" v-if="deleteForm" title="删除栏目" ref="deletePanel" :visible.sync="deletePanel" destroy-on-close
+  :wrapperClosable="false" direction="rtl" size="80%">
+  <div class="drawer__content">
+
+    <el-alert type="warning">
+      - 此操作 <strong>不可以</strong> 被回滚。<br>
+      - 此操作将永久删除该栏目，包括所有下级栏目。
+      <br>
+      - 删除完成后栏目包含的所有内容将进入回收站。
+    </el-alert>
+
+    <br />
+    <el-form v-on:submit.native.prevent size="mini" ref="deleteForm" :model="deleteForm" label-width="160px">
+      <el-form-item>
+        <el-radio v-model="deleteForm.deleteFiles" :label="false">保留生成的文件</el-radio>
+        <el-radio v-model="deleteForm.deleteFiles" :label="true">删除生成的文件</el-radio>
+      </el-form-item>
+      <el-form-item>
+        请输入以下信息以确认您的操作: <span style="color:#F56C6C">{{ deleteForm.label }}</span>
+      </el-form-item>
+      <el-form-item label="需要删除的栏目名称" prop="channelName" :rules="{ required: true, message: '请输入栏目名称' }">
+        <el-input v-model="deleteForm.channelName" placeholder="请输入需要删除的栏目名称"></el-input>
+      </el-form-item>
+
+      <el-divider></el-divider>
+      <div class="drawer__footer">
+        <el-button type="danger" size="small" v-on:click="btnDeleteSubmitClick">删 除</el-button>
+        <el-button size="small" v-on:click="btnCancelClick">取 消</el-button>
+      </div>
+
+    </el-form>
+  </div>
+</el-drawer>
+
+<el-drawer id="importForm" v-if="importForm" title="导入栏目" ref="importPanel" :visible.sync="importPanel" destroy-on-close
+  :wrapperClosable="false" direction="rtl" size="80%">
+  <div class="drawer__content">
+    <el-form v-on:submit.native.prevent ref="importForm" size="small" :model="importForm" label-width="160px">
+
+      <el-form-item label="栏目压缩包" prop="fileName" :rules="{ required: true, message: '请上传栏目压缩包' }">
+        <el-upload :drag="true" :limit="1" :action="uploadUrl" :auto-upload="true"
+          :headers="{Authorization: 'Bearer ' + $token}" :file-list="importUploadList" :before-upload="uploadBefore"
+          :on-progress="uploadProgress" :on-success="uploadSuccess" :on-error="uploadError" :multiple="false">
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        </el-upload>
+      </el-form-item>
+
+      <el-form-item label="父栏目" prop="channelIds" :rules="{ required: true, message: '请选择父栏目' }">
+        <el-cascader v-model="importForm.channelIds" :options="root" :props="{ checkStrictly: true }"
+          style="width: 100%;" placeholder="请选择父栏目">
+        </el-cascader>
+      </el-form-item>
+
+      <el-form-item>
+        <el-checkbox label="覆盖同名栏目" v-model="importForm.isOverride"></el-checkbox>
+        <el-checkbox label="同时导入内容" v-model="importForm.isContents"></el-checkbox>
+      </el-form-item>
+
+      <el-divider></el-divider>
+      <div class="drawer__footer">
+        <el-button type="primary" size="small" v-on:click="btnImportSubmitClick">确 定</el-button>
+        <el-button size="small" v-on:click="btnCancelClick">取 消</el-button>
+      </div>
+
+    </el-form>
+
+  </div>
+</el-drawer>
+
+<el-drawer id="exportForm" v-if="exportForm" title="导出栏目" ref="exportPanel" :visible.sync="exportPanel" destroy-on-close
+  :wrapperClosable="false" direction="rtl" size="80%">
+  <div class="drawer__content">
+    <el-form v-on:submit.native.prevent ref="exportForm" size="small" :model="exportForm" label-width="160px">
+
+      <el-form-item>
+        <el-checkbox label="同时导出内容" v-model="exportForm.isContents"></el-checkbox>
+        <el-checkbox label="同时导出图片文件" v-if="exportForm.isContents" v-model="exportForm.isFileImages"></el-checkbox>
+        <el-checkbox label="同时导出附件文件" v-if="exportForm.isContents" v-model="exportForm.isFileAttaches"></el-checkbox>
+      </el-form-item>
+
+      <el-divider></el-divider>
+      <div class="drawer__footer">
+        <el-button type="primary" size="small" v-on:click="btnExportSubmitClick">确 定</el-button>
+        <el-button size="small" v-on:click="btnCancelClick">取 消</el-button>
+      </div>
+
+    </el-form>
+
+  </div>
+</el-drawer>
+
+<el-drawer id="editForm" v-if="editPanel && form" title="编辑栏目" :visible.sync="editPanel" :destroy-on-close="true"
+  :wrapperClosable="false" direction="rtl" size="90%">
+  <div class="drawer__content">
+    <el-form v-on:submit.native.prevent size="mini" ref="editForm" :model="form" label-width="200px">
+      <el-form-item label="栏目名称" prop="channelName" :rules="{ required: true, message: '请输入栏目名称' }">
+        <el-input v-model="form.channelName" placeholder="请输入栏目名称"></el-input>
+      </el-form-item>
+      <el-form-item label="栏目索引">
+        <el-input v-model="form.indexName" placeholder="请输入栏目索引"></el-input>
+      </el-form-item>
+      <el-form-item label="栏目组" v-if="groupNames && groupNames.length > 0">
+        <el-checkbox-group v-model="form.groupNames">
+          <el-checkbox v-for="groupName in groupNames" :key="groupName" :label="groupName" :value="groupName"
+            name="groupNames"></el-checkbox>
+        </el-checkbox-group>
+        <el-button size="mini" icon="el-icon-circle-plus-outline" v-on:click="btnEditAddGroupClick">
+          新增栏目组
+        </el-button>
+      </el-form-item>
+      <el-form-item label="栏目模板">
+        <el-select v-model="form.channelTemplateId" placeholder="请选择栏目模板">
+          <el-option label="<默认>" :value="0"></el-option>
+          <el-option v-for="channelTemplate in channelTemplates" :key="channelTemplate.id"
+            :label="channelTemplate.templateName" :value="channelTemplate.id"></el-option>
+        </el-select>
+        <el-link v-if="isTemplateEditable && form.channelTemplateId > 0" :underline="false"
+          :href="getTemplateEditorUrl(true, form.channelTemplateId)" target="_blank" type="primary">
+          编辑
+        </el-link>
+      </el-form-item>
+      <el-form-item label="内容模板">
+        <el-select v-model="form.contentTemplateId" placeholder="请选择内容模板">
+          <el-option label="<默认>" :value="0"></el-option>
+          <el-option v-for="contentTemplate in contentTemplates" :key="contentTemplate.id"
+            :label="contentTemplate.templateName" :value="contentTemplate.id"></el-option>
+        </el-select>
+        <el-link v-if="isTemplateEditable && form.contentTemplateId > 0" :underline="false"
+          :href="getTemplateEditorUrl(false, form.contentTemplateId)" target="_blank" type="primary">
+          编辑
+        </el-link>
+      </el-form-item>
+      <el-form-item label="链接类型">
+        <el-tooltip effect="light" content="设置此栏目的链接与子栏目及内容的关系" placement="right">
+          <el-select v-model="form.linkType" placeholder="请选择链接类型"
+            v-on:change="form.linkUrl = form.linkToChannel = '';">
+            <el-option v-for="linkType in editLinkTypes" :key="linkType.value" :label="linkType.label"
+              :value="linkType.value"></el-option>
+          </el-select>
+        </el-tooltip>
+      </el-form-item>
+      <el-form-item v-if="form.linkType == 'None'" label="外部链接">
+        <el-input v-model="form.linkUrl" placeholder="设置后栏目链接将转向此地址"></el-input>
+      </el-form-item>
+      <el-form-item v-if="form.linkType == 'LinkToChannel' || form.linkType == 'LinkToContent'" label="指定栏目"
+        prop="channelIds" :rules="[{ required: true, message: '请选择栏目' }]">
+        <el-cascader v-model="form.channelIds" filterable :options="root" :props="{ checkStrictly: true }" filterable
+          v-on:change="form.contentId = 0; form.contentTitle = '';" style="width: 100%;" placeholder="请选择栏目">
+          <template slot-scope="{ node, data }">
+            <span>{{ data.label }}</span>
+            <span> ({{ data.count }}) </span>
+          </template>
+        </el-cascader>
+      </el-form-item>
+      <el-form-item v-if="form.linkType == 'LinkToContent' && form.channelIds && form.channelIds.length > 0"
+        label="指定内容" prop="contentTitle" :rules="[{ required: true, message: '请选择内容' }]">
+        <template v-if="form.contentId > 0">
+          <el-link type="primary" :underline="false" :href="getContentUrl()" v-html="form.contentTitle"
+            target="_blank"></el-link>
+          <div style="clear: both;"></div>
+        </template>
+        <el-button size="mini" icon="el-icon-circle-plus-outline" v-on:click="btnLinkToContentClick">
+          指定内容
+        </el-button>
+      </el-form-item>
+      <el-form-item label="新增内容排序规则">
+        <el-tooltip effect="light" content="新增或导入的内容将按照此排序规则进行排序" placement="right">
+          <el-select v-model="form.defaultTaxisType" placeholder="请选择新增内容排序规则">
+            <el-option v-for="taxisType in editTaxisTypes" :key="taxisType.value" :label="taxisType.label"
+              :value="taxisType.value"></el-option>
+          </el-select>
+        </el-tooltip>
+      </el-form-item>
+      <el-form-item label="生成页面路径">
+        <el-input v-model="form.filePath" placeholder="设置栏目的生成页面地址"></el-input>
+      </el-form-item>
+      <el-form-item label="下级栏目页面命名规则">
+        <el-input style="width: 70%" v-model="form.channelFilePathRule" placeholder="设置下级栏目页面命名规则"></el-input>
+        <el-button v-on:click.prevent="btnSetClick(form.id, true, form.channelFilePathRule)">构造</el-button>
+      </el-form-item>
+      <el-form-item label="内容页面命名规则">
+        <el-input style="width: 70%" v-model="form.contentFilePathRule" placeholder="设置此栏目下的内容页面命名规则"></el-input>
+        <el-button v-on:click.prevent="btnSetClick(form.id, false, form.contentFilePathRule)">构造</el-button>
+      </el-form-item>
+      <el-form-item label="栏目设置">
+        <el-switch v-model="form.knowledge" active-text="加入知识库"></el-switch>
+        <el-switch v-model="form.isChangeBanned" active-text="禁止维护内容(添加/修改/删除)" style="margin-right: 20px"></el-switch>
+        <el-switch v-model="form.isCreateBanned" active-text="禁止生成内容"></el-switch>
+      </el-form-item>
+      <el-form-item label="栏目关键字">
+        <el-input v-model="form.keywords"></el-input>
+      </el-form-item>
+      <el-form-item label="栏目描述">
+        <el-input type="textarea" v-model="form.description" :autosize="{ minRows: 3, maxRows: 10}"></el-input>
+      </el-form-item>
+      @await Html.PartialAsync("_PartialForm")
+
+      <el-divider></el-divider>
+      <div class="drawer__footer">
+        <el-button type="primary" v-on:click="btnSaveClick" size="small">确 定</el-button>
+        <el-button size="small" v-on:click="btnCancelClick">取 消</el-button>
+      </div>
+    </el-form>
+  </div>
+</el-drawer>
+
+@section Scripts{
+<script src="/sitefiles/assets/lib/ueditor/editor_config.js" type="text/javascript"></script>
+<script src="/sitefiles/assets/lib/ueditor/ueditor.all.js" type="text/javascript"></script>
+<script src="/sitefiles/assets/lib/ueditor/third-party/custom/custom.js" type="text/javascript"></script>
+<script src="/sitefiles/assets/js/_partialForm.js" type="text/javascript"></script>
+<script src="/sitefiles/assets/js/admin/cms/channels.js" type="text/javascript"></script>
+}

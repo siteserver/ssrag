@@ -1,0 +1,1755 @@
+{
+  "license": "AGPL-3.0",
+  "extensions": {
+    "permissions": {
+      "sys_apps_management": {
+        "text": "项目管理",
+        "type": [
+          "app"
+        ],
+        "order": 101
+      },
+      "sys_apps_chats": {
+        "text": "应用对话",
+        "type": [
+          "app"
+        ],
+        "order": 102
+      },
+      "sys_plugins_add": {
+        "text": "添加插件",
+        "type": [
+          "app"
+        ],
+        "order": 103
+      },
+      "sys_plugins_management": {
+        "text": "管理插件",
+        "type": [
+          "app"
+        ],
+        "order": 104
+      },
+      "sys_settings_sites": {
+        "text": "知识库管理",
+        "type": [
+          "app"
+        ],
+        "order": 106
+      },
+      "sys_settings_sitesUrl": {
+        "text": "知识库访问地址",
+        "type": [
+          "app"
+        ],
+        "order": 107
+      },
+      "sys_settings_sitesTables": {
+        "text": "站点内容表",
+        "type": [
+          "app"
+        ],
+        "order": 108
+      },
+      "sys_settings_sitesTemplates": {
+        "text": "知识库模板管理",
+        "type": [
+          "app"
+        ],
+        "order": 109
+      },
+      "sys_settings_sitesTemplatesOnline": {
+        "text": "在线知识库模板",
+        "type": [
+          "app"
+        ],
+        "order": 110
+      },
+      "sys_settings_administrators": {
+        "text": "管理员管理",
+        "type": [
+          "app"
+        ],
+        "order": 111
+      },
+      "sys_settings_administratorsRole": {
+        "text": "角色管理",
+        "type": [
+          "app"
+        ],
+        "order": 112
+      },
+      "sys_settings_users": {
+        "text": "用户管理",
+        "type": [
+          "app"
+        ],
+        "order": 113
+      },
+      "sys_settings_usersDepartment": {
+        "text": "部门管理",
+        "type": [
+          "app"
+        ],
+        "order": 114
+      },
+      "sys_settings_usersGroup": {
+        "text": "用户组管理",
+        "type": [
+          "app"
+        ],
+        "order": 115
+      },
+      "sys_settings_usersStyle": {
+        "text": "用户字段",
+        "type": [
+          "app"
+        ],
+        "order": 116
+      },
+      "sys_settings_usersConfig": {
+        "text": "用户设置",
+        "type": [
+          "app"
+        ],
+        "order": 117
+      },
+      "sys_settings_homeConfig": {
+        "text": "用户中心设置",
+        "type": [
+          "app"
+        ],
+        "order": 118
+      },
+      "sys_settings_homeMenus": {
+        "text": "用户中心菜单",
+        "type": [
+          "app"
+        ],
+        "order": 119
+      },
+      "sys_settings_configsModels": {
+        "text": "模型提供商",
+        "type": [
+          "app"
+        ],
+        "order": 120
+      },
+      "sys_settings_configsAdministrators": {
+        "text": "管理员设置",
+        "type": [
+          "app"
+        ],
+        "order": 121
+      },
+      "sys_settings_configsAccessTokens": {
+        "text": "密钥管理",
+        "type": [
+          "app"
+        ],
+        "order": 122
+      },
+      "sys_settings_analysisAdminLogin": {
+        "text": "管理员登录统计",
+        "type": [
+          "app"
+        ],
+        "order": 134
+      },
+      "sys_settings_analysisSiteContent": {
+        "text": "知识库内容统计",
+        "type": [
+          "app"
+        ],
+        "order": 135
+      },
+      "sys_settings_analysisUser": {
+        "text": "用户数据统计",
+        "type": [
+          "app"
+        ],
+        "order": 136
+      },
+      "sys_settings_logsSite": {
+        "text": "项目日志",
+        "type": [
+          "app"
+        ],
+        "order": 137
+      },
+      "sys_settings_logsAdmin": {
+        "text": "管理员日志",
+        "type": [
+          "app"
+        ],
+        "order": 138
+      },
+      "sys_settings_logsUser": {
+        "text": "用户日志",
+        "type": [
+          "app"
+        ],
+        "order": 139
+      },
+      "sys_settings_logsError": {
+        "text": "系统错误日志",
+        "type": [
+          "app"
+        ],
+        "order": 140
+      },
+      "sys_settings_logsConfig": {
+        "text": "日志设置",
+        "type": [
+          "app"
+        ],
+        "order": 141
+      },
+      "sys_settings_utilitiesCache": {
+        "text": "系统缓存",
+        "type": [
+          "app"
+        ],
+        "order": 143
+      },
+      "sys_settings_utilitiesParameters": {
+        "text": "系统参数",
+        "type": [
+          "app"
+        ],
+        "order": 144
+      },
+      "sys_settings_utilitiesEncrypt": {
+        "text": "加密符串",
+        "type": [
+          "app"
+        ],
+        "order": 145
+      },
+      "site_contents": {
+        "text": "内容管理",
+        "type": [
+          "web",
+          "document"
+        ],
+        "order": 101
+      },
+      "site_channels": {
+        "text": "栏目管理",
+        "type": [
+          "web",
+          "document"
+        ],
+        "order": 102
+      },
+      "site_contentsSearch": {
+        "text": "内容搜索",
+        "type": [
+          "web",
+          "document"
+        ],
+        "order": 103
+      },
+      "site_channelsTranslate": {
+        "text": "批量复制",
+        "type": [
+          "web"
+        ],
+        "order": 104
+      },
+      "site_contentsReplace": {
+        "text": "批量替换",
+        "type": [
+          "web"
+        ],
+        "order": 105
+      },
+      "site_contentsCheck": {
+        "text": "内容审核",
+        "type": [
+          "web"
+        ],
+        "order": 106
+      },
+      "site_contentsRecycle": {
+        "text": "内容回收站",
+        "type": [
+          "web"
+        ],
+        "order": 107
+      },
+      "site_dataset_documents": {
+        "text": "知识库管理",
+        "type": [
+          "web",
+          "document"
+        ],
+        "order": 108
+      },
+      "site_dataset_testing": {
+        "text": "搜索测试",
+        "type": [
+          "web",
+          "document"
+        ],
+        "order": 109
+      },
+      "site_datasetSettings": {
+        "text": "分段与清洗设置",
+        "type": [
+          "web",
+          "document"
+        ],
+        "order": 110
+      },
+      "site_datasetStatus": {
+        "text": "分段进度查看",
+        "type": [
+          "web",
+          "document"
+        ],
+        "order": 111
+      },
+      "site_formList": {
+        "text": "表单管理",
+        "type": [
+          "web"
+        ],
+        "order": 112
+      },
+      "site_formTemplates": {
+        "text": "表单模板",
+        "type": [
+          "web"
+        ],
+        "order": 113
+      },
+      "site_templates": {
+        "text": "模板管理",
+        "type": [
+          "web"
+        ],
+        "order": 114
+      },
+      "site_specials": {
+        "text": "专题管理",
+        "type": [
+          "web"
+        ],
+        "order": 115
+      },
+      "site_templatesMatch": {
+        "text": "匹配模板",
+        "type": [
+          "web"
+        ],
+        "order": 120
+      },
+      "site_templatesIncludes": {
+        "text": "包含文件管理",
+        "type": [
+          "web"
+        ],
+        "order": 121
+      },
+      "site_templatesAssets": {
+        "text": "资源文件管理",
+        "type": [
+          "web"
+        ],
+        "order": 122
+      },
+      "site_templatesPreview": {
+        "text": "模板在线解析",
+        "type": [
+          "web"
+        ],
+        "order": 123
+      },
+      "site_templatesReference": {
+        "text": "模板语言参考",
+        "type": [
+          "web"
+        ],
+        "order": 124
+      },
+      "site_settingsSite": {
+        "text": "知识库设置",
+        "type": [
+          "web"
+        ],
+        "order": 125
+      },
+      "site_settingsContent": {
+        "text": "内容设置",
+        "type": [
+          "web"
+        ],
+        "order": 126
+      },
+      "site_settingsChannelGroup": {
+        "text": "栏目组管理",
+        "type": [
+          "web"
+        ],
+        "order": 127
+      },
+      "site_settingsContentGroup": {
+        "text": "内容组管理",
+        "type": [
+          "web"
+        ],
+        "order": 128
+      },
+      "site_settingsContentTag": {
+        "text": "内容标签管理",
+        "type": [
+          "web"
+        ],
+        "order": 129
+      },
+      "site_settingsStyleContent": {
+        "text": "内容字段设置",
+        "type": [
+          "web"
+        ],
+        "order": 130
+      },
+      "site_settingsStyleChannel": {
+        "text": "栏目字段设置",
+        "type": [
+          "web"
+        ],
+        "order": 131
+      },
+      "site_settingsStyleSite": {
+        "text": "知识库字段设置",
+        "type": [
+          "web"
+        ],
+        "order": 132
+      },
+      "site_settingsStyleRelatedField": {
+        "text": "联动字段设置",
+        "type": [
+          "web"
+        ],
+        "order": 133
+      },
+      "site_settingsCrossSiteTransChannels": {
+        "text": "跨站转发栏目设置",
+        "type": [
+          "web"
+        ],
+        "order": 134
+      },
+      "site_settingsCrossSiteTrans": {
+        "text": "跨站转发审核设置",
+        "type": [
+          "web"
+        ],
+        "order": 135
+      },
+      "site_settingsCreateRule": {
+        "text": "页面命名规则",
+        "type": [
+          "web"
+        ],
+        "order": 136
+      },
+      "site_settingsCreate": {
+        "text": "页面生成设置",
+        "type": [
+          "web"
+        ],
+        "order": 137
+      },
+      "site_settingsCreateTrigger": {
+        "text": "页面生成触发器",
+        "type": [
+          "web"
+        ],
+        "order": 138
+      },
+      "site_settingsUploadImage": {
+        "text": "图片上传设置",
+        "type": [
+          "web"
+        ],
+        "order": 139
+      },
+      "site_settingsUploadVideo": {
+        "text": "视频上传设置",
+        "type": [
+          "web"
+        ],
+        "order": 140
+      },
+      "site_settingsUploadAudio": {
+        "text": "音频上传设置",
+        "type": [
+          "web"
+        ],
+        "order": 141
+      },
+      "site_settingsUploadFile": {
+        "text": "附件上传设置",
+        "type": [
+          "web"
+        ],
+        "order": 142
+      },
+      "site_settingsWaterMark": {
+        "text": "图片水印设置",
+        "type": [
+          "web"
+        ],
+        "order": 143
+      },
+      "site_createIndex": {
+        "text": "生成首页",
+        "type": [
+          "web"
+        ],
+        "order": 144
+      },
+      "site_createChannels": {
+        "text": "生成栏目页",
+        "type": [
+          "web"
+        ],
+        "order": 145
+      },
+      "site_createContents": {
+        "text": "生成内容页",
+        "type": [
+          "web"
+        ],
+        "order": 146
+      },
+      "site_createFiles": {
+        "text": "生成文件页",
+        "type": [
+          "web"
+        ],
+        "order": 147
+      },
+      "site_createSpecials": {
+        "text": "生成专题",
+        "type": [
+          "web"
+        ],
+        "order": 148
+      },
+      "site_createAll": {
+        "text": "一键生成",
+        "type": [
+          "web"
+        ],
+        "order": 149
+      },
+      "site_createStatus": {
+        "text": "生成进度查看",
+        "type": [
+          "web"
+        ],
+        "order": 150
+      },
+      "site_appsChat": {
+        "text": "应用对话",
+        "type": [
+          "chat",
+          "chatflow",
+          "agent"
+        ],
+        "order": 200
+      },
+      "site_appsSettings": {
+        "text": "应用配置",
+        "type": [
+          "chat",
+          "chatflow",
+          "agent"
+        ],
+        "order": 201
+      },
+      "site_appsFlow": {
+        "text": "工作流编排",
+        "type": [
+          "chatflow",
+          "agent"
+        ],
+        "order": 202
+      },
+      "site_appsLogs": {
+        "text": "对话日志",
+        "type": [
+          "chat",
+          "chatflow",
+          "agent"
+        ],
+        "order": 203
+      },
+      "site_appsPublish": {
+        "text": "应用发布",
+        "type": [
+          "chat",
+          "chatflow",
+          "agent"
+        ],
+        "order": 204
+      },
+      "content_view": {
+        "text": "浏览内容",
+        "type": [
+          "content"
+        ],
+        "order": 101
+      },
+      "content_add": {
+        "text": "添加内容",
+        "type": [
+          "content"
+        ],
+        "order": 102
+      },
+      "content_edit": {
+        "text": "修改内容",
+        "type": [
+          "content"
+        ],
+        "order": 103
+      },
+      "content_delete": {
+        "text": "删除内容",
+        "type": [
+          "content"
+        ],
+        "order": 104
+      },
+      "content_translate": {
+        "text": "转移内容",
+        "type": [
+          "content"
+        ],
+        "order": 105
+      },
+      "content_arrange": {
+        "text": "整理内容",
+        "type": [
+          "content"
+        ],
+        "order": 106
+      },
+      "content_checkLevel1": {
+        "text": "一级内容审核权",
+        "type": [
+          "content"
+        ],
+        "order": 107
+      },
+      "content_checkLevel2": {
+        "text": "二级内容审核权",
+        "type": [
+          "content"
+        ],
+        "order": 108
+      },
+      "content_checkLevel3": {
+        "text": "三级内容审核权",
+        "type": [
+          "content"
+        ],
+        "order": 109
+      },
+      "content_checkLevel4": {
+        "text": "四级内容审核权",
+        "type": [
+          "content"
+        ],
+        "order": 110
+      },
+      "content_checkLevel5": {
+        "text": "五级内容审核权",
+        "type": [
+          "content"
+        ],
+        "order": 111
+      },
+      "content_create": {
+        "text": "生成内容页面",
+        "type": [
+          "content"
+        ],
+        "order": 112
+      }
+    },
+    "menus": {
+      "sys_apps_all": {
+        "text": "项目管理",
+        "type": [
+          "app"
+        ],
+        "permissions": [
+          "sys_apps_management",
+          "sys_apps_chats",
+          "sys_settings_configChatModels",
+          "sys_settings_sitesAdd",
+          "sys_settings_sites",
+          "sys_settings_sitesUrl",
+          "sys_settings_sitesTables",
+          "sys_settings_sitesTemplates",
+          "sys_settings_sitesTemplatesOnline"
+        ],
+        "order": 101,
+        "menus": {
+          "sys_apps_management": {
+            "text": "项目管理",
+            "link": "/ss-admin/apps/",
+            "permissions": [
+              "sys_apps_management"
+            ],
+            "iconClass": "el-icon-files",
+            "order": 101
+          },
+          "sys_apps_chats": {
+            "text": "应用对话",
+            "link": "/open/home/",
+            "permissions": [
+              "sys_apps_chats"
+            ],
+            "iconClass": "el-icon-chat-line-round",
+            "order": 103
+          },
+          "sys_settings_configsModels": {
+            "text": "模型设置",
+            "link": "./settings/configsModels/",
+            "permissions": [
+              "sys_settings_configsModels"
+            ],
+            "iconClass": "el-icon-set-up",
+            "order": 104
+          },
+          "sys_settings_sitesTemplates": {
+            "text": "模板管理",
+            "link": "./settings/sitesTemplates/",
+            "permissions": [
+              "sys_settings_sitesTemplates"
+            ],
+            "iconClass": "el-icon-box",
+            "order": 105
+          }
+        }
+      },
+      "sys_plugins_all": {
+        "text": "插件管理",
+        "type": [
+          "app"
+        ],
+        "permissions": [
+          "sys_plugins_add",
+          "sys_plugins_management"
+        ],
+        "order": 102,
+        "menus": {
+          "sys_plugins_add": {
+            "text": "添加插件",
+            "link": "./plugins/add/",
+            "permissions": [
+              "sys_plugins_add"
+            ],
+            "iconClass": "ion-plus-circled",
+            "order": 101
+          },
+          "sys_plugins_management": {
+            "text": "管理插件",
+            "link": "./plugins/manage/",
+            "permissions": [
+              "sys_plugins_management"
+            ],
+            "iconClass": "ion-cube",
+            "order": 102
+          }
+        }
+      },
+      "sys_settings_all": {
+        "text": "系统管理",
+        "type": [
+          "app"
+        ],
+        "permissions": [
+          "sys_settings_administrators",
+          "sys_settings_administratorsRole",
+          "sys_settings_users",
+          "sys_settings_usersDepartment",
+          "sys_settings_usersGroup",
+          "sys_settings_usersStyle",
+          "sys_settings_usersConfig",
+          "sys_settings_homeConfig",
+          "sys_settings_homeMenus",
+          "sys_settings_configAccessTokens",
+          "sys_settings_configAdministrators",
+          "sys_settings_analysisAdminLogin",
+          "sys_settings_analysisSiteContent",
+          "sys_settings_analysisUser",
+          "sys_settings_logsSite",
+          "sys_settings_logsAdmin",
+          "sys_settings_logsUser",
+          "sys_settings_logsError",
+          "sys_settings_logsConfig",
+          "sys_settings_configAdmin",
+          "sys_settings_utilitiesCache",
+          "sys_settings_utilitiesParameters",
+          "sys_settings_utilitiesEncrypt"
+        ],
+        "order": 103,
+        "menus": {
+          "sys_settings_administrators_all": {
+            "text": "管理员管理",
+            "permissions": [
+              "sys_settings_administrators",
+              "sys_settings_administratorsRole",
+              "sys_settings_configsAccessTokens",
+              "sys_settings_configsAdministrators"
+            ],
+            "iconClass": "ion-person",
+            "order": 104,
+            "menus": {
+              "sys_settings_administrators": {
+                "text": "管理员管理",
+                "link": "./settings/administrators/",
+                "permissions": [
+                  "sys_settings_administrators"
+                ],
+                "order": 101
+              },
+              "sys_settings_administratorsRole": {
+                "text": "角色管理",
+                "link": "./settings/administratorsRole/",
+                "permissions": [
+                  "sys_settings_administratorsRole"
+                ],
+                "order": 102
+              },
+              "sys_settings_configsAccessTokens": {
+                "text": "API密钥管理",
+                "link": "./settings/configsAccessTokens/",
+                "permissions": [
+                  "sys_settings_configsAccessTokens"
+                ],
+                "order": 103
+              },
+              "sys_settings_configsAdministrators": {
+                "text": "管理员设置",
+                "link": "./settings/configsAdministrators/",
+                "permissions": [
+                  "sys_settings_configsAdministrators"
+                ],
+                "order": 104
+              }
+            }
+          },
+          "sys_settings_users_all": {
+            "text": "通讯录",
+            "permissions": [
+              "sys_settings_users",
+              "sys_settings_usersDepartment",
+              "sys_settings_usersGroup",
+              "sys_settings_usersStyle",
+              "sys_settings_usersConfig"
+            ],
+            "iconClass": "ion-android-contacts",
+            "order": 105,
+            "menus": {
+              "sys_settings_users": {
+                "text": "用户管理",
+                "link": "./settings/users/",
+                "permissions": [
+                  "sys_settings_users"
+                ],
+                "order": 101
+              },
+              "sys_settings_usersDepartment": {
+                "text": "部门管理",
+                "link": "./settings/usersDepartment/",
+                "permissions": [
+                  "sys_settings_usersDepartment"
+                ],
+                "order": 102
+              },
+              "sys_settings_usersGroup": {
+                "text": "用户组管理",
+                "link": "./settings/usersGroup/",
+                "permissions": [
+                  "sys_settings_usersGroup"
+                ],
+                "order": 103
+              },
+              "sys_settings_usersStyle": {
+                "text": "用户字段",
+                "link": "./settings/usersStyle/",
+                "permissions": [
+                  "sys_settings_usersStyle"
+                ],
+                "order": 104
+              },
+              "sys_settings_usersConfig": {
+                "text": "用户设置",
+                "link": "./settings/usersConfig/",
+                "permissions": [
+                  "sys_settings_usersConfig"
+                ],
+                "order": 105
+              }
+            }
+          },
+          "sys_settings_home_all": {
+            "text": "用户中心",
+            "permissions": [
+              "sys_settings_homeConfig",
+              "sys_settings_homeMenus"
+            ],
+            "iconClass": "ion-home",
+            "order": 106,
+            "menus": {
+              "sys_settings_home": {
+                "text": "进入用户中心",
+                "link": "/home/",
+                "target": "_blank",
+                "order": 101
+              },
+              "sys_settings_homeConfig": {
+                "text": "用户中心设置",
+                "link": "./settings/homeConfig/",
+                "permissions": [
+                  "sys_settings_homeConfig"
+                ],
+                "order": 102
+              },
+              "sys_settings_homeMenus": {
+                "text": "用户中心菜单",
+                "link": "./settings/homeMenus/",
+                "permissions": [
+                  "sys_settings_homeMenus"
+                ],
+                "order": 103
+              }
+            }
+          },
+          "sys_settings_analysis_all": {
+            "text": "统计图表",
+            "permissions": [
+              "sys_settings_analysisAdminLogin",
+              "sys_settings_analysisSiteContent",
+              "sys_settings_analysisUser"
+            ],
+            "iconClass": "ion-podium",
+            "order": 108,
+            "menus": {
+              "sys_settings_analysisAdminLogin": {
+                "text": "管理员登录统计",
+                "link": "./settings/analysisAdminLogin/",
+                "permissions": [
+                  "sys_settings_analysisAdminLogin"
+                ],
+                "order": 101
+              },
+              "sys_settings_analysisSiteContent": {
+                "text": "知识库内容统计",
+                "link": "./settings/analysisSiteContent/",
+                "permissions": [
+                  "sys_settings_analysisSiteContent"
+                ],
+                "order": 102
+              },
+              "sys_settings_analysisUser": {
+                "text": "用户数据统计",
+                "link": "./settings/analysisUser/",
+                "permissions": [
+                  "sys_settings_analysisUser"
+                ],
+                "order": 103
+              }
+            }
+          },
+          "sys_settings_logs_all": {
+            "text": "运行日志",
+            "permissions": [
+              "sys_settings_logsSite",
+              "sys_settings_logsAdmin",
+              "sys_settings_logsUser",
+              "sys_settings_logsError",
+              "sys_settings_logsConfig"
+            ],
+            "iconClass": "ion-information-circled",
+            "order": 109,
+            "menus": {
+              "sys_settings_logsSite": {
+                "text": "项目日志",
+                "link": "./settings/logsSite/",
+                "permissions": [
+                  "sys_settings_logsSite"
+                ],
+                "order": 101
+              },
+              "sys_settings_logsAdmin": {
+                "text": "管理员日志",
+                "link": "./settings/logsAdmin/",
+                "permissions": [
+                  "sys_settings_logsAdmin"
+                ],
+                "order": 102
+              },
+              "sys_settings_logsUser": {
+                "text": "用户日志",
+                "link": "./settings/logsUser/",
+                "permissions": [
+                  "sys_settings_logsUser"
+                ],
+                "order": 103
+              },
+              "sys_settings_logsError": {
+                "text": "系统错误日志",
+                "link": "./settings/logsError/",
+                "permissions": [
+                  "sys_settings_logsError"
+                ],
+                "order": 104
+              },
+              "sys_settings_logsConfig": {
+                "text": "日志设置",
+                "link": "./settings/logsConfig/",
+                "permissions": [
+                  "sys_settings_logsConfig"
+                ],
+                "order": 105
+              }
+            }
+          },
+          "sys_settings_utilities_all": {
+            "text": "实用工具",
+            "permissions": [
+              "sys_settings_utilitiesCache",
+              "sys_settings_utilitiesParameters",
+              "sys_settings_utilitiesEncrypt"
+            ],
+            "iconClass": "ion-briefcase",
+            "order": 110,
+            "menus": {
+              "sys_settings_utilitiesCache": {
+                "text": "系统缓存",
+                "link": "./settings/utilitiesCache/",
+                "permissions": [
+                  "sys_settings_utilitiesCache"
+                ],
+                "order": 102
+              },
+              "sys_settings_utilitiesParameters": {
+                "text": "系统参数",
+                "link": "./settings/utilitiesParameters/",
+                "permissions": [
+                  "sys_settings_utilitiesParameters"
+                ],
+                "order": 103
+              },
+              "sys_settings_utilitiesEncrypt": {
+                "text": "加密/解密字符串",
+                "link": "./settings/utilitiesEncrypt/",
+                "permissions": [
+                  "sys_settings_utilitiesEncrypt"
+                ],
+                "order": 104
+              }
+            }
+          }
+        }
+      },
+      "site_contents_all": {
+        "text": "信息管理",
+        "type": [
+          "web"
+        ],
+        "permissions": [
+          "site_contents",
+          "site_channels",
+          "site_contentsSearch",
+          "site_contentsCheck",
+          "site_formList",
+          "site_formTemplates",
+          "site_channelsTranslate",
+          "site_contentsReplace",
+          "site_contentsRecycle"
+        ],
+        "selected": true,
+        "iconClass": "ion-compose",
+        "order": 101,
+        "menus": {
+          "site_contents": {
+            "text": "内容管理",
+            "link": "./cms/contents/",
+            "permissions": [
+              "site_contents"
+            ],
+            "order": 101
+          },
+          "site_channels": {
+            "text": "栏目管理",
+            "link": "./cms/channels/",
+            "permissions": [
+              "site_channels"
+            ],
+            "order": 102
+          },
+          "site_contentsSearch": {
+            "text": "内容搜索",
+            "link": "./cms/contentsSearch/",
+            "permissions": [
+              "site_contentsSearch"
+            ],
+            "order": 103
+          },
+          "site_contentsCheck": {
+            "text": "内容审核",
+            "link": "./cms/contentsCheck/",
+            "permissions": [
+              "site_contentsCheck"
+            ],
+            "order": 104
+          },
+          "site_form_all": {
+            "text": "表单管理",
+            "type": [
+              "web"
+            ],
+            "permissions": [
+              "site_formList",
+              "site_formTemplates"
+            ],
+            "order": 105,
+            "menus": {
+              "site_formList": {
+                "text": "表单管理",
+                "link": "./cms/formList/",
+                "permissions": [
+                  "site_formList"
+                ],
+                "order": 101
+              },
+              "site_formTemplates": {
+                "text": "表单模板",
+                "link": "./cms/formTemplates/",
+                "permissions": [
+                  "site_formTemplates"
+                ],
+                "order": 102
+              }
+            }
+          },
+          "site_operations": {
+            "text": "批量操作",
+            "type": [
+              "web"
+            ],
+            "permissions": [
+              "site_channelsTranslate",
+              "site_contentsReplace"
+            ],
+            "order": 106,
+            "menus": {
+              "site_channelsTranslate": {
+                "text": "批量复制",
+                "link": "./cms/channelsTranslate/",
+                "permissions": [
+                  "site_channelsTranslate"
+                ],
+                "order": 101
+              },
+              "site_contentsReplace": {
+                "text": "批量替换",
+                "link": "./cms/contentsReplace/",
+                "permissions": [
+                  "site_contentsReplace"
+                ],
+                "order": 102
+              }
+            }
+          },
+          "site_contentsRecycle": {
+            "text": "内容回收站",
+            "link": "./cms/contentsRecycle/",
+            "permissions": [
+              "site_contentsRecycle"
+            ],
+            "order": 107
+          }
+        }
+      },
+      "site_documents_all": {
+        "text": "文档知识库",
+        "type": [
+          "document"
+        ],
+        "permissions": [
+          "site_contents",
+          "site_dataset_testing",
+          "site_channels",
+          "site_datasetSettings",
+          "site_datasetStatus"
+        ],
+        "selected": true,
+        "iconClass": "el-icon-collection",
+        "order": 100,
+        "menus": {
+          "site_contents": {
+            "text": "文档管理",
+            "link": "./document/contents/",
+            "permissions": [
+              "site_contents"
+            ],
+            "order": 101
+          },
+          "site_dataset_testing": {
+            "text": "搜索测试",
+            "link": "./dataset/testing/",
+            "permissions": [
+              "site_dataset_testing"
+            ],
+            "order": 102
+          },
+          "site_channels": {
+            "text": "栏目管理",
+            "link": "./document/channels/",
+            "permissions": [
+              "site_channels"
+            ],
+            "order": 103
+          },
+          "site_datasetSettings": {
+            "text": "分段与清洗设置",
+            "link": "./dataset/settings/",
+            "permissions": [
+              "site_datasetSettings"
+            ],
+            "order": 104
+          },
+          "site_datasetStatus": {
+            "text": "分段进度查看",
+            "link": "./dataset/status/",
+            "permissions": [
+              "site_datasetStatus"
+            ],
+            "order": 105
+          }
+        }
+      },
+      "site_dataset_all": {
+        "text": "知识库管理",
+        "type": [
+          "web"
+        ],
+        "permissions": [
+          "site_dataset_documents",
+          "site_dataset_testing",
+          "site_datasetSettings",
+          "site_datasetStatus"
+        ],
+        "selected": true,
+        "iconClass": "el-icon-collection",
+        "order": 102,
+        "menus": {
+          "site_dataset_documents": {
+            "text": "知识库管理",
+            "link": "./dataset/documents/",
+            "permissions": [
+              "site_dataset_documents"
+            ],
+            "order": 101
+          },
+          "site_dataset_testing": {
+            "text": "搜索测试",
+            "link": "./dataset/testing/",
+            "permissions": [
+              "site_dataset_testing"
+            ],
+            "order": 102
+          },
+          "site_datasetSettings": {
+            "text": "分段与清洗设置",
+            "link": "./dataset/settings/",
+            "permissions": [
+              "site_datasetSettings"
+            ],
+            "order": 103
+          },
+          "site_datasetStatus": {
+            "text": "分段进度查看",
+            "link": "./dataset/status/",
+            "permissions": [
+              "site_datasetStatus"
+            ],
+            "order": 104
+          }
+        }
+      },
+      "site_templates_all": {
+        "text": "显示管理",
+        "type": [
+          "web"
+        ],
+        "permissions": [
+          "site_templates",
+          "site_specials",
+          "site_templatesMatch",
+          "site_templatesIncludes",
+          "site_templatesAssets",
+          "site_templatesPreview",
+          "site_templatesReference"
+        ],
+        "iconClass": "ion-tshirt-outline",
+        "order": 103,
+        "menus": {
+          "site_templates": {
+            "text": "模板管理",
+            "link": "./cms/templates/",
+            "permissions": [
+              "site_templates"
+            ],
+            "order": 101
+          },
+          "site_specials": {
+            "text": "专题管理",
+            "link": "./cms/templatesSpecial/",
+            "permissions": [
+              "site_specials"
+            ],
+            "order": 102
+          },
+          "site_templatesMatch": {
+            "text": "匹配模板",
+            "link": "./cms/templatesMatch/",
+            "permissions": [
+              "site_templatesMatch"
+            ],
+            "order": 103
+          },
+          "site_templatesIncludes": {
+            "text": "包含文件管理",
+            "link": "./cms/templatesIncludes/",
+            "permissions": [
+              "site_templatesIncludes"
+            ],
+            "order": 104
+          },
+          "site_templatesAssets": {
+            "text": "资源文件管理",
+            "link": "./cms/templatesAssets/",
+            "permissions": [
+              "site_templatesAssets"
+            ],
+            "order": 105
+          },
+          "site_templatesPreview": {
+            "text": "模板在线解析",
+            "link": "./cms/templatesPreview/",
+            "permissions": [
+              "site_templatesPreview"
+            ],
+            "order": 106
+          },
+          "site_templatesReference": {
+            "text": "模板语言参考",
+            "link": "./cms/templatesReference/",
+            "permissions": [
+              "site_templatesReference"
+            ],
+            "order": 107
+          }
+        }
+      },
+      "site_settings_all": {
+        "text": "设置管理",
+        "type": [
+          "web"
+        ],
+        "permissions": [
+          "site_settingsSite",
+          "site_settingsAttributes",
+          "site_settingsContent",
+          "site_settingsChannelGroup",
+          "site_settingsContentGroup",
+          "site_settingsContentTag",
+          "site_settingsStyleContent",
+          "site_settingsStyleChannel",
+          "site_settingsStyleSite",
+          "site_settingsStyleRelatedField",
+          "site_settingsCrossSiteTrans",
+          "site_settingsCrossSiteTransChannels",
+          "site_settingsCreateRule",
+          "site_settingsCreate",
+          "site_settingsCreateTrigger",
+          "site_settingsUploadImage",
+          "site_settingsUploadVideo",
+          "site_settingsUploadAudio",
+          "site_settingsUploadFile",
+          "site_settingsWaterMark"
+        ],
+        "iconClass": "ion-wrench",
+        "order": 104,
+        "menus": {
+          "site_settingsSite": {
+            "text": "知识库设置",
+            "link": "./cms/settingsSite/",
+            "permissions": [
+              "site_settingsSite"
+            ],
+            "order": 101
+          },
+          "site_settingsContent": {
+            "text": "内容设置",
+            "link": "./cms/settingsContent/",
+            "permissions": [
+              "site_settingsContent"
+            ],
+            "order": 102
+          },
+          "site_settingsGroups": {
+            "text": "组别及标签",
+            "permissions": [
+              "site_settingsChannelGroup",
+              "site_settingsContentGroup",
+              "site_settingsContentTag"
+            ],
+            "order": 104,
+            "menus": {
+              "site_settingsChannelGroup": {
+                "text": "栏目组管理",
+                "link": "./cms/settingsChannelGroup/",
+                "permissions": [
+                  "site_settingsChannelGroup"
+                ],
+                "order": 101
+              },
+              "site_settingsContentGroup": {
+                "text": "内容组管理",
+                "link": "./cms/settingsContentGroup/",
+                "permissions": [
+                  "site_settingsContentGroup"
+                ],
+                "order": 102
+              },
+              "site_settingsContentTag": {
+                "text": "内容标签管理",
+                "link": "./cms/settingsContentTag/",
+                "permissions": [
+                  "site_settingsContentTag"
+                ],
+                "order": 103
+              }
+            }
+          },
+          "site_settingsStyle_all": {
+            "text": "字段设置",
+            "permissions": [
+              "site_settingsStyleContent",
+              "site_settingsStyleChannel",
+              "site_settingsStyleSite",
+              "site_settingsStyleRelatedField"
+            ],
+            "order": 105,
+            "menus": {
+              "site_settingsStyleContent": {
+                "text": "内容字段设置",
+                "link": "./cms/settingsStyleContent/",
+                "permissions": [
+                  "site_settingsStyleContent"
+                ],
+                "order": 101
+              },
+              "site_settingsStyleChannel": {
+                "text": "栏目字段设置",
+                "link": "./cms/settingsStyleChannel/",
+                "permissions": [
+                  "site_settingsStyleChannel"
+                ],
+                "order": 102
+              },
+              "site_settingsStyleSite": {
+                "text": "知识库字段设置",
+                "link": "./cms/settingsStyleSite/",
+                "permissions": [
+                  "site_settingsStyleSite"
+                ],
+                "order": 103
+              },
+              "site_settingsStyleRelatedField": {
+                "text": "联动字段设置",
+                "link": "./cms/settingsStyleRelatedField/",
+                "permissions": [
+                  "site_settingsStyleRelatedField"
+                ],
+                "order": 104
+              }
+            }
+          },
+          "site_settingsCrossSiteTrans_all": {
+            "text": "跨站转发设置",
+            "permissions": [
+              "site_settingsCrossSiteTrans",
+              "site_settingsCrossSiteTransChannels"
+            ],
+            "order": 106,
+            "menus": {
+              "site_settingsCrossSiteTransChannels": {
+                "text": "跨站转发栏目设置",
+                "link": "./cms/settingsCrossSiteTransChannels/",
+                "permissions": [
+                  "site_settingsCrossSiteTransChannels"
+                ],
+                "order": 101
+              },
+              "site_settingsCrossSiteTrans": {
+                "text": "跨站转发审核设置",
+                "link": "./cms/settingsCrossSiteTrans/",
+                "permissions": [
+                  "site_settingsCrossSiteTrans"
+                ],
+                "order": 102
+              }
+            }
+          },
+          "site_settingsCreate_all": {
+            "text": "生成设置",
+            "permissions": [
+              "site_settingsCreateRule",
+              "site_settingsCreate",
+              "site_settingsCreateTrigger"
+            ],
+            "order": 107,
+            "menus": {
+              "site_settingsCreateRule": {
+                "text": "页面命名规则",
+                "link": "./cms/settingsCreateRule/",
+                "permissions": [
+                  "site_settingsCreateRule"
+                ],
+                "order": 101
+              },
+              "site_settingsCreate": {
+                "text": "页面生成设置",
+                "link": "./cms/settingsCreate/",
+                "permissions": [
+                  "site_settingsCreate"
+                ],
+                "order": 102
+              },
+              "site_settingsCreateTrigger": {
+                "text": "页面生成触发器",
+                "link": "./cms/settingsCreateTrigger/",
+                "permissions": [
+                  "site_settingsCreateTrigger"
+                ],
+                "order": 103
+              }
+            }
+          },
+          "site_settingsUpload": {
+            "text": "上传设置",
+            "permissions": [
+              "site_settingsUploadImage",
+              "site_settingsUploadVideo",
+              "site_settingsUploadAudio",
+              "site_settingsUploadFile"
+            ],
+            "order": 108,
+            "menus": {
+              "site_settingsUploadImage": {
+                "text": "图片上传设置",
+                "link": "./cms/settingsUploadImage/",
+                "permissions": [
+                  "site_settingsUploadImage"
+                ],
+                "order": 101
+              },
+              "site_settingsUploadVideo": {
+                "text": "视频上传设置",
+                "link": "./cms/settingsUploadVideo/",
+                "permissions": [
+                  "site_settingsUploadVideo"
+                ],
+                "order": 102
+              },
+              "site_settingsUploadAudio": {
+                "text": "音频上传设置",
+                "link": "./cms/settingsUploadAudio/",
+                "permissions": [
+                  "site_settingsUploadAudio"
+                ],
+                "order": 103
+              },
+              "site_settingsUploadFile": {
+                "text": "附件上传设置",
+                "link": "./cms/settingsUploadFile/",
+                "permissions": [
+                  "site_settingsUploadFile"
+                ],
+                "order": 104
+              }
+            }
+          },
+          "site_settingsWaterMark": {
+            "text": "图片水印设置",
+            "link": "./cms/settingsWaterMark/",
+            "permissions": [
+              "site_settingsWaterMark"
+            ],
+            "order": 109
+          }
+        }
+      },
+      "site_create_all": {
+        "text": "生成管理",
+        "type": [
+          "web"
+        ],
+        "permissions": [
+          "site_createIndex",
+          "site_createChannels",
+          "site_createContents",
+          "site_createFiles",
+          "site_createSpecials",
+          "site_createAll",
+          "site_createStatus"
+        ],
+        "iconClass": "ion-wand",
+        "order": 105,
+        "menus": {
+          "site_createIndex": {
+            "text": "生成首页",
+            "link": "./cms/createPage/?type=Index",
+            "permissions": [
+              "site_createIndex"
+            ],
+            "order": 101
+          },
+          "site_createChannels": {
+            "text": "生成栏目页",
+            "link": "./cms/createPage/?type=Channel",
+            "permissions": [
+              "site_createChannels"
+            ],
+            "order": 102
+          },
+          "site_createContents": {
+            "text": "生成内容页",
+            "link": "./cms/createPage/?type=Content",
+            "permissions": [
+              "site_createContents"
+            ],
+            "order": 103
+          },
+          "site_createFiles": {
+            "text": "生成文件页",
+            "link": "./cms/createFile/",
+            "permissions": [
+              "site_createFiles"
+            ],
+            "order": 104
+          },
+          "site_createSpecials": {
+            "text": "生成专题",
+            "link": "./cms/createSpecial/",
+            "permissions": [
+              "site_createSpecials"
+            ],
+            "order": 105
+          },
+          "site_createAll": {
+            "text": "一键生成",
+            "link": "./cms/createPage/?type=All",
+            "permissions": [
+              "site_createAll"
+            ],
+            "order": 106
+          },
+          "site_createStatus": {
+            "text": "生成进度查看",
+            "link": "./cms/createStatus/",
+            "permissions": [
+              "site_createStatus"
+            ],
+            "order": 107
+          }
+        }
+      },
+      "site_appsChat": {
+        "text": "应用对话",
+        "type": [
+          "chat",
+          "chatflow",
+          "agent"
+        ],
+        "link": "/open/home/",
+        "permissions": [
+          "site_appsChat"
+        ],
+        "iconClass": "el-icon-chat-line-round",
+        "order": 200
+      },
+      "site_appsSettings": {
+        "text": "应用配置",
+        "type": [
+          "chat",
+          "chatflow",
+          "agent"
+        ],
+        "link": "./apps/settings/",
+        "iconClass": "el-icon-setting",
+        "permissions": [
+          "site_appsSettings"
+        ],
+        "order": 201
+      },
+      "site_appsFlow": {
+        "text": "工作流编排",
+        "type": [
+          "chatflow",
+          "agent"
+        ],
+        "link": "./apps/flow/",
+        "iconClass": "el-icon-sort",
+        "permissions": [
+          "site_appsFlow"
+        ],
+        "order": 202
+      },
+      "site_appsLogs": {
+        "text": "对话日志",
+        "type": [
+          "chat",
+          "chatflow",
+          "agent"
+        ],
+        "link": "./apps/logs/",
+        "iconClass": "el-icon-mobile",
+        "permissions": [
+          "site_appsLogs"
+        ],
+        "order": 203
+      },
+      "site_appsPublish": {
+        "text": "应用发布",
+        "type": [
+          "chat",
+          "chatflow",
+          "agent"
+        ],
+        "link": "./apps/publish/",
+        "iconClass": "el-icon-circle-check",
+        "permissions": [
+          "site_appsPublish"
+        ],
+        "order": 204
+      }
+    }
+  }
+}

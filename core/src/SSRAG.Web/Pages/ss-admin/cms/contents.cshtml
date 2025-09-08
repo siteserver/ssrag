@@ -1,0 +1,243 @@
+﻿@page
+@{ Layout = "_Layout"; }
+@section Styles{
+<style>
+  html {
+    height: 100%;
+  }
+
+  body {
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+  }
+
+  .el-main {
+    padding: 5px 5px 20px 5px;
+    overflow: hidden;
+  }
+
+  #commands .el-button {
+    margin-bottom: 5px;
+  }
+
+  #commands .el-button+.el-button {
+    margin-left: 0;
+  }
+
+  #search .el-select .el-input {
+    width: 100px;
+  }
+
+  .table-expand-form .el-form-item__label {
+    width: 120px;
+    color: #909399;
+  }
+
+  .table-expand-form .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
+  }
+
+  .input-with-select .el-input-group__prepend {
+    background-color: #fff;
+  }
+
+  .el-input-group {
+    width: 350px;
+  }
+
+  .disabled {
+    color: #bcc0c7;
+    cursor: not-allowed;
+  }
+
+  .el-breadcrumb__inner a,
+  .el-breadcrumb__inner.is-link {
+    font-weight: normal;
+    color: #999;
+  }
+
+  .el-breadcrumb__item:last-child .el-breadcrumb__inner,
+  .el-breadcrumb__item:last-child .el-breadcrumb__inner a,
+  .el-breadcrumb__item:last-child .el-breadcrumb__inner a:hover {
+    cursor: pointer;
+  }
+
+  .gradient-button {
+    background: linear-gradient(45deg, #6253e1, #04befe);
+    transition: background 0.5s ease;
+    color: #1b7fe6;
+  }
+
+  .gradient-button svg {
+    margin-right: 5px;
+    fill: #1b7fe6;
+  }
+
+  .gradient-button:hover {
+    animation: gradientShift 1.5s infinite;
+    color: white;
+  }
+
+  .gradient-button:hover svg {
+    fill: white;
+  }
+
+  @@keyframes gradientShift {
+    0% {
+      background: linear-gradient(45deg, #6253e1, #04befe);
+    }
+
+    50% {
+      background: linear-gradient(45deg, #04befe, #6253e1);
+    }
+
+    100% {
+      background: linear-gradient(45deg, #6253e1, #04befe);
+    }
+  }
+</style>
+}
+
+<el-container>
+  <el-scrollbar class="scrollbar" style="padding-top: 5px; padding-left: 5px; width: 200px; min-width: 200px;"
+    :style="{height: asideHeight + 'px'}">
+
+    <el-input placeholder="请输入栏目名称/栏目Id" size="mini" suffix-icon="el-icon-search" v-model="filterText">
+    </el-input>
+
+    <div style="height: 5px"></div>
+
+    <el-tree ref="tree" class="leftTree" :data="root" node-key="value" :default-expanded-keys="expendedChannelIds"
+      :highlight-current="true" :filter-node-method="filterNode" :expand-on-click-node="false"
+      v-on:node-click="btnChannelClick">
+      <span slot-scope="{ node, data }" :class="{disabled: node.disabled}">
+        <el-link :underline="false" :type="permissions && channelId === data.value ? 'primary' : 'info'"
+          :href="getChannelUrl(data)" v-on:click.stop.native target="_blank"><i class="el-icon-link"></i></el-link>
+        <el-tooltip open-delay="1000" effect="dark" :content="node.label" placement="bottom">
+          <span :class="permissions && channelId === data.value ? 'el-link el-link--primary' : ''">{{ node.label }} ({{
+            data.count }})</span>
+        </el-tooltip>
+      </span>
+    </el-tree>
+
+  </el-scrollbar>
+
+  <el-container v-if="permissions">
+    <el-main>
+
+      @await Html.PartialAsync("_PartialContentsCommands")
+
+      <div style="height: 3px;"></div>
+
+      <el-row id="search">
+        <el-col :span="20">
+          <el-input v-model="searchForm.searchText" v-on:change="btnSearchClick" suffix-icon="el-icon-search"
+            size="mini" placeholder="搜索关键词" class="input-with-select">
+            <el-select v-model="searchForm.searchType" v-on:change="btnSearchClick" slot="prepend" placeholder="请选择">
+              <el-option :label="titleColumn.displayName" value="Title"></el-option>
+              <el-option label="正文" value="Body"></el-option>
+              <el-option v-for="column in columns" v-if="column.isSearchable" :label="column.displayName"
+                :value="column.attributeName"></el-option>
+            </el-select>
+          </el-input>
+          <span style="width: 5px">&nbsp;</span>
+          <el-checkbox v-model="searchForm.isAllContents" v-on:change="handleAllChange" label="包含子栏目"></el-checkbox>
+          <span style="width: 5px">&nbsp;</span>
+          <el-popover placement="top" width="580" v-model="isAdvancedForm" trigger="click">
+            <el-form v-on:submit.native.prevent size="mini" :model="advancedForm" style="margin-top: 10px;"
+              label-width="80px">
+              <el-form-item label="审核状态">
+                <el-checkbox-group v-model="advancedForm.checkedLevels" v-on:change="btnSearchClick">
+                  <el-checkbox v-for="level in checkedLevels" v-key="level.label"
+                    :label="level.label">{{level.text}}</el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+              <el-form-item label="内容属性">
+                <el-checkbox label="置顶" v-model="advancedForm.isTop" v-on:change="btnSearchClick"></el-checkbox>
+                <el-checkbox label="推荐" v-model="advancedForm.isRecommend" v-on:change="btnSearchClick"></el-checkbox>
+                <el-checkbox label="热点" v-model="advancedForm.isHot" v-on:change="btnSearchClick"></el-checkbox>
+                <el-checkbox label="醒目" v-model="advancedForm.isColor" v-on:change="btnSearchClick"></el-checkbox>
+                <el-checkbox label="索引" v-model="advancedForm.isIndex" v-on:change="btnSearchClick"></el-checkbox>
+              </el-form-item>
+              <el-form-item label="内容分组" v-if="groupNames && groupNames.length > 0">
+                <el-checkbox-group v-model="advancedForm.groupNames" v-on:change="btnSearchClick">
+                  <el-checkbox v-for="groupName in groupNames" v-key="groupName"
+                    :label="groupName">{{groupName}}</el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+              <el-form-item label="内容标签" v-if="tagNames && tagNames.length > 0">
+                <el-select ref="tagNames" v-model="advancedForm.tagNames" v-on:visible-change="handleTagNamesChange"
+                  v-on:remove-tag="handleTagNamesChange(false)" multiple filterable default-first-option
+                  style="width: 100%;" placeholder="请选择内容标签">
+                  <el-option v-for="tagName in tagNames" :key="tagName" :label="tagName" :value="tagName">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+            <div slot="reference" class="el-dropdown">
+              <el-badge v-if="isAdvanced" is-dot class="item">
+                <span style="cursor: pointer;">
+                  筛选<i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+              </el-badge>
+              <span v-else style="cursor: pointer;">
+                筛选<i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+            </div>
+          </el-popover>
+        </el-col>
+        <el-col :span="4" align="right">
+          <el-popover id="sortColumns" placement="top" width="360" trigger="click">
+            <div>
+              设置显示列
+            </div>
+            <el-table :data="columns" size="mini" style="width: 100%; overflow: auto; max-height: 500px !important">
+              <el-table-column prop="displayName"></el-table-column>
+              <el-table-column prop="attributeName"></el-table-column>
+              <el-table-column align="right" width="80">
+                <template slot-scope="scope">
+                  <el-switch v-model="scope.row.isList" :disabled="scope.row.attributeName === 'Title'"
+                    v-on:change="handleColumnsChange" size="mini">
+                  </el-switch>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div slot="reference" class="el-dropdown">
+              <span style="cursor: pointer;">
+                显示列<i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+            </div>
+          </el-popover>
+          <span style="width: 20px">&nbsp;</span>
+        </el-col>
+      </el-row>
+
+      <div style="height: 10px;"></div>
+
+      <el-table-draggable v-on:sort="onSort">
+        @await Html.PartialAsync("_PartialContents")
+      </el-table-draggable>
+
+      <el-row style="margin-top: 7px;">
+        <el-col :span="12" align="left">
+          <el-breadcrumb style="margin-top: 5px;">
+            <el-breadcrumb-item v-for="item in breadcrumbItems" :key="item.value"><a :href="getChannelUrl(item)"
+                target="_blank">{{ item.label }}</a></el-breadcrumb-item>
+          </el-breadcrumb>
+        </el-col>
+        <el-col :span="12" align="right">
+          <el-pagination size="mini" background v-on:current-change="handleCurrentChange" :current-page="page"
+            :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
+          </el-pagination>
+        </el-col>
+      </el-row>
+    </el-main>
+  </el-container>
+</el-container>
+
+@section Scripts{
+<script src="/sitefiles/assets/js/admin/cms/contents.js" type="text/javascript"></script>
+}

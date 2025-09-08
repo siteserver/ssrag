@@ -1,0 +1,334 @@
+﻿@page
+@{ Layout = "_Layout"; }
+@section Styles{
+<link rel="stylesheet" href="/sitefiles/assets/lib/ueditor/third-party/custom/custom.css">
+<style>
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .el-tag {
+    height: auto;
+    white-space: inherit;
+    margin-bottom: 5px;
+    margin-right: 5px;
+  }
+
+  .el-button-group .el-dropdown {
+    float: left;
+    margin-top: -3px;
+    margin-right: -1px;
+  }
+
+  .loading-hint-wrap-box {
+    margin: 40px auto 0;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .loading-hint-wrap-box,
+  .loading-hint-wrap-box .loading-hint-wrap .loading-bg {
+    width: 129px;
+    height: 138px;
+  }
+
+  .loading-hint-wrap-box .loading-hint-wrap {
+    position: relative;
+  }
+
+  .loading-hint-wrap-box .loading-hint-wrap .search-icon {
+    width: 33px;
+    height: 33px;
+    position: absolute;
+    top: 60px;
+    left: 50px;
+    -webkit-animation: detection-translate 2.5s linear infinite;
+    animation: detection-translate 2.5s linear infinite;
+  }
+
+  .step1 {
+    margin-top: 200px;
+  }
+
+  .step1 p {
+    color: #24BE58;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .el-tab-pane .tag {
+    border-radius: 4px;
+    font-size: 12px;
+    height: 22px;
+    line-height: 22px;
+    padding: 0 8px;
+    margin-right: 11px;
+    display: inline-block;
+  }
+
+  .el-tab-pane .tag.success {
+    color: #52C41A;
+    background: #F6FFED;
+    border: 1px solid #B7EB8F;
+  }
+
+  .el-tab-pane .tag.fail {
+    color: #F5222D;
+    background: #FFF1F0;
+    border: 1px solid #FFA39E;
+  }
+
+  .el-tab-pane .tag+span {
+    color: #999;
+    font-size: 13px;
+  }
+
+  .el-tab-pane .result-wrap-box {
+    margin-top: 15px;
+  }
+
+  .el-tab-pane .result-wrap-box .result-wrap p {
+    color: #333;
+  }
+
+  .el-tab-pane .result-wrap-box .result-wrap p:before {
+    content: '';
+    width: 3px;
+    height: 12px;
+    background: #24BE58;
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  .el-tab-pane img.res-icon {
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+
+  .el-collapse-item__header {
+    font-size: 14px;
+  }
+
+  .el-link {
+    font-size: 12px;
+    margin-right: 5px;
+  }
+
+  .el-breadcrumb__inner a,
+  .el-breadcrumb__inner.is-link {
+    font-weight: normal;
+    color: #999;
+  }
+
+  .el-breadcrumb__item:last-child .el-breadcrumb__inner,
+  .el-breadcrumb__item:last-child .el-breadcrumb__inner a,
+  .el-breadcrumb__item:last-child .el-breadcrumb__inner a:hover {
+    cursor: pointer;
+  }
+
+  .editor-container {
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+  }
+
+  .editor-form {
+    margin: 10px 20px 20px 0
+  }
+</style>
+}
+
+<el-container class="editor-container" :style="{height: mainHeight}">
+  <el-main style="padding: 0; margin: 0">
+    <el-scrollbar class="scrollbar" :style="{height: mainHeight}">
+
+      <el-form v-on:submit.native.prevent class="editor-form" ref="form" :model="form" size="small" status-icon
+        label-width="100px">
+        <el-form-item>
+          <el-breadcrumb style="margin-top: 5px;">
+            <el-breadcrumb-item v-for="item in breadcrumbItems" :key="item.value"><a :href="getChannelUrl(item)"
+                target="_blank">{{ item.label }}</a></el-breadcrumb-item>
+          </el-breadcrumb>
+        </el-form-item>
+        @await Html.PartialAsync("_PartialForm")
+      </el-form>
+
+    </el-scrollbar>
+  </el-main>
+  <el-aside v-if="isSettings" width="290px">
+    <el-scrollbar class="scrollbar" :style="{height: mainHeight}">
+
+      <el-tabs v-model="sideType" type="border-card">
+        <el-tab-pane label="设置" name="settings">
+          <el-collapse v-model="collapseSettings">
+            <el-collapse-item title="审核状态" name="checkedLevel">
+              <el-select v-model="form.checkedLevel" size="small" style="width: 100%;">
+                <el-option v-for="level in checkedLevels" :key="level.value" :label="level.label"
+                  :value="level.value"></el-option>
+              </el-select>
+            </el-collapse-item>
+            <el-collapse-item title="内容属性" name="attributes">
+              <el-checkbox v-model="form.top">置顶</el-checkbox>
+              <el-checkbox v-model="form.recommend">推荐</el-checkbox>
+              <el-checkbox v-model="form.hot">热点</el-checkbox>
+              <el-checkbox v-model="form.color">醒目</el-checkbox>
+            </el-collapse-item>
+            <el-collapse-item title="内容组" name="groupNames">
+              <el-checkbox-group v-model="form.groupNames">
+                <el-checkbox v-for="groupName in groupNames" :key="groupName" :label="groupName" :value="groupName"
+                  name="groupNames"></el-checkbox>
+              </el-checkbox-group>
+              <div style="height: 5px"></div>
+              <el-button size="mini" icon="el-icon-circle-plus-outline" v-on:click="btnGroupAddClick">
+                新增内容组
+              </el-button>
+            </el-collapse-item>
+            <el-collapse-item title="标签" name="tagNames">
+              <el-select v-model="form.tagNames" style="width: 100%;" size="small" multiple filterable allow-create
+                default-first-option placeholder="请选择内容标签">
+                <el-option v-for="tagName in tagNames" :key="tagName" :label="tagName" :value="tagName">
+                </el-option>
+              </el-select>
+              <div class="tips">输入文字后回车可创建新标签</div>
+
+              <el-button size="small" v-on:click="btnTagsClick">从内容提取标签</el-button>
+
+            </el-collapse-item>
+            <el-collapse-item title="内容链接" name="link">
+              <el-form ref="linkToForm" :model="linkTo" v-on:submit.native.prevent size="small">
+                <el-form-item label="链接类型">
+                  <el-select v-model="form.linkType" placeholder="请选择链接类型"
+                    v-on:change="form.linkUrl = form.linkToChannel = '';">
+                    <el-option v-for="linkType in linkTypes" :key="linkType.value" :label="linkType.label"
+                      :value="linkType.value"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item v-if="form.linkType == 'None'" label="外部链接">
+                  <el-input v-model="form.linkUrl" name="linkUrl" placeholder="设置后栏目链接将转向此地址" autosize
+                    :autosize="{ minRows: 2, maxRows: 4}" type="textarea" data-vv-as="外部链接"
+                    v-validate="'url'"></el-input>
+                </el-form-item>
+                <el-form-item v-if="form.linkType == 'LinkToChannel' || form.linkType == 'LinkToContent'" label="指定栏目"
+                  prop="channelIds" :rules="[{ required: true, message: '请选择栏目' }]">
+                  <el-cascader v-model="linkTo.channelIds" :options="root" :props="{ checkStrictly: true }" filterable
+                    clearable v-on:change="linkTo.contentId = 0; linkTo.contentTitle = '';" style="width: 100%;"
+                    placeholder="请选择栏目">
+                    <template slot-scope="{ node, data }">
+                      <span>{{ data.label }}</span>
+                      <span> ({{ data.count }}) </span>
+                    </template>
+                  </el-cascader>
+                </el-form-item>
+                <el-form-item
+                  v-if="form.linkType == 'LinkToContent' && linkTo.channelIds && linkTo.channelIds.length > 0"
+                  label="指定内容" prop="contentTitle" :rules="[{ required: true, message: '请选择内容' }]">
+                  <div style="clear: both;" v-if="linkTo.contentId > 0">
+                    <el-link type="primary" :underline="false" :href="getContentUrl()" v-html="linkTo.contentTitle"
+                      target="_blank"></el-link>
+                  </div>
+                  <div style="clear: both;"></div>
+                  <el-button size="mini" icon="el-icon-circle-plus-outline" v-on:click="btnLinkToContentClick">
+                    指定内容
+                  </el-button>
+                </el-form-item>
+              </el-form>
+            </el-collapse-item>
+            <el-collapse-item title="添加时间" name="addDate">
+              <el-date-picker v-model="form.addDate" size="small" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"
+                placeholder="选择内容添加时间">
+              </el-date-picker>
+            </el-collapse-item>
+          </el-collapse>
+        </el-tab-pane>
+        <el-tab-pane label="更多" name="more">
+          <el-collapse v-model="collapseMore">
+
+            <el-collapse-item title="内容模板" name="templateId">
+              <el-select v-model="form.templateId" size="mini" placeholder="请选择内容模板">
+                <el-option label="<默认>" :value="0"></el-option>
+                <el-option v-for="template in templates" :key="template.id" :label="template.templateName"
+                  :value="template.id"></el-option>
+              </el-select>
+            </el-collapse-item>
+
+            <el-collapse-item title="同时转移到" name="translates">
+              <el-tag v-for="translate in translates" :key="translate.summary" closable size="mini"
+                v-on:close="handleTranslationClose(translate.summary)" type="primary">
+                {{translate.summary}}
+              </el-tag>
+
+              <div></div>
+
+              <el-button size="mini" icon="el-icon-circle-plus-outline" v-on:click="btnTranslateAddClick">
+                新增转移
+              </el-button>
+            </el-collapse-item>
+          </el-collapse>
+        </el-tab-pane>
+      </el-tabs>
+
+    </el-scrollbar>
+  </el-aside>
+
+</el-container>
+
+<el-divider></el-divider>
+
+<el-row align="center" style="text-align: center; padding-top:4px">
+
+  <el-tooltip v-if="form.checkedLevel === site.checkContentLevel" class="item" effect="dark" placement="top">
+    <div slot="content" style="text-align: center">发布内容<br />Ctrl+回车</div>
+    <el-dropdown style="margin-right: 10px;" split-button type="primary" size="medium" v-on:click="btnSaveClick"
+      v-on:command="btnSaveCommandClick">
+      发 布
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item command="scheduled">定时发布</el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
+  </el-tooltip>
+  <el-tooltip v-else class="item" effect="dark" placement="top">
+    <div slot="content" style="text-align: center">保存内容<br />Ctrl+回车</div>
+    <el-button size="medium" v-on:click="btnSaveClick" type="primary">保 存</el-button>
+  </el-tooltip>
+
+  <el-button size="medium" v-on:click="btnPreviewClick" type="info">预 览</el-button>
+  <el-tooltip class="item" effect="dark" placement="top">
+    <div slot="content" style="text-align: center">关闭窗口<br />Escape</div>
+    <el-button size="medium" v-on:click="btnCloseClick" type="default">关 闭</el-button>
+  </el-tooltip>
+  <el-button size="medium" icon="el-icon-setting" circle :type="isSettings ? 'info' : 'default'"
+    v-on:click="isSettings = !isSettings"></el-button>
+</el-row>
+
+<el-dialog title="定时发布" :visible.sync="isScheduledDialog">
+  <el-form v-on:submit.native.prevent size="small" ref="scheduledForm" :model="scheduledForm" label-position="top">
+    <el-form-item label="">
+      <el-switch v-model="scheduledForm.isScheduled" active-text="启用定时发布"></el-switch>
+      <div class="tips" style="margin-top: 10px;">
+        您可以选择5分钟后的任意时刻定时发布
+      </div>
+    </el-form-item>
+    <el-form-item label="定时发布时间" prop="scheduledDate" :rules="{ required: true, message: '请选择定时发布时间' }">
+      <el-date-picker v-model="scheduledForm.scheduledDate" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"
+        placeholder="请选择定时发布时间">
+      </el-date-picker>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button v-on:click="isScheduledDialog = false">取 消</el-button>
+    <el-button type="primary" v-on:click="btnScheduledSaveClick" :disabled="!scheduledForm.isScheduled">确 定</el-button>
+  </div>
+</el-dialog>
+
+@section Scripts{
+<script src="/sitefiles/assets/lib/ueditor/editor_config.js" type="text/javascript"></script>
+<script src="/sitefiles/assets/lib/ueditor/ueditor.all.js" type="text/javascript"></script>
+<script src="/sitefiles/assets/lib/ueditor/third-party/custom/custom.js" type="text/javascript"></script>
+<script src="/sitefiles/assets/js/_partialForm.js" type="text/javascript"></script>
+<script src="/sitefiles/assets/js/admin/cms/editor.js" type="text/javascript"></script>
+}

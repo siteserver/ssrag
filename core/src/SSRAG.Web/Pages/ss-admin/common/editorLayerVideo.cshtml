@@ -1,0 +1,133 @@
+﻿@page
+@{ Layout = "_Layout"; }
+@section Styles{
+<style>
+  .el-upload,
+  .el-upload-dragger {
+    width: 100%;
+  }
+
+  .videojs {
+    width: 100% !important;
+    min-height: 300px;
+  }
+
+  .el-upload-dragger {
+    height: 240px;
+    padding: 20px;
+    line-height: 22px;
+  }
+
+  .el-upload__tip {
+    word-wrap: break-word;
+  }
+</style>
+}
+
+<el-alert type="error" v-if="uploadErrorMessage" :title="uploadErrorMessage"></el-alert>
+<el-form style="margin: 20px 10px;" v-on:submit.native.prevent ref="form" :model="form" size="small">
+
+  <el-form-item>
+    <el-radio-group v-model="form.type" v-on:change="btnChangeClick">
+      <el-radio-button label="upload">上传视频</el-radio-button>
+      <el-radio-button label="url">视频地址</el-radio-button>
+      <el-radio-button label="preview">预览视频</el-radio-button>
+    </el-radio-group>
+  </el-form-item>
+  <el-form-item v-if="form.type === 'upload'">
+
+    <template v-if="isCloudVod">
+      <el-upload :disabled="cloudUploadProgressPercent" :drag="true" :action="cloudUploadUrl" :auto-upload="true"
+        :headers="{ Authorization: 'Bearer ' + cloudUploadToken }" :show-file-list="false"
+        :before-upload="cloudUploadBefore" :http-request="cloudUploadRequest" :multiple="false">
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">
+          <strong>
+            将文件拖到此处，或
+            <em>点击上传</em>
+          </strong>
+        </div>
+        <div class="el-upload__tip">
+          支持3GP、ASF、AVI、DAT、DV、FLV、F4V、GIF、M2T、M4V、MJ2、MJPEG、MKV、MOV、MP4、MPE、MPG、MPEG、MTS、OGG、QT、RM、RMVB、SWF、TS、VOB、WMV、WEBM
+          等视频格式上传
+        </div>
+      </el-upload>
+      <el-progress v-if="cloudUploadProgressPercent" :text-inside="true" :stroke-width="26"
+        :percentage="cloudUploadProgressPercent"></el-progress>
+    </template>
+
+    <template v-else>
+      <el-upload :disabled="uploadProgressPercent" :drag="true" :action="uploadUrl" :auto-upload="true"
+        :headers="{Authorization: 'Bearer ' + $token}" :show-file-list="false" :before-upload="uploadBefore"
+        :http-request="uploadRequest" :multiple="false">
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">
+          <strong>
+            将文件拖到此处，或
+            <em>点击上传</em>
+          </strong>
+        </div>
+        <div class="el-upload__tip">
+          支持视频格式：{{ showExtensions }}
+        </div>
+      </el-upload>
+      <el-progress v-if="uploadProgressPercent" :text-inside="true" :stroke-width="26"
+        :percentage="uploadProgressPercent"></el-progress>
+    </template>
+
+  </el-form-item>
+  <el-form-item v-if="form.type === 'url'" label="视频地址" prop="videoUrl" :rules="{ required: true, message: '请输入视频地址' }">
+    <el-input v-model="form.videoUrl"></el-input>
+  </el-form-item>
+  <el-form-item v-if="form.type === 'preview'">
+    <el-card>
+      <video ref="videoPlayer" class="videojs vjs-default-skin vjs-big-play-centered" width="100%" height="300" controls
+        preload="auto" data-setup="{}">
+        <source :src="getPreviewVideoUrl(form.videoUrl)">
+        </source>
+      </video>
+    </el-card>
+  </el-form-item>
+
+  <el-form-item>
+    <el-checkbox v-if="form.type === 'upload'" label="重命名文件" v-model="form.isChangeFileName"></el-checkbox>
+    <el-checkbox label="设置封面" v-model="form.isPoster"></el-checkbox>
+    <el-checkbox label="自动播放" v-model="form.isAutoPlay"></el-checkbox>
+    <el-checkbox label="设置宽度" v-model="form.isWidth"></el-checkbox>
+    <el-checkbox label="设置高度" v-model="form.isHeight"></el-checkbox>
+  </el-form-item>
+
+  <el-form-item v-if="form.isPoster">
+    <el-upload drag :action="uploadImageUrl" :auto-upload="true" :headers="{Authorization: 'Bearer ' + $token}"
+      :show-file-list="false" :before-upload="uploadImageBefore" :on-progress="uploadProgress"
+      :on-success="uploadImageSuccess" :on-error="uploadError" :multiple="false">
+      <img v-if="form.imageUrl" :src="form.imageUrl" class="el-upload">
+      <div v-else>
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">
+          视频封面图，将图片文件拖到此处，或<em>点击上传</em>
+        </div>
+      </div>
+    </el-upload>
+  </el-form-item>
+
+  <el-form-item v-if="form.isWidth" label="视频宽度">
+    <el-input v-model="form.width"></el-input>
+  </el-form-item>
+  <el-form-item v-if="form.isHeight" label="视频高度">
+    <el-input v-model="form.height"></el-input>
+  </el-form-item>
+
+</el-form>
+
+<el-divider></el-divider>
+<el-row align="right" style="margin-right: 5px; margin-top: 10px;">
+  <el-col :span="24" align="right">
+    <el-button size="small" type="primary" v-on:click="btnSubmitClick">确 定</el-button>
+    <el-button size="small" v-on:click="btnCancelClick">取 消</el-button>
+  </el-col>
+</el-row>
+
+@section Scripts{
+<script src="/sitefiles/assets/js/admin/common/editorLayerVideo.js" type="text/javascript"></script>
+}

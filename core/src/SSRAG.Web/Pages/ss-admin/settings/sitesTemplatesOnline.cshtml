@@ -1,0 +1,136 @@
+﻿@page
+@{ Layout = "_Layout"; }
+@section Styles{
+<style>
+  .plan-name {
+    color: #28AB94;
+    margin: 0 auto;
+    width: 80%;
+    white-space: nowrap;
+    display: block;
+    overflow: hidden;
+    font-size: 16px;
+    text-overflow: ellipsis;
+  }
+
+  .plan-price {
+    margin-top: 10px;
+  }
+
+  .ga-border {
+    height: 3px;
+    width: 40px;
+    background-color: #1b7fe6;
+    margin: 10px auto;
+  }
+
+  .el-badge__content.is-fixed {
+    right: 0px;
+  }
+</style>
+}
+
+<div style="height: 10px"></div>
+<el-row>
+  <el-col :span="20">
+    <el-form v-on:submit.native.prevent :inline="true" size="mini">
+      <el-form-item label="价格">
+        <el-select v-on:change="priceChanged" v-model="price">
+          <el-option value="" label="全部"></el-option>
+          <el-option value="false" label="免费模板"></el-option>
+          <el-option value="true" label="收费模板"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="排序">
+        <el-select v-on:change="orderChanged" v-model="order">
+          <el-option value="" label="默认"></el-option>
+          <el-option value="UpdatedDate" label="更新时间"></el-option>
+          <el-option value="AddDate" label="上传时间"></el-option>
+          <el-option value="Price" label="价格"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-input v-model="word" style="width:200px" placeholder="请输入关键字..."></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button :underline="false" type="primary"
+          v-on:click="btnRedirectClick(getUrl(page, word, tag, price, order))">搜索</el-button>
+      </el-form-item>
+    </el-form>
+  </el-col>
+  <el-col :span="4" align="right">
+    <el-link :underline="false" type="primary" target="_blank" :href="getTemplatesUrl()">官网模板中心</el-link>
+  </el-col>
+</el-row>
+<el-row>
+  <el-tag type="success" style="cursor: pointer; margin: 0 3px 6px 0;" v-on:click="btnRedirectClick(getTagUrl(''))"
+    :effect="!tag ? 'dark' : 'plain'">
+    全部
+  </el-tag>
+  <el-tag v-for="tagName in tags" :key="tagName" type="success" style="cursor: pointer; margin: 0 3px 6px 0;"
+    v-on:click="btnRedirectClick(getTagUrl(tagName))" :effect="tagName == tag ? 'dark' : 'plain'">
+    {{ tagName }}
+  </el-tag>
+</el-row>
+
+<div style="height: 10px"></div>
+
+<el-row>
+  <el-col :span="6" v-for="(theme, index) in themes" :key="index">
+    <el-card style="margin-bottom: 15px; margin-right: 15px;"
+      :body-style="{ padding: '0px', textAlign: 'center', height: '450px', overflow: 'hidden' }">
+      <el-image style="width: 100%; min-height: 120px; max-height: 240px; cursor: pointer;"
+        v-on:click="btnImageClick(theme)" :src="getCoverUrl(theme)">
+        <div slot="error" class="image-slot">
+          <i class="el-icon-picture-outline"></i>
+        </div>
+      </el-image>
+      <div style="padding: 14px;">
+
+        <h4 class="text-center plan-name">
+          {{ theme.name }}（{{ theme.updatedDate.substr(0, 10) }}）
+          <div v-if="theme.price" class="plan-price">
+            <el-badge v-if="isCreatable(theme)" value="已购">
+              ￥{{ theme.price.toFixed(2) }}
+            </el-badge>
+            <span v-else>￥{{ theme.price.toFixed(2) }}</span>
+          </div>
+          <div v-else class="plan-price">免费</div>
+        </h4>
+        <div class="ga-border"></div>
+        <p class="text-muted text-center" style="height: 45px; overflow: hidden;">
+          <small>{{ theme.summary }}</small>
+        </p>
+
+        <div style="margin-top: 10px;">
+          <el-button plain type="info" v-on:click="btnPreviewClick(theme)" size="mini" icon="el-icon-view"
+            style="margin: 0 5px;">预览知识库</el-button>
+          <el-button plain type="primary" v-if="siteAddPermission && isCreatable(theme)"
+            v-on:click="btnCreateClick(theme)" size="mini" icon="el-icon-circle-plus" style="margin: 0 5px;">
+            创建知识库
+          </el-button>
+          <el-button plain type="primary" v-if="siteAddPermission && !isCreatable(theme)"
+            v-on:click="btnBuyClick(theme.userName, theme.name)" size="mini" icon="el-icon-s-goods"
+            style="margin: 0 5px;">
+            购买并创建知识库
+          </el-button>
+        </div>
+      </div>
+    </el-card>
+  </el-col>
+</el-row>
+
+<el-divider></el-divider>
+<div style="height: 10px"></div>
+
+<el-row align="center">
+  <el-col :span="24" align="center">
+    <el-pagination background layout="prev, pager, next" v-on:current-change="handlePageChange" :current-page="page"
+      :page-size="12" :total="count">
+    </el-pagination>
+  </el-col>
+</el-row>
+
+@section Scripts{
+<script src="/sitefiles/assets/js/admin/settings/sitesTemplatesOnline.js" type="text/javascript"></script>
+}

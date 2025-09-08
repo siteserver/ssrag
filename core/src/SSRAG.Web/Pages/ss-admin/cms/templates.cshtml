@@ -1,0 +1,212 @@
+﻿@page
+@{ Layout = "_Layout"; }
+@section Styles{
+  <style>
+    .el-table .default-row {
+      background: oldlace;
+    }
+  </style>
+}
+
+<el-container>
+  <el-aside width="100px">
+    <el-tabs v-model="templateType" tab-position="left" style="height: 100%;" v-on:tab-click="reload">
+      <el-tab-pane label="全部" name="All"></el-tab-pane>
+      <el-tab-pane label="首页模板" name="IndexPageTemplate"></el-tab-pane>
+      <el-tab-pane label="栏目模板" name="ChannelTemplate"></el-tab-pane>
+      <el-tab-pane label="内容模板" name="ContentTemplate"></el-tab-pane>
+      <el-tab-pane label="单页模板" name="FileTemplate"></el-tab-pane>
+    </el-tabs>
+  </el-aside>
+
+  <el-container>
+    <el-main>
+      <el-form v-on:submit.native.prevent :inline="true" size="small">
+        <el-form-item label="模板类型">
+          <el-select v-model="templateType" v-on:change="reload" placeholder="请选择">
+            <el-option label="<全部>" value="All"></el-option>
+            <el-option label="首页模板" value="IndexPageTemplate"></el-option>
+            <el-option label="栏目模板" value="ChannelTemplate"></el-option>
+            <el-option label="内容模板" value="ContentTemplate"></el-option>
+            <el-option label="单页模板" value="FileTemplate"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="栏目" prop="channelIds">
+          <el-cascader
+            v-model="channelIds"
+            :options="channels"
+            :props="{ multiple: true, checkStrictly: true }"
+            filterable
+            v-on:change="reload"
+            placeholder="请选择栏目"></el-cascader>
+        </el-form-item>
+        <el-form-item label="模板名称/文件名">
+          <el-input
+            v-model="keyword"
+            v-on:change="reload"
+            placeholder="请输入模板名称或者文件名"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+
+      <el-table :data="templates" style="width: 100%" :row-class-name="tableRowClassName" v-on:row-dblclick="btnEditClick">
+        <el-table-column label="模板名称">
+          <template slot-scope="scope">
+            <el-link
+              :underline="false"
+              :href="getEditorUrl(scope.row.templateType, scope.row.id)"
+              target="_blank"
+              type="primary">
+              {{ scope.row.templateName }}
+              <el-tag size="mini" type="danger" v-if="scope.row.defaultTemplate">
+                默认
+              </el-tag>
+            </el-link>
+          </template>
+        </el-table-column>
+        <el-table-column prop="relatedFileName" label="模板文件"> </el-table-column>
+        <el-table-column label="生成文件名">
+          <template slot-scope="scope">
+            <el-link
+              v-if="scope.row.templateType == 'IndexPageTemplate' || scope.row.templateType == 'FileTemplate'"
+              :underline="false"
+              :href="scope.row.url"
+              target="_blank"
+              type="primary">
+              {{ scope.row.createdFileFullName }}
+            </el-link>
+          </template>
+        </el-table-column>
+        <el-table-column width="80" align="center" label="使用次数">
+          <template slot-scope="scope">
+            <el-link
+              :underline="false"
+              v-on:click="btnUserCountClick(scope.row)"
+              type="primary">
+              {{ scope.row.useCount }}
+            </el-link>
+          </template>
+        </el-table-column>
+        <el-table-column label="模板类型" width="80">
+          <template slot-scope="scope">
+            {{ getTemplateType(scope.row.templateType) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="310">
+          <template slot-scope="scope">
+            <el-link
+              :underline="false"
+              :href="getEditorUrl(scope.row.templateType, scope.row.id)"
+              target="_blank"
+              type="primary">
+              编辑
+            </el-link>
+            <el-link
+              :underline="false"
+              :disabled="scope.row.defaultTemplate || scope.row.templateType === 'FileTemplate'"
+              v-on:click="btnDefaultClick(scope.row)"
+              type="primary">
+              设为默认
+            </el-link>
+            <el-link
+              :underline="false"
+              type="primary"
+              v-on:click="btnCopyClick(scope.row)">
+              快速复制
+            </el-link>
+            <el-link
+              :underline="false"
+              type="primary"
+              v-on:click="btnExportClick(scope.row)">
+              导出
+            </el-link>
+            <el-link
+              :underline="false"
+              type="primary"
+              v-on:click="btnCreateClick(scope.row)">
+              生成页面
+            </el-link>
+            <el-link
+              :underline="false"
+              :disabled="scope.row.defaultTemplate"
+              type="danger"
+              v-on:click="btnDeleteClick(scope.row)">
+              删除
+            </el-link>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <div style="height: 10px"></div>
+      <el-divider></el-divider>
+      <div style="height: 10px"></div>
+
+      <el-link
+        type="primary"
+        v-if="templateType === 'All' || templateType === 'IndexPageTemplate'"
+        :underline="false"
+        class="el-button el-button--primary el-button--small"
+        style="color: #fff; margin-left: 0;"
+        target="_blank"
+        :href="getEditorUrl('IndexPageTemplate', 0)">
+        新增首页模板
+      </el-link>
+      <el-link
+        type="primary"
+        v-if="templateType === 'All' || templateType === 'ChannelTemplate'"
+        :underline="false"
+        class="el-button el-button--primary el-button--small"
+        style="color: #fff; margin-left: 0;"
+        target="_blank"
+        :href="getEditorUrl('ChannelTemplate', 0)">
+        新增栏目模板
+      </el-link>
+      <el-link
+        type="primary"
+        v-if="templateType === 'All' || templateType === 'ContentTemplate'"
+        :underline="false"
+        class="el-button el-button--primary el-button--small"
+        style="color: #fff; margin-left: 0;"
+        target="_blank"
+        :href="getEditorUrl('ContentTemplate', 0)">
+        新增内容模板
+      </el-link>
+      <el-link
+        type="primary"
+        v-if="templateType === 'All' || templateType === 'FileTemplate'"
+        :underline="false"
+        class="el-button el-button--primary el-button--small"
+        style="color: #fff; margin-left: 0;"
+        target="_blank"
+        :href="getEditorUrl('FileTemplate', 0)">
+        新增单页模板
+      </el-link>
+      <el-upload
+        v-if="templateType !== 'All'"
+        style="display: inline-block;"
+        class="uploader"
+        :action="getImportUrl()"
+        :headers="{Authorization: 'Bearer ' + $token}"
+        :show-file-list="false"
+        :drag="false"
+        :limit="1"
+        :before-upload="uploadBefore"
+        :on-progress="uploadProgress"
+        :on-success="uploadSuccess"
+        :on-error="uploadError"
+        :multiple="false">
+        <el-button
+          size="small"
+          plain
+          icon="el-icon-upload2"
+          type="primary">
+          导 入
+        </el-button>
+      </el-upload>
+    </el-main>
+  </el-container>
+</el-container>
+
+@section Scripts{
+<script src="/sitefiles/assets/js/admin/cms/templates.js" type="text/javascript"></script>
+}
