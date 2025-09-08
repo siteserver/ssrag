@@ -1,0 +1,28 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
+using SSRAG.Configuration;
+using SSRAG.Services;
+
+namespace SSRAG.Web.Controllers.Admin
+{
+    [OpenApiIgnore]
+    [Authorize(Roles = Types.Roles.Administrator)]
+    [Route(Constants.ApiAdminPrefix)]
+    public partial class LoadingController : ControllerBase
+    {
+        private const string Route = "loading";
+
+        private readonly ISettingsManager _settingsManager;
+
+        public LoadingController(ISettingsManager settingsManager)
+        {
+            _settingsManager = settingsManager;
+        }
+
+        public class SubmitRequest
+        {
+            public string RedirectUrl { get; set; }
+        }
+    }
+}

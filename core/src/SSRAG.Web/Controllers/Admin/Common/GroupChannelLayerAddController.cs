@@ -1,0 +1,63 @@
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
+using SSRAG.Configuration;
+using SSRAG.Dto;
+using SSRAG.Models;
+using SSRAG.Repositories;
+using SSRAG.Services;
+
+namespace SSRAG.Web.Controllers.Admin.Common
+{
+    [OpenApiIgnore]
+    [Authorize(Roles = Types.Roles.Administrator)]
+    [Route(Constants.ApiAdminPrefix)]
+    public partial class GroupChannelLayerAddController : ControllerBase
+    {
+        private const string Route = "common/groupChannelLayerAdd";
+        private const string RouteUpdate = "common/groupChannelLayerAdd/actions/update";
+
+        private readonly IAuthManager _authManager;
+        private readonly IChannelGroupRepository _channelGroupRepository;
+
+        public GroupChannelLayerAddController(
+            IAuthManager authManager,
+            IChannelGroupRepository channelGroupRepository
+        )
+        {
+            _authManager = authManager;
+            _channelGroupRepository = channelGroupRepository;
+        }
+
+        public class GetRequest : SiteRequest
+        {
+            public int GroupId { get; set; }
+        }
+
+        public class GetResult
+        {
+            public string GroupName { get; set; }
+            public string Description { get; set; }
+        }
+
+        public class AddRequest : SiteRequest
+        {
+            public string GroupName { get; set; }
+            public string Description { get; set; }
+        }
+
+        public class UpdateRequest : SiteRequest
+        {
+            public int GroupId { get; set; }
+            public string GroupName { get; set; }
+            public string Description { get; set; }
+        }
+
+        public class ListResult
+        {
+            public IEnumerable<string> GroupNames { get; set; }
+            public IEnumerable<ChannelGroup> Groups { get; set; }
+        }
+    }
+}
