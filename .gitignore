@@ -6,6 +6,7 @@ plugin-all/
 plugin-samples/
 .config/
 core/src/plugins/
+core/src/SSRAG.Web/ssrag.json
 core/src/SSRAG.Web/log/
 core/src/SSRAG.Web/logs/
 core/src/SSRAG.Web/plugins/
@@ -17,6 +18,7 @@ core/src/SSRAG.Web/wwwroot/sitefiles/templates/
 core/src/SSRAG.Web/wwwroot/sitefiles/temporaryfiles/
 core/src/SSRAG.Web/wwwroot/blog/
 core/src/SSRAG.Web/wwwroot/ssrag/
+core/src/SSRAG.Web/key-e57d5622-5948-462a-b5f6-af9d179c153d.xml
 ai/upload_files/
 ai/wwwroot/
 ai/.venv/
