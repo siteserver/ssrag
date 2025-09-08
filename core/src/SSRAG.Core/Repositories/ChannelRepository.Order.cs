@@ -1,0 +1,193 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using SSRAG.Datory;
+using SSRAG.Models;
+using SSRAG.Dto;
+using SSRAG.Utils;
+
+namespace SSRAG.Core.Repositories
+{
+    public partial class ChannelRepository
+    {
+        private async Task SetTaxisAsync(int siteId, int channelId, int taxis)
+        {
+            await _repository.UpdateAsync(Q
+                .Set(nameof(Channel.Taxis), taxis)
+                .Where(nameof(Channel.Id), channelId)
+                .CachingRemove(GetListKey(siteId), GetEntityKey(channelId))
+            );
+        }
+
+        private async Task<int> GetChildrenCountAsync(int siteId, int channelId)
+        {
+            return await _repository.CountAsync(Q
+                .Where(nameof(Channel.SiteId), siteId)
+                .Where(nameof(Channel.ParentId), channelId)
+            );
+        }
+
+        private async Task<int> GetMaxTaxisAsync(int siteId, int parentId)
+        {
+            var maxTaxis = await _repository.MaxAsync(nameof(Channel.Taxis), Q
+                .Where(nameof(Channel.SiteId), siteId)
+                .Where(nameof(Channel.ParentId), parentId)
+            );
+            return maxTaxis ?? 0;
+        }
+
+        public async Task DropAsync(int siteId, int sourceId, int targetId, string dropType)
+        {
+            var summaries = new List<ChannelSummary>(await GetSummariesAsync(siteId));
+            var source = summaries.FirstOrDefault(x => x.Id == sourceId);
+            var target = summaries.FirstOrDefault(x => x.Id == targetId);
+            if (source == null || target == null) return;
+
+            if (dropType == "after")
+            {
+                if (source.ParentId != target.ParentId)
+                {
+                    var parent = summaries.FirstOrDefault(x => x.Id == target.ParentId);
+
+                    await _repository.DecrementAsync(nameof(Channel.ChildrenCount), Q
+                        .Where(nameof(Channel.Id), source.ParentId)
+                    );
+
+                    await _repository.IncrementAsync(nameof(Channel.ChildrenCount), Q
+                        .Where(nameof(Channel.Id), target.ParentId)
+                    );
+
+                    await UpdateParentAsync(summaries, sourceId, parent);
+                }
+
+                var childIds = summaries
+                    .Where(x => x.ParentId == target.ParentId)
+                    .OrderBy(x => x.Taxis)
+                    .Select(x => x.Id)
+                    .ToList();
+                childIds.Remove(sourceId);
+                var index = childIds.IndexOf(targetId);
+                childIds.Insert(index + 1, sourceId);
+                await UpdateTaxisAsync(siteId, childIds);
+            }
+            else if (dropType == "before")
+            {
+                if (source.ParentId != target.ParentId)
+                {
+                    var parent = summaries.FirstOrDefault(x => x.Id == target.ParentId);
+
+                    await _repository.DecrementAsync(nameof(Channel.ChildrenCount), Q
+                        .Where(nameof(Channel.Id), source.ParentId)
+                    );
+
+                    await _repository.IncrementAsync(nameof(Channel.ChildrenCount), Q
+                        .Where(nameof(Channel.Id), target.ParentId)
+                    );
+
+                    await UpdateParentAsync(summaries, sourceId, parent);
+                }
+
+                var childIds = summaries
+                    .Where(x => x.ParentId == target.ParentId)
+                    .OrderBy(x => x.Taxis)
+                    .Select(x => x.Id)
+                    .ToList();
+                childIds.Remove(sourceId);
+                var index = childIds.IndexOf(targetId);
+                childIds.Insert(index, sourceId);
+                await UpdateTaxisAsync(siteId, childIds);
+            }
+            else if (dropType == "inner")
+            {
+                var parentId = source.ParentId;
+                var childIds = summaries
+                    .Where(x => x.ParentId == targetId)
+                    .OrderBy(x => x.Taxis)
+                    .Select(x => x.Id)
+                    .ToList();
+                childIds.Add(sourceId);
+                await UpdateTaxisAsync(siteId, childIds);
+
+                await _repository.DecrementAsync(nameof(Channel.ChildrenCount), Q
+                    .Where(nameof(Channel.Id), parentId)
+                );
+
+                await _repository.IncrementAsync(nameof(Channel.ChildrenCount), Q
+                    .Where(nameof(Channel.Id), target.Id)
+                );
+
+                await UpdateParentAsync(summaries, sourceId, target);
+            }
+        }
+
+        private async Task UpdateParentAsync(List<ChannelSummary> summaries, int sourceId, IChannelSummary parent)
+        {
+            var source = await GetAsync(sourceId);
+
+            source.ParentId = parent.Id;
+            var parentIds = new List<int>
+            {
+                parent.Id
+            };
+            GetParentIdsRecursive(summaries, parentIds, parent.Id);
+            parentIds.Reverse();
+            source.ParentsPath = parentIds;
+            source.ParentsCount = source.ParentsPath.Count;
+
+            await UpdateAsync(source);
+
+            var childIds = summaries
+                .Where(x => x.ParentId == source.Id)
+                .Select(x => x.Id)
+                .ToList();
+
+            if (childIds.Count > 0)
+            {
+                foreach (var childId in childIds)
+                {
+                    await UpdateParentAsync(summaries, childId, source);
+                }
+            }
+        }
+
+        private async Task UpdateTaxisAsync(int siteId, List<int> channelIds)
+        {
+            for (var taxis = 1; taxis <= channelIds.Count; taxis++)
+            {
+                await SetTaxisAsync(siteId, channelIds[taxis - 1], taxis);
+            }
+        }
+
+        public async Task UpdateTaxisAsync(int siteId, int parentId, int channelId, bool isUp)
+        {
+            var summaries = await GetSummariesAsync(siteId);
+
+            var channelIds = summaries
+                .Where(x => x.ParentId == parentId)
+                .OrderBy(x => x.Taxis)
+                .Select(x => x.Id)
+                .ToList();
+
+            var index = channelIds.IndexOf(channelId);
+
+            if (isUp && index == 0) return;
+            if (!isUp && index == channelIds.Count - 1) return;
+
+            if (isUp)
+            {
+                channelIds.Remove(channelId);
+                channelIds.Insert(index - 1, channelId);
+            }
+            else
+            {
+                channelIds.Remove(channelId);
+                channelIds.Insert(index + 1, channelId);
+            }
+
+            for (var taxis = 1; taxis <= channelIds.Count; taxis++)
+            {
+                await SetTaxisAsync(siteId, channelIds[taxis - 1], taxis);
+            }
+        }
+    }
+}

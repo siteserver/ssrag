@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+    <Version>0.0.1</Version>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <AssemblyName>SSRAG.Cli</AssemblyName>
+    <StartupObject>SSRAG.Cli.Program</StartupObject>
+    <CompressionEnabled>false</CompressionEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="4.0.1" />
+    <PackageReference Include="Mono.Options" Version="6.12.0.148" />
+    <PackageReference Include="Quartz" Version="3.3.3" />
+    <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+    <!-- <PackageReference Include="YamlDotNet" Version="13.7.1" /> -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SSRAG.Core\SSRAG.Core.csproj" />
+  </ItemGroup>
+
+
+</Project>

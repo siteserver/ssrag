@@ -1,0 +1,623 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
+using SSRAG.Configuration;
+
+namespace SSRAG.Datory.Utils
+{
+    public static class Utilities
+    {
+        private static readonly DateTime JanFirst1970 = new DateTime(1970, 1, 1);
+
+        public static int GetUnixTimestamp(DateTime dateTime)
+        {
+            return (int)dateTime.Subtract(JanFirst1970).TotalSeconds;
+        }
+
+        public static List<int> GetIntList(string collection, char separator = ',')
+        {
+            var list = new List<int>();
+            if (!string.IsNullOrEmpty(collection))
+            {
+                var array = collection.Split(separator);
+                foreach (var s in array)
+                {
+                    int.TryParse(s.Trim(), out var i);
+                    list.Add(i);
+                }
+            }
+            return list;
+        }
+
+        public static List<int> GetIntList(IEnumerable<int> collection)
+        {
+            return collection == null ? new List<int>() : new List<int>(collection);
+        }
+
+        public static List<int> GetIntList(JArray jArray)
+        {
+            try
+            {
+                return jArray == null ? new List<int>() : jArray.ToObject<List<int>>();
+            }
+            catch
+            {
+                return new List<int>();
+            }
+        }
+
+        public static string ToString(List<string> objects, string separator = ",")
+        {
+            return objects != null && objects.Count > 0 ? string.Join(separator, objects) : string.Empty;
+        }
+
+        public static string ToString(List<int> objects, string separator = ",")
+        {
+            return objects != null && objects.Count > 0 ? string.Join(separator, objects) : string.Empty;
+        }
+
+        public static string ToString(List<object> objects, string separator = ",")
+        {
+            return objects != null && objects.Count > 0 ? string.Join(separator, objects) : string.Empty;
+        }
+
+        public static string ToString(JArray objects, string separator = ",")
+        {
+            return objects != null && objects.Count > 0 ? string.Join(separator, objects) : string.Empty;
+        }
+
+        public static List<string> GetStringList(string collection, char split = ',')
+        {
+            var list = new List<string>();
+            if (!string.IsNullOrEmpty(collection))
+            {
+                var array = collection.Split(split);
+                foreach (var s in array)
+                {
+                    if (!string.IsNullOrEmpty(s))
+                    {
+                        list.Add(s);
+                    }
+                }
+            }
+            return list;
+        }
+
+        public static List<string> GetStringList(string collection, string split)
+        {
+            var list = new List<string>();
+            if (!string.IsNullOrEmpty(collection))
+            {
+                var array = collection.Split(split);
+                foreach (var s in array)
+                {
+                    if (!string.IsNullOrEmpty(s))
+                    {
+                        list.Add(s);
+                    }
+                }
+            }
+            return list;
+        }
+
+        public static List<string> GetStringList(IEnumerable<string> collection)
+        {
+            return collection == null ? new List<string>() : new List<string>(collection);
+        }
+
+        public static List<string> GetStringList(JArray jArray)
+        {
+            try
+            {
+                return jArray == null ? new List<string>() : jArray.ToObject<List<string>>();
+            }
+            catch
+            {
+                return new List<string>();
+            }
+        }
+
+        public static readonly JsonSerializerSettings JsonSettings = new JsonSerializerSettings
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            Converters = new List<JsonConverter>
+            {
+                new IsoDateTimeConverter {DateTimeFormat = "yyyy-MM-dd HH:mm:ss"}
+            }
+        };
+
+        public static string JsonSerialize(object obj)
+        {
+            if (obj == null) return string.Empty;
+
+            try
+            {
+                //var settings = new JsonSerializerSettings
+                //{
+                //    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                //};
+                //var timeFormat = new IsoDateTimeConverter {DateTimeFormat = "yyyy-MM-dd HH:mm:ss"};
+                //settings.Converters.Add(timeFormat);
+
+                return JsonConvert.SerializeObject(obj, JsonSettings);
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        public static T JsonDeserialize<T>(string json, T defaultValue = default)
+        {
+            if (string.IsNullOrEmpty(json)) return defaultValue;
+
+            try
+            {
+                //var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+                //var timeFormat = new IsoDateTimeConverter { DateTimeFormat = "yyyy-MM-dd HH:mm:ss" };
+                //settings.Converters.Add(timeFormat);
+
+                return JsonConvert.DeserializeObject<T>(json, JsonSettings);
+            }
+            catch
+            {
+                return defaultValue;
+            }
+        }
+
+        public static object Get(IDictionary<string, object> dict, string name)
+        {
+            if (string.IsNullOrEmpty(name)) return null;
+
+            return dict.TryGetValue(name, out var extendValue) ? extendValue : null;
+        }
+
+        public static T Get<T>(object value, T defaultValue = default(T))
+        {
+            switch (value)
+            {
+                case null:
+                    return defaultValue;
+                case T variable:
+                    return variable;
+                default:
+                    try
+                    {
+                        return (T)Convert.ChangeType(value, typeof(T));
+                    }
+                    catch
+                    {
+                        return defaultValue;
+                    }
+            }
+        }
+
+        public static Dictionary<string, object> ToDictionary(string json)
+        {
+            var dict = new Dictionary<string, object>();
+
+            if (string.IsNullOrEmpty(json)) return dict;
+
+            try
+            {
+                if (json.StartsWith("{") && json.EndsWith("}"))
+                {
+                    dict = JsonDeserialize<Dictionary<string, object>>(json);
+                    return dict;
+                }
+
+                json = json.Replace("/u0026", "&");
+
+                var pairs = json.Split('&');
+                foreach (var pair in pairs)
+                {
+                    if (pair.IndexOf("=", StringComparison.Ordinal) == -1) continue;
+                    var name = pair.Split('=')[0];
+                    if (string.IsNullOrEmpty(name)) continue;
+
+                    name = name.Replace("_equals_", "=").Replace("_and_", "&").Replace("_question_", "?").Replace("_quote_", "'").Replace("_add_", "+").Replace("_return_", "\r").Replace("_newline_", "\n");
+                    var value = pair.Split('=')[1];
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        value = value.Replace("_equals_", "=").Replace("_and_", "&").Replace("_question_", "?").Replace("_quote_", "'").Replace("_add_", "+").Replace("_return_", "\r").Replace("_newline_", "\n");
+                    }
+
+                    dict[name] = value;
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+
+            return dict;
+        }
+
+        public static int ToInt(string intStr, int defaultValue = 0)
+        {
+            if (!int.TryParse(intStr?.Trim().TrimStart('0'), out var i))
+            {
+                i = defaultValue;
+            }
+            if (i < 0)
+            {
+                i = defaultValue;
+            }
+            return i;
+        }
+
+        public static bool ToBool(string boolStr)
+        {
+            if (!bool.TryParse(boolStr?.Trim(), out var boolean))
+            {
+                boolean = false;
+            }
+            return boolean;
+        }
+
+        public static decimal ToDecimal(string intStr, decimal defaultValue = 0)
+        {
+            if (!decimal.TryParse(intStr?.Trim(), out var i))
+            {
+                i = defaultValue;
+            }
+            if (i < 0)
+            {
+                i = defaultValue;
+            }
+            return i;
+        }
+
+        public static bool IsUuid(string val)
+        {
+            return !string.IsNullOrWhiteSpace(val) && Guid.TryParse(val, out _);
+        }
+
+        public static string GetUuid()
+        {
+            return Guid.NewGuid().ToString();
+        }
+
+        public static bool EqualsIgnoreCase(string a, string b)
+        {
+            if (a == b) return true;
+            if (string.IsNullOrEmpty(a) || string.IsNullOrEmpty(b)) return false;
+
+            return a.Equals(b, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static bool IsExtend(string propertyName)
+        {
+            return EqualsIgnoreCase(propertyName, "ExtendValues");
+        }
+
+        public static bool ContainsIgnoreCase(string text, string inner)
+        {
+            if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(inner)) return false;
+            return text.ToLower().IndexOf(inner.ToLower(), StringComparison.Ordinal) >= 0;
+        }
+
+        public static string TrimAndToUpper(string text)
+        {
+            return string.IsNullOrEmpty(text) ? string.Empty : text.ToUpper().Trim();
+        }
+
+        public static string TrimAndToLower(string text)
+        {
+            return string.IsNullOrEmpty(text) ? string.Empty : text.ToLower().Trim();
+        }
+
+        public static bool ContainsIgnoreCase(IEnumerable<string> list, string target)
+        {
+            if (list == null) return false;
+
+            return list.Any(element => EqualsIgnoreCase(element, target));
+        }
+
+        public static string GetConnectionStringDatabase(string connectionString)
+        {
+            foreach (var pair in GetStringList(connectionString, ';'))
+            {
+                if (string.IsNullOrEmpty(pair) || pair.IndexOf("=", StringComparison.Ordinal) == -1) continue;
+                var key = pair.Substring(0, pair.IndexOf("=", StringComparison.Ordinal));
+                var value = pair.Substring(pair.IndexOf("=", StringComparison.Ordinal) + 1);
+                if (EqualsIgnoreCase(key, "Database") ||
+                    EqualsIgnoreCase(key, "Data Source") ||
+                    EqualsIgnoreCase(key, "Initial Catalog"))
+                {
+                    return value;
+                }
+            }
+
+            return string.Empty;
+        }
+
+        public static string GetConnectionStringUserName(string connectionString)
+        {
+            foreach (var pair in GetStringList(connectionString, ';'))
+            {
+                if (string.IsNullOrEmpty(pair) || pair.IndexOf("=", StringComparison.Ordinal) == -1) continue;
+                var key = pair.Substring(0, pair.IndexOf("=", StringComparison.Ordinal));
+                var value = pair.Substring(pair.IndexOf("=", StringComparison.Ordinal) + 1);
+                if (EqualsIgnoreCase(key, "Uid") ||
+                    EqualsIgnoreCase(key, "Username") ||
+                    EqualsIgnoreCase(key, "User ID"))
+                {
+                    return value;
+                }
+            }
+
+            return string.Empty;
+        }
+
+        public static string GetDatabaseConnectionString(DatabaseType databaseType, string server, bool isDefaultPort, int port, string userName, string password, string databaseName)
+        {
+            var connectionString = string.Empty;
+
+            if (databaseType == DatabaseType.MySql)
+            {
+                connectionString = $"Server={server};";
+                if (!isDefaultPort && port > 0)
+                {
+                    connectionString += $"Port={port};";
+                }
+                connectionString += $"Uid={userName};Pwd={password};";
+                if (!string.IsNullOrEmpty(databaseName))
+                {
+                    connectionString += $"Database={databaseName};";
+                }
+                connectionString += "SslMode=Preferred;CharSet=utf8;";
+            }
+            else if (databaseType == DatabaseType.SqlServer)
+            {
+                connectionString = $"Server={server};";
+                if (!isDefaultPort && port > 0)
+                {
+                    connectionString = $"Server={server},{port};";
+                }
+                connectionString += $"Uid={userName};Pwd={password};";
+                if (!string.IsNullOrEmpty(databaseName))
+                {
+                    connectionString += $"Database={databaseName};";
+                }
+            }
+            else if (databaseType == DatabaseType.PostgreSql)
+            {
+                connectionString = $"Server={server};";
+                if (!isDefaultPort && port > 0)
+                {
+                    connectionString += $"Port={port};";
+                }
+                connectionString += $"User Id={userName};Password={password};";
+                if (!string.IsNullOrEmpty(databaseName))
+                {
+                    connectionString += $"Database={databaseName};";
+                }
+            }
+            else if (databaseType == DatabaseType.SQLite)
+            {
+                connectionString = $"Data Source={Constants.LocalDbHostVirtualPath};Version=3;";
+            }
+            else if (databaseType == DatabaseType.Dm)
+            {
+                connectionString = $"Server={server};";
+                if (!isDefaultPort && port > 0)
+                {
+                    connectionString += $"Port={port};";
+                }
+                else
+                {
+                    connectionString += "Port=5236;";
+                }
+                connectionString += $"UserId={userName};Pwd={password};";
+                if (!string.IsNullOrEmpty(databaseName))
+                {
+                    connectionString += $"Database={databaseName};";
+                }
+                connectionString += "encoding=utf-8;";
+            }
+
+            return connectionString;
+        }
+
+        public static string GetRedisConnectionString(string host, bool isPort, int redisPort, string password, bool ssl, string db, string prefix)
+        {
+            var connectionString = string.Empty;
+            if (!string.IsNullOrEmpty(host))
+            {
+                var port = 6379;
+                if (!isPort && redisPort > 0)
+                {
+                    port = redisPort;
+                }
+                connectionString = $"{host}:{port}";
+                if (!string.IsNullOrEmpty(password))
+                {
+                    connectionString += $",password={password}";
+                }
+                if (ssl)
+                {
+                    connectionString += ",ssl=true";
+                }
+                if (!string.IsNullOrEmpty(db))
+                {
+                    connectionString += $",defaultDatabase={db}";
+                }
+                if (!string.IsNullOrEmpty(prefix))
+                {
+                    connectionString += $",prefix={prefix}";
+                }
+            }
+
+            return connectionString;
+        }
+
+        public static (string Host, int Port, string Password, bool Ssl, int Db, string Prefix) ParseRedisConnectionString(string connectionString)
+        {
+            var host = "localhost";
+            var post = 6379;
+            var password = string.Empty;
+            var ssl = false;
+            var db = 0;
+            var prefix = string.Empty;
+
+            foreach (var pair in GetStringList(connectionString))
+            {
+                if (string.IsNullOrEmpty(pair)) continue;
+
+                if (pair.IndexOf("=", StringComparison.Ordinal) != -1)
+                {
+                    var key = pair.Substring(0, pair.IndexOf("=", StringComparison.Ordinal));
+                    var value = pair.Substring(pair.IndexOf("=", StringComparison.Ordinal) + 1);
+
+                    if (EqualsIgnoreCase(key, "password"))
+                    {
+                        password = value;
+                    }
+                    else if (EqualsIgnoreCase(key, "ssl"))
+                    {
+                        ssl = ToBool(value);
+                    }
+                    else if (EqualsIgnoreCase(key, "defaultDatabase"))
+                    {
+                        db = ToInt(value);
+                    }
+                    else if (EqualsIgnoreCase(key, "prefix"))
+                    {
+                        prefix = value;
+                    }
+                }
+                else if (pair.IndexOf(":", StringComparison.Ordinal) != -1)
+                {
+                    host = pair.Substring(0, pair.IndexOf(":", StringComparison.Ordinal));
+                    post = ToInt(pair.Substring(pair.IndexOf(":", StringComparison.Ordinal) + 1));
+                }
+                else
+                {
+                    host = pair;
+                }
+            }
+
+            return (host, post, password, ssl, db, prefix);
+        }
+
+
+
+        public static T ToEnum<T>(string value, T defaultValue) where T : struct
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return defaultValue;
+            }
+
+            return Enum.TryParse<T>(value, true, out var result) ? result : defaultValue;
+        }
+
+        public static string ReplaceEndsWith(string input, string replace, string to)
+        {
+            var retVal = input;
+            if (!string.IsNullOrEmpty(input) && !string.IsNullOrEmpty(replace) && input.EndsWith(replace))
+            {
+                retVal = input.Substring(0, input.Length - replace.Length) + to;
+            }
+            return retVal;
+        }
+
+        public static string ReplaceEndsWithIgnoreCase(string input, string replace, string to)
+        {
+            var retVal = input;
+            if (!string.IsNullOrEmpty(input) && !string.IsNullOrEmpty(replace) && input.ToLower().EndsWith(replace.ToLower()))
+            {
+                retVal = input.Substring(0, input.Length - replace.Length) + to;
+            }
+            return retVal;
+        }
+
+        public static string GetMd5Hash(string source)
+        {
+            using var md5Hash = MD5.Create();
+            // Convert the input string to a byte array and compute the hash.
+            var data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(source));
+
+            // Create a new Stringbuilder to collect the bytes
+            // and create a string.
+            var sBuilder = new StringBuilder();
+
+            // Loop through each byte of the hashed data 
+            // and format each one as a hexadecimal string.
+            for (int i = 0; i < data.Length; i++)
+            {
+                sBuilder.Append(data[i].ToString("x2"));
+            }
+
+            // Return the hexadecimal string.
+            return sBuilder.ToString();
+        }
+
+        public static string ReplaceIgnoreCase(string value, string replace, string to)
+        {
+            if (value == null) return string.Empty;
+            if (to == null) to = string.Empty;
+            var count = 0;
+            var position0 = 0;
+            int position1;
+            var upperString = value.ToUpper();
+            var upperPattern = replace.ToUpper();
+            var inc = (value.Length / replace.Length) * (to.Length - replace.Length);
+            var chars = new char[value.Length + Math.Max(0, inc)];
+            while ((position1 = upperString.IndexOf(upperPattern, position0, StringComparison.Ordinal)) != -1)
+            {
+                for (var i = position0; i < position1; ++i) chars[count++] = value[i];
+                foreach (var t in to)
+                {
+                    chars[count++] = t;
+                }
+                position0 = position1 + replace.Length;
+            }
+            if (position0 == 0) return value;
+            for (var i = position0; i < value.Length; ++i) chars[count++] = value[i];
+            return new string(chars, 0, count);
+        }
+
+        public static string FilterSql(string objStr)
+        {
+            if (string.IsNullOrEmpty(objStr)) return string.Empty;
+
+            var isSqlExists = false;
+            const string strSql = "',\\(,\\),select ,insert,update,from ";
+            var strSqls = strSql.Split(',');
+            foreach (var sql in strSqls)
+            {
+                if (objStr.IndexOf(sql, StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    isSqlExists = true;
+                    break;
+                }
+            }
+            if (isSqlExists)
+            {
+                objStr = ReplaceIgnoreCase(objStr, "'", "_sqlquote_");
+                objStr = ReplaceIgnoreCase(objStr, "\\(", "_sqlleftparenthesis_");
+                objStr = ReplaceIgnoreCase(objStr, "\\)", "_sqlrightparenthesis_");
+                objStr = ReplaceIgnoreCase(objStr, "select ", "_sqlselect_ ");
+                objStr = ReplaceIgnoreCase(objStr, "insert", "_sqlinsert_");
+                objStr = ReplaceIgnoreCase(objStr, "update", "_sqlupdate_");
+                objStr = ReplaceIgnoreCase(objStr, "from ", "_sqlfrom_ ");
+            }
+            return objStr;
+        }
+
+        public static string UnFilterSql(string objStr)
+        {
+            if (string.IsNullOrEmpty(objStr)) return string.Empty;
+
+            return objStr.Replace("_sqlquote_", "'").Replace("_sqlleftparenthesis_", "\\(").Replace("_sqlrightparenthesis_", "\\)");
+        }
+    }
+}

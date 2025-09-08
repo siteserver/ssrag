@@ -1,0 +1,299 @@
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using SSRAG.Configuration;
+using SSRAG.Core.StlParser.Attributes;
+using SSRAG.Parse;
+using SSRAG.Core.StlParser.Utility;
+using SSRAG.Core.Utils;
+using SSRAG.Enums;
+using SSRAG.Services;
+using SSRAG.Utils;
+using System;
+
+namespace SSRAG.Core.StlParser.StlElement
+{
+    [StlElement(Title = "获取值", Description = "通过 stl:value 标签在模板中获取值")]
+    public static class StlValue
+    {
+        public const string ElementName = "stl:value";
+
+        [StlAttribute(Title = "类型")]
+        private const string Type = nameof(Type);
+
+        [StlAttribute(Title = "显示的格式")]
+        private const string Format = nameof(Format);
+
+        [StlAttribute(Title = "显示的格式")]
+        private const string FormatString = nameof(FormatString);
+
+        [StlAttribute(Title = "字符开始位置")]
+        private const string StartIndex = nameof(StartIndex);
+
+        [StlAttribute(Title = "指定字符长度")]
+        private const string Length = nameof(Length);
+
+        [StlAttribute(Title = "显示字符的数目")]
+        private const string WordNum = nameof(WordNum);
+
+        [StlAttribute(Title = "文字超出部分显示的文字")]
+        private const string Ellipsis = nameof(Ellipsis);
+
+        [StlAttribute(Title = "需要替换的文字，可以是正则表达式")]
+        private const string Replace = nameof(Replace);
+
+        [StlAttribute(Title = "替换replace的文字信息")]
+        private const string To = nameof(To);
+
+        [StlAttribute(Title = "是否清除标签信息")]
+        private const string IsClearTags = nameof(IsClearTags);
+
+        [StlAttribute(Title = "是否清除空格")]
+        private const string IsClearBlank = nameof(IsClearBlank);
+
+        [StlAttribute(Title = "是否将回车替换为HTML换行标签")]
+        private const string IsReturnToBr = nameof(IsReturnToBr);
+
+        [StlAttribute(Title = "是否转换为小写")]
+        private const string IsLower = nameof(IsLower);
+
+        [StlAttribute(Title = "是否转换为大写")]
+        private const string IsUpper = nameof(IsUpper);
+
+        public const string TypeItemIndex = "ItemIndex";
+        public const string TypeVersion = "Version";
+        public const string TypeDate = "Date";
+        public const string TypeDateOfTraditional = "DateOfTraditional";
+        public const string TypeSiteId = "SiteId";
+        public const string TypeSiteDir = "SiteDir";
+        public const string TypeSiteName = "SiteName";
+        public const string TypeSiteUrl = "SiteUrl";
+        public const string TypeRootUrl = "RootUrl";
+        public const string TypeApiUrl = "ApiUrl";
+        public const string TypeCurrentUrl = "CurrentUrl";
+        public const string TypeChannelUrl = "ChannelUrl";
+        public const string TypeHomeUrl = "HomeUrl";
+        public const string TypeLoginUrl = "LoginUrl";
+        public const string TypeRegisterUrl = "RegisterUrl";
+        public const string TypeLogoutUrl = "LogoutUrl";
+
+        public static SortedList<string, string> TypeList => new SortedList<string, string>
+        {
+            {TypeVersion, "CMS版本"},
+            {TypeDate, "当前日期"},
+            {TypeDateOfTraditional, "带农历的当前日期"}
+        };
+
+        public static async Task<object> ParseAsync(IParseManager parseManager)
+        {
+            var type = string.Empty;
+            var format = string.Empty;
+            var startIndex = 0;
+            var length = 0;
+            var wordNum = 0;
+            var ellipsis = Constants.Ellipsis;
+            var replace = string.Empty;
+            var to = string.Empty;
+            var isClearTags = false;
+            var isClearBlank = false;
+            var isReturnToBr = false;
+            var isLower = false;
+            var isUpper = false;
+
+            foreach (var name in parseManager.ContextInfo.Attributes.AllKeys)
+            {
+                var value = parseManager.ContextInfo.Attributes[name];
+
+                if (StringUtils.EqualsIgnoreCase(name, Type))
+                {
+                    type = value;
+                }
+                else if (StringUtils.EqualsIgnoreCase(name, Format) || StringUtils.EqualsIgnoreCase(name, FormatString))
+                {
+                    format = value;
+                }
+                else if (StringUtils.EqualsIgnoreCase(name, StartIndex))
+                {
+                    startIndex = TranslateUtils.ToInt(value);
+                }
+                else if (StringUtils.EqualsIgnoreCase(name, Length))
+                {
+                    length = TranslateUtils.ToInt(value);
+                }
+                else if (StringUtils.EqualsIgnoreCase(name, WordNum))
+                {
+                    wordNum = TranslateUtils.ToInt(value);
+                }
+                else if (StringUtils.EqualsIgnoreCase(name, Ellipsis))
+                {
+                    ellipsis = value;
+                }
+                else if (StringUtils.EqualsIgnoreCase(name, Replace))
+                {
+                    replace = value;
+                }
+                else if (StringUtils.EqualsIgnoreCase(name, To))
+                {
+                    to = value;
+                }
+                else if (StringUtils.EqualsIgnoreCase(name, IsClearTags))
+                {
+                    isClearTags = TranslateUtils.ToBool(value, false);
+                }
+                else if (StringUtils.EqualsIgnoreCase(name, IsClearBlank))
+                {
+                    isClearBlank = TranslateUtils.ToBool(value, false);
+                }
+                else if (StringUtils.EqualsIgnoreCase(name, IsReturnToBr))
+                {
+                    isReturnToBr = TranslateUtils.ToBool(value, false);
+                }
+                else if (StringUtils.EqualsIgnoreCase(name, IsLower))
+                {
+                    isLower = TranslateUtils.ToBool(value, true);
+                }
+                else if (StringUtils.EqualsIgnoreCase(name, IsUpper))
+                {
+                    isUpper = TranslateUtils.ToBool(value, true);
+                }
+            }
+
+            return await ParseAsync(parseManager, type, format, startIndex, length, wordNum, ellipsis, replace, to, isClearTags, isClearBlank, isReturnToBr, isLower, isUpper);
+        }
+
+        private static async Task<object> ParseAsync(IParseManager parseManager, string type, string format, int startIndex, int length, int wordNum, string ellipsis, string replace, string to, bool isClearTags, bool isClearBlank, bool isReturnToBr, bool isLower, bool isUpper)
+        {
+            var parsedContent = string.Empty;
+
+            var pageInfo = parseManager.PageInfo;
+            var contextInfo = parseManager.ContextInfo;
+
+            if (string.IsNullOrEmpty(type))
+            {
+                if (contextInfo.ContextType == ParseType.Each)
+                {
+                    parsedContent = contextInfo.ItemContainer.EachItem.Value as string;
+                    parsedContent = InputTypeUtils.ParseString(InputType.Text, parsedContent, replace, to, startIndex, length, wordNum, ellipsis, isClearTags, isClearBlank, isReturnToBr, isLower, isUpper, format);
+                }
+            }
+            else if (StringUtils.EqualsIgnoreCase(type, TypeItemIndex))
+            {
+                var itemIndex = StlParserUtility.GetItemIndex(contextInfo);
+                parsedContent = itemIndex.ToString();
+            }
+            else if (StringUtils.EqualsIgnoreCase(type, TypeVersion))
+            {
+                parsedContent = parseManager.SettingsManager.Version;
+            }
+            else if (StringUtils.EqualsIgnoreCase(type, TypeDate))
+            {
+                if (!string.IsNullOrEmpty(format))
+                {
+                    parsedContent = DateUtils.Format(DateTime.Now, format);
+                }
+                else
+                {
+                    if (!pageInfo.BodyCodes.ContainsKey("datestring.js"))
+                    {
+                        var jsUrl = parseManager.PathManager.GetSiteFilesUrl(pageInfo.Site, Resources.DateString.Js);
+
+                        pageInfo.BodyCodes.Add("datestring.js", $@"<script charset=""{Resources.DateString.Charset}"" src=""{jsUrl}"" type=""text/javascript""></script>");
+                    }
+
+                    parsedContent = @"<script language=""javascript"" type=""text/javascript"">RunGLNL(false);</script>";
+                }
+            }
+            else if (StringUtils.EqualsIgnoreCase(type, TypeDateOfTraditional))
+            {
+                if (!pageInfo.BodyCodes.ContainsKey("datestring"))
+                {
+                    var jsUrl = parseManager.PathManager.GetSiteFilesUrl(pageInfo.Site, Resources.DateString.Js);
+
+                    pageInfo.BodyCodes.Add("datestring", $@"<script charset=""{Resources.DateString.Charset}"" src=""{jsUrl}"" type=""text/javascript""></script>");
+                }
+
+                parsedContent = @"<script language=""javascript"" type=""text/javascript"">RunGLNL(true);</script>";
+            }
+            else if (StringUtils.EqualsIgnoreCase(TypeRootUrl, type))//系统根目录地址
+            {
+                parsedContent = parseManager.PathManager.ParseUrl("~");
+                if (!string.IsNullOrEmpty(parsedContent))
+                {
+                    parsedContent = parsedContent.TrimEnd('/');
+                }
+            }
+            else if (StringUtils.EqualsIgnoreCase(TypeApiUrl, type))//API地址
+            {
+                parsedContent = parseManager.PathManager.GetRootUrl();
+            }
+            else if (StringUtils.EqualsIgnoreCase(TypeSiteId, type))//ID
+            {
+                parsedContent = pageInfo.SiteId.ToString();
+            }
+            else if (StringUtils.EqualsIgnoreCase(TypeSiteName, type))//名称
+            {
+                parsedContent = pageInfo.Site.SiteName;
+            }
+            else if (StringUtils.EqualsIgnoreCase(TypeSiteUrl, type))//域名地址
+            {
+                var value = parseManager.PathManager.GetSiteUrl(pageInfo.Site, pageInfo.IsLocal);
+                parsedContent = value.TrimEnd('/');
+            }
+            else if (StringUtils.EqualsIgnoreCase(TypeSiteDir, type))//文件夹
+            {
+                parsedContent = pageInfo.Site.SiteDir;
+            }
+            else if (StringUtils.EqualsIgnoreCase(TypeCurrentUrl, type))//当前页地址
+            {
+                var content = await parseManager.GetContentAsync();
+                parsedContent = await StlParserUtility.GetStlCurrentUrlAsync(parseManager, pageInfo.Site, contextInfo.ChannelId, contextInfo.ContentId, content, pageInfo.Template.TemplateType, pageInfo.Template.Id, pageInfo.IsLocal);
+            }
+            else if (StringUtils.EqualsIgnoreCase(TypeChannelUrl, type))//栏目页地址
+            {
+                parsedContent = await parseManager.PathManager.GetChannelUrlAsync(pageInfo.Site, await parseManager.DatabaseManager.ChannelRepository.GetAsync(contextInfo.ChannelId), pageInfo.IsLocal);
+            }
+            else if (StringUtils.EqualsIgnoreCase(TypeHomeUrl, type))//用户中心地址
+            {
+                parsedContent = parseManager.PathManager.GetHomeUrl(string.Empty).TrimEnd('/');
+            }
+            else if (StringUtils.EqualsIgnoreCase(TypeLoginUrl, type))
+            {
+                var content = await parseManager.GetContentAsync();
+                var returnUrl = await StlParserUtility.GetStlCurrentUrlAsync(parseManager, pageInfo.Site, contextInfo.ChannelId, contextInfo.ContentId, content, pageInfo.Template.TemplateType, pageInfo.Template.Id, pageInfo.IsLocal);
+                parsedContent = parseManager.PathManager.GetHomeUrl($"login/?returnUrl={PageUtils.UrlEncode(returnUrl)}");
+            }
+            else if (StringUtils.EqualsIgnoreCase(TypeLogoutUrl, type))
+            {
+                var content = await parseManager.GetContentAsync();
+                var returnUrl = await StlParserUtility.GetStlCurrentUrlAsync(parseManager, pageInfo.Site, contextInfo.ChannelId, contextInfo.ContentId, content, pageInfo.Template.TemplateType, pageInfo.Template.Id, pageInfo.IsLocal);
+                parsedContent = parseManager.PathManager.GetHomeUrl($"logout/?returnUrl={PageUtils.UrlEncode(returnUrl)}");
+            }
+            else if (StringUtils.EqualsIgnoreCase(TypeRegisterUrl, type))
+            {
+                var content = await parseManager.GetContentAsync();
+                var returnUrl = await StlParserUtility.GetStlCurrentUrlAsync(parseManager, pageInfo.Site, contextInfo.ChannelId, contextInfo.ContentId, content, pageInfo.Template.TemplateType, pageInfo.Template.Id, pageInfo.IsLocal);
+                parsedContent = parseManager.PathManager.GetHomeUrl($"register/?returnUrl={PageUtils.UrlEncode(returnUrl)}");
+            }
+            else if (StringUtils.StartsWithIgnoreCase(type, "TableFor"))//
+            {
+                if (StringUtils.EqualsIgnoreCase(type, "TableForContent"))
+                {
+                    parsedContent = pageInfo.Site.TableName;
+                }
+            }
+            else if (StringUtils.StartsWithIgnoreCase(type, "Site"))//
+            {
+                parsedContent = pageInfo.Site.Get<string>(type.Substring(4));
+            }
+            else if (pageInfo.Parameters != null && pageInfo.Parameters.ContainsKey(type))
+            {
+                pageInfo.Parameters.TryGetValue(type, out parsedContent);
+                parsedContent = InputTypeUtils.ParseString(InputType.Text, parsedContent, replace, to, startIndex, length, wordNum, ellipsis, isClearTags, isClearBlank, isReturnToBr, isLower, isUpper, format);
+            }
+            else
+            {
+                return await StlSite.ParseAsync(parseManager);
+            }
+            return parsedContent;
+        }
+    }
+}

@@ -1,0 +1,94 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using SSRAG.Datory;
+using SSRAG.Enums;
+using SSRAG.Repositories;
+
+namespace SSRAG.Services
+{
+    public partial interface IDatabaseManager
+    {
+        IAccessTokenRepository AccessTokenRepository { get; }
+        IAdministratorRepository AdministratorRepository { get; }
+        IAdministratorsInRolesRepository AdministratorsInRolesRepository { get; }
+        ICeleryTaskRepository CeleryTaskRepository { get; }
+        IChannelRepository ChannelRepository { get; }
+        IChannelGroupRepository ChannelGroupRepository { get; }
+        IChatGroupRepository ChatGroupRepository { get; }
+        IChatMessageRepository ChatMessageRepository { get; }
+        IConfigRepository ConfigRepository { get; }
+        IContentCheckRepository ContentCheckRepository { get; }
+        IContentGroupRepository ContentGroupRepository { get; }
+        IContentRepository ContentRepository { get; }
+        IContentTagRepository ContentTagRepository { get; }
+        IDatasetRepository DatasetRepository { get; }
+        IDbCacheRepository DbCacheRepository { get; }
+        IDepartmentRepository DepartmentRepository { get; }
+        IDocumentRepository DocumentRepository { get; }
+        IErrorLogRepository ErrorLogRepository { get; }
+        IFlowEdgeRepository FlowEdgeRepository { get; }
+        IFlowNodeRepository FlowNodeRepository { get; }
+        IFlowVariableRepository FlowVariableRepository { get; }
+        IFormRepository FormRepository { get; }
+        IFormDataRepository FormDataRepository { get; }
+        ILogRepository LogRepository { get; }
+        IModelProviderRepository ModelProviderRepository { get; }
+        IModelRepository ModelRepository { get; }
+        IPermissionsInRolesRepository PermissionsInRolesRepository { get; }
+        IPluginConfigRepository PluginConfigRepository { get; }
+        IRelatedFieldItemRepository RelatedFieldItemRepository { get; }
+        IRelatedFieldRepository RelatedFieldRepository { get; }
+        IRoleRepository RoleRepository { get; }
+        IScheduledTaskRepository ScheduledTaskRepository { get; }
+        ISegmentRepository SegmentRepository { get; }
+        ISiteLogRepository SiteLogRepository { get; }
+        ISitePermissionsRepository SitePermissionsRepository { get; }
+        ISiteRepository SiteRepository { get; }
+        ISpecialRepository SpecialRepository { get; }
+        IStatRepository StatRepository { get; }
+        IStorageFileRepository StorageFileRepository { get; }
+        ITableStyleRepository TableStyleRepository { get; }
+        ITemplateLogRepository TemplateLogRepository { get; }
+        ITemplateRepository TemplateRepository { get; }
+        ITranslateRepository TranslateRepository { get; }
+        IUserGroupRepository UserGroupRepository { get; }
+        IUserMenuRepository UserMenuRepository { get; }
+        IUserRepository UserRepository { get; }
+        IUsersInGroupsRepository UsersInGroupsRepository { get; }
+
+        List<IRepository> GetAllRepositories();
+
+        Database GetDatabase(string connectionString = null);
+
+        int GetIntResult(string connectionString, string sqlString);
+
+        int GetIntResult(string sqlString);
+
+        string GetString(string connectionString, string sqlString);
+
+        IEnumerable<IDictionary<string, object>> GetRows(DatabaseType databaseType, string connectionString, string sqlString);
+
+        int GetPageTotalCount(string sqlString);
+
+        string GetStlPageSqlString(string sqlString, string orderString, int totalCount, int itemsPerPage,
+            int currentPageIndex);
+
+        string GetSelectSqlString(string tableName, int totalNum, string columns, string whereString,
+            string orderByString);
+
+        int GetCount(string tableName);
+
+        Task<List<IDictionary<string, object>>> GetObjectsAsync(string tableName);
+
+        Task<List<IDictionary<string, object>>> GetPageObjectsAsync(string tableName, string identityColumnName, int offset, int limit);
+
+        string GetPageSqlString(string tableName, string columnNames, string whereSqlString, string orderSqlString,
+            int offset, int limit);
+
+        string GetContentOrderByString(TaxisType taxisType);
+
+        string GetContentOrderByString(TaxisType taxisType, string orderByString);
+
+        string GetDatabaseNameFormConnectionString(string connectionString);
+    }
+}
