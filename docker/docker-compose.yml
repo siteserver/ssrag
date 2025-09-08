@@ -1,0 +1,154 @@
+x-shared-env: &shared-env
+  SECURITY_KEY: ${SECURITY_KEY:-a3e8b1d902f7c54e8f2a6b09c1d3e7f1.5b0a8c3e9d2f6a14b7e831c0d4f9a2b6}
+  DB_HOST: ${DB_HOST:-ssrag-postgres}
+  DB_PORT: ${DB_PORT:-5432}
+  DB_USER: ${DB_USER:-postgres}
+  DB_PASSWORD: ${DB_PASSWORD:-postgres-password}
+  DB_DATABASE: ${DB_DATABASE:-postgres}
+  REDIS_HOST: ${REDIS_HOST:-redis}
+  REDIS_PORT: ${REDIS_PORT:-6379}
+  REDIS_USER: ${REDIS_USER:-}
+  REDIS_PASSWORD: ${REDIS_PASSWORD:-redis-password}
+  REDIS_USE_SSL: ${REDIS_USE_SSL:-false}
+  REDIS_DB: ${REDIS_DB:-0}
+  CELERY_BROKER_DB: ${CELERY_BROKER_DB:-1}
+  CELERY_BACKEND_DB: ${CELERY_BACKEND_DB:-2}
+  VECTOR_STORE: ${VECTOR_STORE:-pgvector}
+  PGVECTOR_HOST: ${PGVECTOR_HOST:-pgvector}
+  PGVECTOR_PORT: ${PGVECTOR_PORT:-5432}
+  PGVECTOR_USER: ${PGVECTOR_USER:-postgres}
+  PGVECTOR_PASSWORD: ${PGVECTOR_PASSWORD:-ssrag123456}
+  PGVECTOR_DATABASE: ${PGVECTOR_DATABASE:-ssrag}
+  WEAVIATE_ENDPOINT: ${WEAVIATE_ENDPOINT:-http://weaviate:8080}
+  WEAVIATE_API_KEY: ${WEAVIATE_API_KEY:-WVF5YThaHlkYwhGUSmCRgsX3tD5ngdN8pkih}
+  WEAVIATE_PERSISTENCE_DATA_PATH: ${WEAVIATE_PERSISTENCE_DATA_PATH:-/var/lib/weaviate}
+  WEAVIATE_QUERY_DEFAULTS_LIMIT: ${WEAVIATE_QUERY_DEFAULTS_LIMIT:-25}
+  WEAVIATE_AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: ${WEAVIATE_AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED:-true}
+  WEAVIATE_DEFAULT_VECTORIZER_MODULE: ${WEAVIATE_DEFAULT_VECTORIZER_MODULE:-none}
+  WEAVIATE_CLUSTER_HOSTNAME: ${WEAVIATE_CLUSTER_HOSTNAME:-node1}
+  WEAVIATE_AUTHENTICATION_APIKEY_ENABLED: ${WEAVIATE_AUTHENTICATION_APIKEY_ENABLED:-true}
+  WEAVIATE_AUTHENTICATION_APIKEY_ALLOWED_KEYS: ${WEAVIATE_AUTHENTICATION_APIKEY_ALLOWED_KEYS:-WVF5YThaHlkYwhGUSmCRgsX3tD5ngdN8pkih}
+  WEAVIATE_AUTHENTICATION_APIKEY_USERS: ${WEAVIATE_AUTHENTICATION_APIKEY_USERS:-hello@ssrag.ai}
+  WEAVIATE_AUTHORIZATION_ADMINLIST_ENABLED: ${WEAVIATE_AUTHORIZATION_ADMINLIST_ENABLED:-true}
+  WEAVIATE_AUTHORIZATION_ADMINLIST_USERS: ${WEAVIATE_AUTHORIZATION_ADMINLIST_USERS:-hello@ssrag.ai}
+
+services:
+
+  # The traefik reverse proxy.
+  # used for reverse proxying the core service and ai service.
+  proxy:
+    image: docker.m.daocloud.io/traefik:v2.11
+    command: --providers.docker
+    depends_on:
+      - ssrag-ai-api
+      - ssrag-ai-worker
+      - ssrag-core
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  # AI service
+  ssrag-ai-api:
+    image: ssrag/ai:latest
+    volumes:
+      - ssrag-data:/app/wwwroot
+    environment: 
+      # Use the shared environment variables.
+      <<: *shared-env
+      # Startup mode, 'api' starts the API server.
+      MODE: api
+    labels:
+      traefik.http.routers.ssrag-ai-api.rule: Host(`localhost`) && PathPrefix(`/api/ai`)
+      traefik.http.services.ssrag-ai-api.loadbalancer.server.port: 8081
+
+  # AI worker
+  ssrag-ai-worker:
+    image: ssrag/ai:latest
+    volumes:
+      - ssrag-data:/app/wwwroot
+    environment: 
+      # Use the shared environment variables.
+      <<: *shared-env
+      # Startup mode, 'worker' starts the Celery worker for processing the queue.
+      MODE: worker
+
+  # Application service
+  ssrag-core:
+    image: ssrag/core:latest
+    volumes:
+      - ssrag-data:/app/wwwroot
+    environment: 
+      # Use the shared environment variables.
+      <<: *shared-env
+    labels:
+      traefik.http.routers.ssrag-core.rule: Host(`localhost`)
+      traefik.http.services.ssrag-core.loadbalancer.server.port: 8080
+
+  # Postgres with pgvector
+  postgre:
+    image: docker.m.daocloud.io/pgvector/pgvector:pg17
+    profiles:
+      - postgre
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PORT: ${DB_PORT:-5432}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres-password}
+      POSTGRES_DB: ${DB_DATABASE:-postgres}
+    volumes:
+      - ./volumes/postgre/data:/var/lib/postgresql/data
+      - ./postgre/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ 'CMD', 'pg_isready', '-h', 'db', '-U', '${PGUSER:-postgres}', '-d', '${POSTGRES_DB:-ssrag}' ]
+      interval: 1s
+      timeout: 3s
+      retries: 60
+
+  # The Weaviate vector store.
+  weaviate:
+    image: docker.m.daocloud.io/semitechnologies/weaviate:1.31.4
+    profiles:
+      - weaviate
+    restart: always
+    ports:
+     - 8080:8080
+     - 50051:50051
+    volumes:
+      # Mount the Weaviate data directory to the con tainer.
+      - ./volumes/weaviate:/var/lib/weaviate
+    environment:
+      # The Weaviate configurations
+      # You can refer to the [Weaviate](https://weaviate.io/developers/weaviate/config-refs/env-vars) documentation for more information.
+      PERSISTENCE_DATA_PATH: ${WEAVIATE_PERSISTENCE_DATA_PATH:-/var/lib/weaviate}
+      QUERY_DEFAULTS_LIMIT: ${WEAVIATE_QUERY_DEFAULTS_LIMIT:-25}
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: ${WEAVIATE_AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED:-false}
+      DEFAULT_VECTORIZER_MODULE: ${WEAVIATE_DEFAULT_VECTORIZER_MODULE:-none}
+      CLUSTER_HOSTNAME: ${WEAVIATE_CLUSTER_HOSTNAME:-node1}
+      AUTHENTICATION_APIKEY_ENABLED: ${WEAVIATE_AUTHENTICATION_APIKEY_ENABLED:-true}
+      AUTHENTICATION_APIKEY_ALLOWED_KEYS: ${WEAVIATE_AUTHENTICATION_APIKEY_ALLOWED_KEYS:-WVF5YThaHlkYwhGUSmCRgsX3tD5ngdN8pkih}
+      AUTHENTICATION_APIKEY_USERS: ${WEAVIATE_AUTHENTICATION_APIKEY_USERS:-hello@ssrag.ai}
+      AUTHORIZATION_ADMINLIST_ENABLED: ${WEAVIATE_AUTHORIZATION_ADMINLIST_ENABLED:-true}
+      AUTHORIZATION_ADMINLIST_USERS: ${WEAVIATE_AUTHORIZATION_ADMINLIST_USERS:-hello@ssrag.ai}
+
+  # The redis cache.
+  redis:
+    image: docker.m.daocloud.io/redis:8.0.2
+    profiles:
+      - redis
+    restart: always
+    environment:
+      REDISCLI_AUTH: ${REDIS_PASSWORD:-redis-password}
+    volumes:
+      # Mount the redis data directory to the container.
+      - ./volumes/redis/data:/data
+    # Set the redis password when startup redis server.
+    command: redis-server --requirepass ${REDIS_PASSWORD:-redis-password}
+    healthcheck:
+      test: [ 'CMD', 'redis-cli', 'ping' ]
+
+volumes:
+  ssrag-data:

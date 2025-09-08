@@ -1,0 +1,16 @@
+{
+  "files.exclude": {
+    "**/node_modules": true,
+    "public/assets/monaco-editor/dev": true,
+    "public/assets/monaco-editor/esm": true,
+    "public/assets/monaco-editor/min": true,
+    "public/assets/monaco-editor/min-maps": true,
+    "**/dist": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true
+  },
+  "editor.formatOnSave": true,
+  "window.zoomLevel": 1
+}
