@@ -1,0 +1,51 @@
+{
+  "cSpell.words": ["Kingbase", "Newtonsoft", "SSRAG"],
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "ai/": true,
+    "web/": true,
+    "src/SSRAG.Web/plugins": true,
+    "src/SSRAG/bin": true,
+    "src/SSRAG/obj": true,
+    "src/SSRAG.Cli/bin": true,
+    "src/SSRAG.Cli/obj": true,
+    "src/SSRAG.Core/bin": true,
+    "src/SSRAG.Core/obj": true,
+    "src/SSRAG.Web/bin": true,
+    "src/SSRAG.Web/obj": true,
+    "src/SSRAG.Web/log": true
+  },
+  "explorerExclude.backup": {},
+  "dotnetAcquisitionExtension.installTimeoutValue": 1800,
+  "dotnetAcquisitionExtension.existingDotnetPath": [
+    {
+      "extensionId": "msazurermtools.azurerm-vscode-tools",
+      "path": "C:\\Program Files\\dotnet\\dotnet.exe"
+    }
+  ],
+  "dotnet.defaultSolution": "build.sln",
+
+  "editor.tabSize": 4,
+  "[csharp]": {
+    "editor.tabSize": 4
+  },
+  "[html]": {
+    "editor.tabSize": 2
+  },
+  "[javascript]": {
+    "editor.tabSize": 2
+  },
+  "[json]": {
+    "editor.tabSize": 2
+  },
+
+  // This one forces the tab to be **space**
+  "editor.insertSpaces": true,
+  "window.zoomLevel": 1,
+  "editor.formatOnSave": true
+}
