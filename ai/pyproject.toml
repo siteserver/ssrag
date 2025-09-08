@@ -1,0 +1,30 @@
+[project]
+name = "python"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "aiosqlite==0.21.0",
+    "alembic==1.16.2",
+    "authlib==1.6.0",
+    "celery==5.5.3",
+    "fastapi[standard]==0.115.14",
+    "gmssl==3.2.2",
+    "markitdown[all]==0.1.2",
+    "pandas==2.3.0",
+    "pyjwt==2.10.1",
+    "redis==6.2.0",
+    "sqlalchemy==2.0.41",
+    "sqlmodel==0.0.24",
+    "unstructured[md]==0.18.1",
+    "uvicorn==0.34.3",
+    "pgvector==0.4.1",
+    "jieba==0.42.1",
+    "llama-index-core==0.12.44",
+    "llama-index-readers-file==0.4.8",
+    "pydantic-settings==2.10.1",
+    "weaviate-client==4.15.4",
+    "alibabacloud-oss-v2==1.1.2",
+    "psycopg2-binary==2.9.10",
+]

@@ -20,6 +20,7 @@ ai/upload_files/
 ai/wwwroot/
 ai/.venv/
 ai/.vscode/extensions.json
+ai/fastapi-service.xml
 /publish/
 /docker/volumes/
 __pycache__/
