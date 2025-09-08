@@ -1,0 +1,52 @@
+.welcome {
+  padding-top: 10px;
+}
+
+/* 针对手机端，调整 welcome 的样式 */
+@media (max-width: 800px) {
+  .welcome {
+    padding-top: 0;
+  }
+}
+
+.markdown-body {
+  background: transparent;
+}
+
+.markdown-body h1 {
+  font-size: 1.3em;
+}
+
+.markdown-body h2 {
+  font-size: 1.2em;
+}
+
+.markdown-body h3 {
+  font-size: 1.1em;
+}
+
+.markdown-body p {
+  line-height: 30px;
+}
+
+.markdown-body blockquote {
+  background: #f0f0f0;
+  padding: 0 20px;
+}
+
+.markdown-body .highlight pre,
+.markdown-body pre {
+  margin-top: 10px;
+  color: #ffffff;
+  background-color: #000000;
+}
+
+.reasoner {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.reasoner-title {
+  margin-bottom: 10px;
+}

@@ -1,0 +1,91 @@
+body {
+  background-color: #f0f2f5;
+}
+
+.writer-container {
+  width: 100vw;
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 60px;
+}
+
+.writer-container h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.writer-container .highlight {
+  color: #409eff;
+}
+
+.writer-container .subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 32px;
+}
+
+.form-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+  padding: 40px 32px 32px 32px;
+  width: 800px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.form-group .label {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.form-group .bar {
+  width: 4px;
+  height: 18px;
+  background: #409eff;
+  display: inline-block;
+  margin-right: 6px;
+  border-radius: 2px;
+}
+
+.form-group .required {
+  color: #409eff;
+  font-size: 0.95rem;
+}
+
+.next-btn {
+  width: 160px;
+  align-self: center;
+  height: 44px;
+  font-size: 1.1rem;
+  background: #409eff;
+  border: none;
+}
+
+.step-indicator {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  gap: 10px;
+}
+
+.step-indicator .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  display: inline-block;
+}
+
+.step-indicator .dot.active {
+  background: #409eff;
+}

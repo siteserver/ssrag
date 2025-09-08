@@ -1,0 +1,22 @@
+.gradient-button {
+  background: linear-gradient(45deg, #6253e1, #04befe);
+  border: none;
+  color: white;
+  transition: background 0.5s ease;
+}
+
+.gradient-button:hover {
+  animation: gradientShift 1.5s infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background: linear-gradient(45deg, #6253e1, #04befe);
+  }
+  50% {
+    background: linear-gradient(45deg, #04befe, #6253e1);
+  }
+  100% {
+    background: linear-gradient(45deg, #6253e1, #04befe);
+  }
+}

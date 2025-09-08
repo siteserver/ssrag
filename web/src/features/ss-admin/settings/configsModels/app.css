@@ -1,0 +1,17 @@
+.ant-collapse-content-box {
+  padding-top: 16px !important;
+  background-color: #fff;
+}
+.ant-form-item {
+  margin-bottom: 15px;
+}
+
+.settings-header-title {
+  display: flex;
+  align-items: center;
+}
+
+.settings-header-title-text {
+  font-size: 16px;
+  margin-right: 16px;
+}

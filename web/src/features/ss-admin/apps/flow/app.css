@@ -1,0 +1,211 @@
+body {
+  margin: 0;
+}
+svg {
+  display: inline;
+}
+.tips {
+  color: #999;
+  font-size: 12px;
+  margin-top: 7px;
+}
+.flow-nodes {
+  width: 100vw;
+  height: 100vh;
+}
+.react-flow .react-flow__attribution {
+  display: none;
+}
+.node-card,
+.node-run-card {
+  min-width: 300px;
+  max-width: 400px;
+}
+.react-flow .selected .node-card {
+  border: 2px solid #1890ff !important;
+}
+.react-flow .selected .node-container-card {
+  border: 2px solid #1890ff !important;
+}
+.react-flow__handle {
+  width: 10px;
+  height: 10px;
+  background-color: #fff;
+  border-width: 2px;
+  border-radius: 50%;
+  border-color: #1890ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+.react-flow__node.draggable {
+  cursor: pointer;
+}
+.react-flow__edge-path {
+  stroke-width: 2px;
+  stroke: #1890ff;
+}
+.react-flow__edge.selectable:focus .react-flow__edge-path,
+.react-flow__edge.selectable:focus-visible .react-flow__edge-path,
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke-width: 4px;
+  stroke: #0958d9;
+}
+.react-flow__edge.animated .react-flow__edge-path {
+  stroke-width: 4px;
+  stroke: #1890ff;
+}
+.node-handle-active,
+.react-flow .selected .react-flow__handle {
+  display: flex;
+}
+.ant-card-head-title svg,
+.ant-drawer-title svg {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  position: relative;
+}
+.ant-card-head-title span {
+  color: rgba(0, 0, 0, 0.65);
+  margin-left: 5px;
+}
+.ant-card-body > div {
+  margin: 5px;
+}
+.ant-card-body > div.placeholder {
+  color: #ccc;
+}
+.ant-drawer-right .ant-drawer-body {
+  padding: 0;
+}
+.ant-drawer-left .ant-drawer-content-wrapper {
+  margin-top: 70px;
+}
+.ant-drawer-left .ant-drawer-body {
+  padding: 15px !important;
+}
+.ant-drawer-right .ant-input-borderless:focus,
+.ant-drawer-right .ant-input-borderless:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+.ant-drawer-right .ant-drawer-content,
+.ant-drawer-right .ant-drawer-content-wrapper {
+  border-top-left-radius: 30px;
+}
+.ant-drawer-right .ant-card-head-title span {
+  font-size: 16px;
+  font-weight: 500;
+}
+.ant-drawer-left .ant-drawer-content,
+.ant-drawer-left .ant-drawer-content-wrapper {
+  border-top-right-radius: 30px;
+}
+.node-add-container {
+  margin-top: 0.5rem;
+}
+.node-add-container .node-add-divider {
+  display: flex;
+}
+.node-add-container .node-add-elements {
+  display: grid;
+  row-gap: 0.5rem;
+  grid-template-columns: 1fr 1fr;
+}
+.node-add-container .node-add-element {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-inline-start: 0.75rem;
+  padding-inline-end: 0.75rem;
+  cursor: pointer;
+  border-radius: 0.375rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.node-add-container .node-add-element:hover,
+.node-add-container .node-add-element[data-hover] {
+  background: #f4f6f8;
+}
+.node-add-container .node-add-icon-container {
+  display: inline-flex;
+  object-fit: contain;
+  border-radius: 0.375rem;
+  flex-shrink: 0;
+}
+.node-add-container .node-add-icon {
+  display: inline-block;
+  line-height: 1em;
+  flex-shrink: 0;
+  color: currentcolor;
+  width: 1.75rem;
+  height: auto;
+  box-sizing: content-box;
+  vertical-align: top;
+  fill: currentcolor;
+  border-radius: 0.375rem;
+}
+.node-add-container .node-add-text {
+  color: #111842;
+  font-weight: 500;
+  font-size: 0.875rem;
+  flex: 1 0 0px;
+  margin-left: 0.75rem;
+}
+.ant-collapse-content-box {
+  padding-top: 16px !important;
+  background-color: #fff;
+}
+.ant-form-item {
+  margin-bottom: 15px;
+}
+.ant-table-cell {
+  font-weight: 500 !important;
+}
+
+.ant-sender .ant-input-borderless:focus,
+.ant-sender .ant-input-borderless:hover {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.apps {
+  padding: 24px;
+}
+
+.apps-drag-tip {
+  text-align: right;
+  margin-bottom: 8px;
+  color: #999;
+}
+
+.apps-add-button {
+  width: 100%;
+  height: 100%;
+  padding: 38px;
+  color: #1677ff;
+}
+
+.apps-add-button-label {
+  padding: 10px;
+}
+
+.apps-add-button-label-text {
+  margin-left: 10px;
+}
+
+.apps-add-button-label-description {
+  color: #999;
+}
+
+.apps-card .ant-card-meta-description {
+  height: 45px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}

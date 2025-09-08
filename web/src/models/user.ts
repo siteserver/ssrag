@@ -1,0 +1,35 @@
+export interface User {
+  id: number
+  userName: string
+  password?: string
+  passwordFormat?: string
+  passwordSalt?: string
+  lastResetPasswordDate?: Date
+  lastActivityDate?: Date
+  departmentId: number
+  manager: boolean
+  level: number
+  countOfLogin: number
+  countOfFailedLogin: number
+  checked: boolean
+  locked: boolean
+  displayName: string
+  mobile: string
+  mobileVerified: boolean
+  email: string
+  avatarUrl: string
+  rydl: string
+  rydlm: string
+  bmdm: string
+  bmmc: string
+  ksdm: string
+  ksmc: string
+  dydm: string
+  dymc: string
+  zwjbm: string
+  zwjb: string
+  gzdw: string
+  rsdw: string
+  dzzw: string
+  departmentName: string
+}

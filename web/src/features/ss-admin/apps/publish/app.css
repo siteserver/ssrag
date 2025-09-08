@@ -1,0 +1,169 @@
+.publish-set-modal .ant-switch.ant-switch-checked {
+  background-color: #6d1d29;
+}
+.form-item-tooltip .ant-tooltip-inner {
+  padding: 6px 8px;
+  width: 250px;
+  top: -55px;
+  left: -72px;
+  position: absolute;
+}
+.secrey-key-dialog .ant-modal-body {
+  margin: 24px 24px 0;
+}
+.secrey-key-dialog .ant-modal-body .title {
+  color: #222;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+  margin-bottom: 12px;
+}
+.secrey-key-dialog .ant-modal-body .box {
+  border: 1px solid #ededed;
+  border-radius: 8px;
+  padding: 12px;
+  word-break: break-all;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  color: #222;
+}
+.secrey-key-dialog .ant-modal-body .copy {
+  text-align: right;
+  margin: 24px 0;
+}
+.secrey-key-dialog .ant-modal-body .copy .ant-btn-primary {
+  padding: 4px 19px;
+}
+.bot-publish-comp {
+  width: 100%;
+  height: 100vh;
+  background: #f5f5f5;
+  overflow-y: hidden;
+}
+.use-type {
+  width: 159px;
+  display: flex;
+  margin-top: 28px;
+  margin-left: 32px;
+  padding: 3px;
+  border-radius: 6px;
+  background: #e4e9f4;
+}
+.use-type span {
+  display: inline-block;
+  width: 74px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+}
+.use-type span:first-child {
+  margin-right: 5px;
+}
+.use-type span.active {
+  background: #fff;
+  color: #6d1d29;
+}
+.bot-publish {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 32px;
+  margin-right: 32px;
+}
+.bot-publish .publish-item {
+  width: 30%;
+  height: 150px;
+  border-radius: 12px;
+  background: #fff;
+  padding: 28px;
+  margin-right: 28px;
+  margin-top: 28px;
+}
+.bot-publish .publish-item:last-child {
+  margin-right: 0;
+}
+.bot-publish .publish-item.vip {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.bot-publish .publish-item:hover {
+  box-shadow: 4px 4px 10px #0000000d;
+}
+.bot-publish .publish-item .content {
+  width: 100%;
+  height: 56px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+}
+.bot-publish .publish-item .content img {
+  width: 56px;
+  height: 56px;
+  margin-right: 16px;
+}
+.bot-publish .publish-item .content svg {
+  width: 56px;
+  height: 56px;
+  margin-right: 16px;
+}
+.bot-publish .publish-item .content .intro .title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #222;
+}
+.bot-publish .publish-item .content .intro .new {
+  width: 36px;
+  height: 17px;
+  margin-left: 4px;
+}
+.bot-publish .publish-item .content .intro .text {
+  font-size: 14px;
+  color: #999;
+}
+.bot-publish .publish-item .bottom {
+  margin-left: 68px;
+  display: flex;
+}
+.bot-publish .publish-item .bottom .bottom-item {
+  font-size: 14px;
+  color: #666;
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.bot-publish .publish-item .bottom .bottom-item:hover {
+  color: #6d1d29;
+}
+.bot-publish .publish-item .bottom .bottom-item svg {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+.ant-modal-body h3 {
+  margin-bottom: 5px;
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #222;
+}
+.ant-modal-body .code {
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  white-space: break-spaces;
+  box-sizing: border-box;
+  border: 1px solid #ededed;
+  background: #f9f9fc;
+  color: #666;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  padding: 12px;
+  border-radius: 8px;
+}

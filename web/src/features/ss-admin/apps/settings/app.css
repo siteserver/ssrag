@@ -1,0 +1,66 @@
+.ant-collapse-content-box {
+  padding-top: 16px !important;
+  background-color: #fff;
+}
+
+.ant-collapse-header-text strong {
+  color: #333;
+}
+
+.ant-form-item {
+  margin-bottom: 15px;
+}
+
+.settings-header-title {
+  display: flex;
+  align-items: center;
+}
+
+.settings-header-title-text {
+  font-size: 16px;
+  margin-right: 16px;
+}
+
+.tips {
+  color: #999;
+  font-size: 12px;
+  margin-top: 7px;
+}
+
+.apps {
+  padding: 24px;
+}
+
+.apps-drag-tip {
+  text-align: right;
+  margin-bottom: 8px;
+  color: #999;
+}
+
+.apps-add-button {
+  width: 100%;
+  height: 100%;
+  padding: 38px;
+  color: #1677ff;
+}
+
+.apps-add-button-label {
+  padding: 10px;
+}
+
+.apps-add-button-label-text {
+  margin-left: 10px;
+}
+
+.apps-add-button-label-description {
+  color: #999;
+}
+
+.apps-card .ant-card-meta-description {
+  height: 45px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
