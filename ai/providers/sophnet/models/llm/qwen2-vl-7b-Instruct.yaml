@@ -1,0 +1,28 @@
+model: Qwen2-VL-7B-Instruct
+label:
+  en_US: Qwen2-VL-7B-Instruct
+model_type: llm
+features:
+  - vision
+model_properties:
+  mode: chat
+  context_size: 32768
+parameter_rules:
+  - name: temperature
+    use_template: temperature
+    default: 0.6
+  - name: max_tokens
+    use_template: max_tokens
+    default: 4096
+    min: 1
+    max: 32768
+  - name: top_p
+    use_template: top_p
+  - name: presence_penalty
+    use_template: presence_penalty
+
+pricing:
+  input: '2'
+  output: '5'
+  unit: '0.000001'
+  currency: RMB

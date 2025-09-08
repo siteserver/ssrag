@@ -1,0 +1,115 @@
+background: '#FFF8DC'
+configurate_methods:
+- customizable-model
+extra:
+  python:
+    model_sources:
+    - models/llm/llm.py
+    - models/text_embedding/text_embedding.py
+    provider_source: provider/huggingface_hub.py
+help:
+  title:
+    en_US: Get your API key from Hugging Face Hub
+    zh_Hans: 从 Hugging Face Hub 获取 API Key
+  url:
+    en_US: https://huggingface.co/settings/tokens
+icon_large:
+  en_US: icon_l_en.svg
+icon_small:
+  en_US: icon_s_en.svg
+label:
+  en_US: Hugging Face Model
+model_credential_schema:
+  credential_form_schemas:
+  - default: hosted_inference_api
+    label:
+      en_US: Endpoint Type
+      zh_Hans: 端点类型
+    options:
+    - label:
+        en_US: Hosted Inference API
+      value: hosted_inference_api
+    - label:
+        en_US: Inference Endpoints
+      value: inference_endpoints
+    required: true
+    type: radio
+    variable: huggingfacehub_api_type
+  - label:
+      en_US: API Token
+      zh_Hans: API Token
+    placeholder:
+      en_US: Enter your Hugging Face Hub API Token here
+      zh_Hans: 在此输入您的 Hugging Face Hub API Token
+    required: true
+    type: secret-input
+    variable: huggingfacehub_api_token
+  - label:
+      en_US: User Name / Organization Name
+      zh_Hans: 用户名 / 组织名称
+    placeholder:
+      en_US: Enter your User Name / Organization Name here
+      zh_Hans: 在此输入您的用户名 / 组织名称
+    required: true
+    show_on:
+    - value: text-embedding
+      variable: __model_type
+    - value: inference_endpoints
+      variable: huggingfacehub_api_type
+    type: text-input
+    variable: huggingface_namespace
+  - label:
+      en_US: Endpoint URL
+      zh_Hans: 端点 URL
+    placeholder:
+      en_US: Enter your Endpoint URL here
+      zh_Hans: 在此输入您的端点 URL
+    required: true
+    show_on:
+    - value: inference_endpoints
+      variable: huggingfacehub_api_type
+    type: text-input
+    variable: huggingfacehub_endpoint_url
+  - label:
+      en_US: Task
+      zh_Hans: Task
+    options:
+    - label:
+        en_US: Text-to-Text Generation
+      show_on:
+      - value: llm
+        variable: __model_type
+      value: text2text-generation
+    - label:
+        en_US: Text Generation
+        zh_Hans: 文本生成
+      show_on:
+      - value: llm
+        variable: __model_type
+      value: text-generation
+    - label:
+        en_US: Feature Extraction
+      show_on:
+      - value: text-embedding
+        variable: __model_type
+      value: feature-extraction
+    show_on:
+    - value: inference_endpoints
+      variable: huggingfacehub_api_type
+    type: select
+    variable: task_type
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+models:
+  llm:
+    predefined:
+    - models/llm/*.yaml
+  text_embedding:
+    predefined:
+    - models/text_embedding/*.yaml
+provider: huggingface_hub
+supported_model_types:
+- llm
+- text-embedding

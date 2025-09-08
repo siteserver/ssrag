@@ -1,0 +1,93 @@
+background: '#FFFFFF'
+configurate_methods:
+- predefined-model
+- customizable-model
+description:
+  en_US: Models provided by stepfun, such as step-1-8k, step-1-32k、step-1v-8k、step-1v-32k,
+    step-1-128k and step-1-256k
+  zh_Hans: 阶跃星辰提供的模型，例如 step-1-8k、step-1-32k、step-1v-8k、step-1v-32k、step-1-128k 和
+    step-1-256k。
+extra:
+  python:
+    model_sources:
+    - models/llm/llm.py
+    provider_source: provider/stepfun.py
+help:
+  title:
+    en_US: Get your API Key from stepfun
+    zh_Hans: 从 stepfun 获取 API Key
+  url:
+    en_US: https://platform.stepfun.com/interface-key
+icon_large:
+  en_US: icon_l_en.png
+icon_small:
+  en_US: icon_s_en.png
+label:
+  en_US: Stepfun
+  zh_Hans: 阶跃星辰
+model_credential_schema:
+  credential_form_schemas:
+  - label:
+      en_US: API Key
+    placeholder:
+      en_US: Enter your API Key
+      zh_Hans: 在此输入您的 API Key
+    required: true
+    type: secret-input
+    variable: api_key
+  - default: '8192'
+    label:
+      en_US: Model context size
+      zh_Hans: 模型上下文长度
+    placeholder:
+      en_US: Enter your Model context size
+      zh_Hans: 在此输入您的模型上下文长度
+    required: true
+    type: text-input
+    variable: context_size
+  - default: '8192'
+    label:
+      en_US: Upper bound for max tokens
+      zh_Hans: 最大 token 上限
+    type: text-input
+    variable: max_tokens
+  - default: no_call
+    label:
+      en_US: Function calling
+    options:
+    - label:
+        en_US: Not supported
+        zh_Hans: 不支持
+      value: no_call
+    - label:
+        en_US: Tool Call
+        zh_Hans: Tool Call
+      value: tool_call
+    required: false
+    type: select
+    variable: function_calling_type
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter your model name
+      zh_Hans: 输入模型名称
+models:
+  llm:
+    position: models/llm/_position.yaml
+    predefined:
+    - models/llm/*.yaml
+provider: stepfun
+provider_credential_schema:
+  credential_form_schemas:
+  - label:
+      en_US: API Key
+    placeholder:
+      en_US: Enter your API Key
+      zh_Hans: 在此输入您的 API Key
+    required: true
+    type: secret-input
+    variable: api_key
+supported_model_types:
+- llm

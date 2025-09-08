@@ -1,0 +1,88 @@
+model: DeepSeek-V3-Fast
+label:
+  zh_Hans: DeepSeek-V3-Fast
+  en_US: DeepSeek-V3-Fast
+model_type: llm
+features:
+  - agent-thought
+model_properties:
+  mode: chat
+  context_size: 32767
+parameter_rules:
+  - name: max_tokens
+    use_template: max_tokens
+    type: int
+    default: 8192
+    min: 1
+    max: 32767
+    required: false
+    help:
+      zh_Hans: 模型回复最大长度（单位 token）。如果生成结果截断，可以调大该参数。
+      en_US: The maximum length of the model's response (in tokens). If the generated results are truncated, you can increase this parameter.
+  - name: temperature
+    use_template: temperature
+    type: float
+    default: 0.6
+    min: 0.0
+    max: 2.0
+    required: false
+    help:
+      zh_Hans: 用于控制随机性和多样性的程度。具体来说，较高的数值会使输出更加随机，而较低的数值会使其更加集中。默认值1.0，取值范围[0,2.0]。
+      en_US: Used to control the degree of randomness and diversity. Specifically, a higher value will make the output more random, while a lower value will make it more concentrated. The default value is 1.0, with a range of [0,2.0].
+  - name: top_p
+    use_template: top_p
+    type: float
+    default: 1.0
+    min: 0.1
+    max: 1.0
+    required: false
+    help:
+      zh_Hans: 用于控制随机性和多样性的程度。影响输出文本的多样性，取值越大，生成文本的多样性越强。默认值1.0。
+      en_US: Used to control the degree of randomness and diversity. It affects the diversity of the output text. The larger the value, the stronger the diversity of the generated text. The default value is 1.0.
+  - name: frequency_penalty
+    use_template: frequency_penalty
+    type: float
+    default: 0.0
+    min: -2.0
+    max: 2.0
+    required: false
+    help:
+      zh_Hans: 用于控制模型在生成内容时避免重复使用某些词汇的倾向。根据新词在当前文本中的频率进行惩罚，降低模型逐字重复同一行的可能性。 默认值0，取值范围：[-2.0, 2.0]。
+      en_US: Used to control the tendency of the model to avoid using certain words when generating content. The frequency of new words in the current text is penalized, reducing the likelihood of the model repeating the same line word by word. The default value is 0, with a range of [-2.0, 2.0].
+  - name: presence_penalty
+    use_template: presence_penalty
+    type: float
+    default: 0.0
+    min: -2.0
+    max: 2.0
+    required: false
+    help:
+      zh_Hans: 用于控制模型在生成内容时避免重复使用某些词汇的倾向。通过对已生成的token增加惩罚，减少重复生成的现象。默认值0，取值范围：[-2.0, 2.0]。
+      en_US: Used to control the tendency of the model to avoid using certain words when generating content. By adding a penalty to the already generated tokens, the phenomenon of repeated generation is reduced. The default value is 0, with a range of [-2.0, 2.0].
+  - name: logprobs
+    label:
+      zh_Hans: 输出 tokens 的对数概率
+      en_US: Log Probabilities of Output Tokens
+    type: boolean
+    default: false
+    required: false
+    help:
+      zh_Hans: 是否返回输出 tokens 的对数概率。
+      en_US: Whether to return the log probabilities of the output tokens.
+  - name: top_logprobs
+    label:
+      zh_Hans: 每个输出 token 位置最有可能返回的 token 数量
+      en_US: The number of tokens that are most likely to be returned at each output token position
+    type: int
+    default: 0
+    min: 0
+    max: 100
+    required: false
+    help:
+      zh_Hans: 默认值0，取值范围为 [0, 20]。指定每个输出 token 位置最有可能返回的 token 数量，每个 token 都有关联的对数概率。仅当 logprobs为true 时可以设置 top_logprobs 参数。
+      en_US: The default value is 0, with a range of [0, 20]. Specifies the number of tokens that are most likely to be returned at each output token position, with each token having an associated log probability. Only when logprobs is true can the top_logprobs parameter be set.
+pricing:
+  input: '4'
+  output: '16'
+  unit: '0.000001'
+  currency: RMB

@@ -1,0 +1,29 @@
+meta:
+  arch:
+    - amd64
+    - arm64
+  runner:
+    entrypoint: main
+    language: python
+    version: "3.12"
+  version: 0.0.1
+name: ssrag
+author: ssrag
+label:
+  en_US: SSRAG
+  zh_Hans: SSRAG
+description:
+  en_US: SSRAG is a default option built into the product, users can enjoy the service without filling in the API Key.
+  zh_Hans: 内置默认选项，将硅基流动模型服务内置在产品中，无需申请与填写 API Key 即可轻松使用。
+icon: ssrag_square.svg
+plugins:
+  models:
+    - provider/ssrag.yaml
+resource:
+  memory: 268435456
+  permission:
+    model:
+      enabled: false
+type: plugin
+version: 0.0.23
+created_at: 2024-09-20T00:13:50.29298939-04:00

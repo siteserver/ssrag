@@ -1,0 +1,61 @@
+background: "#FAF5FF"
+configurate_methods:
+  - customizable-model
+extra:
+  python:
+    model_sources:
+      - models/rerank/rerank.py
+      - models/text_embedding/text_embedding.py
+    provider_source: provider/lindormai.py
+help:
+  title:
+    en_US: How to deploy your model in Lindorm AI Engine
+    zh_Hans: 如何在Lindorm AI引擎部署模型
+  url:
+    en_US: https://help.aliyun.com/document_detail/2393245.html?spm=a2c4g.11186623.help-menu-172543.d_2_7.4b0f1513fp0y82&scm=20140722.H_2393245._.OR_help-T_cn#DAS#zh-V_1
+icon_large:
+  en_US: icon_l_en.png
+icon_small:
+  en_US: icon_s_en.png
+label:
+  en_US: LindormAI
+model_credential_schema:
+  credential_form_schemas:
+    - label:
+        en_US: Lindorm AI Engine URL
+        zh_Hans: Lindorm AI Engine URL
+      placeholder:
+        en_US: Enter the URL of you LindormAI, e.g. http://ld-xxxxxxxxxxxxx-proxy-ai-pub.lindorm.aliyuncs.com:9002
+        zh_Hans: 在此输入Lindorm的AI连接地址，如 http://ld-xxxxxxxxxxxxx-proxy-ai-pub.lindorm.aliyuncs.com:9002
+      required: true
+      type: text-input
+      variable: lindormai_endpoint
+    - label:
+        en_US: Username
+        zh_Hans: lindorm 用户名
+      placeholder:
+        en_US: Enter your lindorm username
+        zh_Hans: 在此输入您的用户名
+      required: true
+      type: text-input
+      variable: lindormai_username
+    - label:
+        en_US: Password
+        zh_Hans: 密码
+      placeholder:
+        en_US: Enter the password
+        zh_Hans: 在此输入您的密码
+      required: true
+      type: secret-input
+      variable: lindormai_password
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter your deployed model name
+      zh_Hans: 输入部署的模型名称
+provider: lindormai
+supported_model_types:
+  - text-embedding
+  - rerank

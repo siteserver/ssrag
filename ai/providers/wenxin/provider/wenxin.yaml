@@ -1,0 +1,58 @@
+background: '#E8F5FE'
+configurate_methods:
+- predefined-model
+extra:
+  python:
+    model_sources:
+    - models/llm/llm.py
+    - models/rerank/rerank.py
+    - models/text_embedding/text_embedding.py
+    provider_source: provider/wenxin.py
+help:
+  title:
+    en_US: Get your API Key from WenXin
+    zh_Hans: 从文心一言获取您的 API Key
+  url:
+    en_US: https://cloud.baidu.com/wenxin.html
+icon_large:
+  en_US: icon_l_en.png
+  zh_Hans: icon_l_zh.png
+icon_small:
+  en_US: icon_s_en.png
+  zh_Hans: icon_s_en.png
+label:
+  en_US: WenXin
+  zh_Hans: 文心一言
+models:
+  llm:
+    predefined:
+    - models/llm/*.yaml
+  rerank:
+    predefined:
+    - models/rerank/*.yaml
+  text_embedding:
+    predefined:
+    - models/text_embedding/*.yaml
+provider: wenxin
+provider_credential_schema:
+  credential_form_schemas:
+  - label:
+      en_US: API Key
+    placeholder:
+      en_US: Enter your API Key
+      zh_Hans: 在此输入您的 API Key
+    required: true
+    type: secret-input
+    variable: api_key
+  - label:
+      en_US: Secret Key
+    placeholder:
+      en_US: Enter your Secret Key
+      zh_Hans: 在此输入您的 Secret Key
+    required: true
+    type: secret-input
+    variable: secret_key
+supported_model_types:
+- llm
+- text-embedding
+- rerank

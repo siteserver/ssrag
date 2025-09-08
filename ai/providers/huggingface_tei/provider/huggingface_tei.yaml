@@ -1,0 +1,81 @@
+background: '#FFF8DC'
+configurate_methods:
+- customizable-model
+description:
+  en_US: A blazing fast inference solution for text embeddings models.
+  zh_Hans: 用于文本嵌入模型的超快速推理解决方案。
+extra:
+  python:
+    model_sources:
+    - models/rerank/rerank.py
+    - models/text_embedding/text_embedding.py
+    provider_source: provider/huggingface_tei.py
+help:
+  title:
+    en_US: How to deploy Text Embedding Inference
+    zh_Hans: 如何部署 Text Embedding Inference
+  url:
+    en_US: https://github.com/huggingface/text-embeddings-inference
+icon_large:
+  en_US: icon_l_en.svg
+icon_small:
+  en_US: icon_s_en.svg
+label:
+  en_US: Text Embedding Inference
+model_credential_schema:
+  credential_form_schemas:
+  - label:
+      en_US: Server url
+      zh_Hans: 服务器URL
+    placeholder:
+      en_US: Enter the url of your Text Embedding Inference, e.g. http://192.168.1.100:8080
+      zh_Hans: 在此输入Text Embedding Inference的服务器地址，如 http://192.168.1.100:8080
+    required: true
+    type: secret-input
+    variable: server_url
+  - label:
+      en_US: API Key
+    placeholder:
+      en_US: Enter your API Key
+      zh_Hans: 在此输入您的 API Key
+    required: false
+    type: secret-input
+    variable: api_key
+  - default: "60"
+    label:
+      en_US: invoke timeout (unit:second)
+      zh_Hans: 调用超时时间 (单位:秒)
+    placeholder:
+      en_US: Enter invoke timeout value
+      zh_Hans: 在此输入调用超时时间
+    required: true
+    type: text-input
+    variable: invoke_timeout
+  - default: "3"
+    label:
+      en_US: max retries
+      zh_Hans: 调用重试次数
+    placeholder:
+      en_US: Enter max retries
+      zh_Hans: 在此输入调用重试次数
+    required: true
+    type: text-input
+    variable: max_retries
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter your model name
+      zh_Hans: 输入模型名称
+models:
+  rerank:
+    predefined:
+    - models/rerank/*.yaml
+  text_embedding:
+    predefined:
+    - models/text_embedding/*.yaml
+provider: huggingface_tei
+supported_model_types:
+- text-embedding
+- rerank

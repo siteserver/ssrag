@@ -1,0 +1,4 @@
+numpy~=2.2.4
+dashscope~=1.22.2
+openai~=1.70.0
+pydub~=0.25.1

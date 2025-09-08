@@ -1,0 +1,35 @@
+author: ssrag
+created_at: 2024-10-09T15:14:37.903898-04:00
+icon: icon_s_en.svg
+label:
+  en_US: perfxcloud
+description:
+  en_US: PerfXCloud
+meta:
+  arch:
+  - amd64
+  - arm64
+  runner:
+    entrypoint: main
+    language: python
+    version: '3.10'
+  version: 0.0.1
+name: perfxcloud
+plugins:
+  models:
+  - provider/perfxcloud.yaml
+resource:
+  memory: 268435456
+  permission:
+    model:
+      enabled: true
+      llm: true
+      moderation: false
+      rerank: false
+      speech2text: false
+      text_embedding: true
+      tts: false
+    tool:
+      enabled: true
+type: plugin
+version: 0.0.5

@@ -1,0 +1,37 @@
+author: ssrag
+created_at: '2024-09-20T00:13:50.29298939-04:00'
+description:
+  en_US: 快速体验大模型，领先探索 AI 开源世界
+  zh_Hans: 快速体验大模型，领先探索 AI 开源世界
+icon: Gitee-AI-Logo.svg
+label:
+  en_US: Gitee AI
+  zh_Hans: 模力方舟
+meta:
+  arch:
+    - amd64
+    - arm64
+  runner:
+    entrypoint: main
+    language: python
+    version: '3.12'
+  version: 0.0.1
+name: gitee_ai
+plugins:
+  models:
+    - provider/gitee_ai.yaml
+resource:
+  memory: 268435456
+  permission:
+    model:
+      enabled: true
+      llm: true
+      moderation: false
+      rerank: true
+      speech2text: false
+      text_embedding: true
+      tts: false
+    tool:
+      enabled: true
+type: plugin
+version: 0.1.3

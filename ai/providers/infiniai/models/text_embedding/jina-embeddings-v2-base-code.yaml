@@ -1,0 +1,5 @@
+model: jina-embeddings-v2-base-code
+model_type: text-embedding
+model_properties:
+  context_size: 8192
+  max_chunks: 1

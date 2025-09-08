@@ -1,0 +1,90 @@
+﻿provider: fishaudio
+label:
+  en_US: Fish Audio
+description:
+  en_US: Models provided by Fish Audio, currently only support TTS and ASR.
+  zh_Hans: Fish Audio 提供的模型，目前支持 TTS 和 ASR。
+icon_small:
+  en_US: fishaudio.jpeg
+icon_large:
+  en_US: fishaudio.jpeg
+background: "#E5E7EB"
+help:
+  title:
+    en_US: Get your API key from Fish Audio
+    zh_Hans: 从 Fish Audio 获取你的 API Key
+  url:
+    en_US: https://fish.audio/zh-CN/go-api/api-keys/
+supported_model_types:
+  - tts
+  - speech2text
+configurate_methods:
+  - predefined-model
+provider_credential_schema:
+  credential_form_schemas:
+    - variable: api_key
+      label:
+        en_US: API Key
+      type: secret-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 API Key
+        en_US: Enter your API Key
+    - variable: api_base
+      label:
+        en_US: API URL
+      type: text-input
+      required: false
+      default: https://api.fish.audio
+      placeholder:
+        en_US: Enter your API URL
+        zh_Hans: 在此输入您的 API URL
+    - variable: use_public_models
+      label:
+        en_US: Use Public Models
+      type: select
+      required: false
+      default: "false"
+      placeholder:
+        en_US: Toggle to use public models
+        zh_Hans: 切换以使用公共模型
+      options:
+        - value: "true"
+          label:
+            en_US: Allow Public Models
+            zh_Hans: 使用公共模型
+        - value: "false"
+          label:
+            en_US: Private Models Only
+            zh_Hans: 仅使用私有模型
+    - variable: latency
+      label:
+        en_US: Latency
+      type: select
+      required: false
+      default: "normal"
+      placeholder:
+        en_US: Toggle to choice latency
+        zh_Hans: 切换以调整延迟
+      options:
+        - value: "balanced"
+          label:
+            en_US: Low (may affect quality)
+            zh_Hans: 低延迟 (可能降低质量)
+        - value: "normal"
+          label:
+            en_US: Normal
+            zh_Hans: 标准
+models:
+  tts:
+    predefined:
+      - "models/tts/*.yaml"
+  speech2text:
+    predefined:
+      - "models/speech2text/*.yaml"
+extra:
+  python:
+    provider_source: provider/fishaudio.py
+    model_sources:
+      - "models/tts/tts.py"
+      - "models/speech2text/speech2text.py"

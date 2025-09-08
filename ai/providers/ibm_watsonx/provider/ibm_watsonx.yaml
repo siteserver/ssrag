@@ -1,0 +1,107 @@
+provider: ibm_watsonx
+label:
+  en_US: IbmWatsonx
+description:
+  en_US: Models provided by ibm_watsonx.
+  zh_Hans: IbmWatsonx 提供的模型。
+icon_small:
+  en_US: icon.svg
+icon_large:
+  en_US: icon.svg
+background: "#E5E7EB"
+help:
+  title:
+    en_US: Get your API Key from ibm_watsonx
+    zh_Hans: 从 IbmWatsonx 获取 API Key
+  url:
+    en_US: https://cloud.ibm.com/iam/apikeys
+supported_model_types:
+  - llm
+configurate_methods:
+  - predefined-model
+  - customizable-model
+model_credential_schema:
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter your model name
+      zh_Hans: 输入模型名称
+  credential_form_schemas:
+    - variable: ibm_api_key
+      label:
+        en_US: API Key
+      type: secret-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 API Key
+        en_US: Enter your API Key
+    - variable: ibm_project_id
+      label:
+        en_US: Project ID
+      type: text-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 Project ID
+        en_US: Enter your Project ID
+provider_credential_schema:
+  credential_form_schemas:
+    - variable: ibm_api_key
+      label:
+        en_US: API Key
+      type: secret-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 API Key
+        en_US: Enter your API Key
+    - variable: ibm_project_id
+      label:
+        en_US: Project ID
+      type: text-input
+      required: true
+      placeholder:
+        zh_Hans: 在此输入您的 Project ID
+        en_US: Enter your Project ID
+    - variable: ibm_url
+      label:
+        en_US: Ibm Server
+      type: select
+      options:
+        - label:
+            en_US: Dallas
+            zh_Hans: Dallas
+          value: "https://us-south.ml.cloud.ibm.com"
+        - label:
+            en_US: UK
+            zh_Hans: UK
+          value: "https://eu-gb.ml.cloud.ibm.com"
+        - label:
+            en_US: Tokyo
+            zh_Hans: Tokyo
+          value: "https://jp-tok.ml.cloud.ibm.com"
+        - label:
+            en_US: Frankfurt
+            zh_Hans: Frankfurt
+          value: "https://eu-de.ml.cloud.ibm.com"
+        - label:
+            en_US: Sydney
+            zh_Hans: Sydney
+          value: "https://au-syd.ml.cloud.ibm.com"
+        - label:
+            en_US: Toronto
+            zh_Hans: Toronto
+          value: "https://ca-tor.ml.cloud.ibm.com"
+      required: true
+      placeholder:
+        zh_Hans: Ibm Server
+        en_US: Ibm Server
+models:
+  llm:
+    predefined:
+      - "models/llm/*.yaml"
+extra:
+  python:
+    provider_source: provider/ibm_watsonx.py
+    model_sources:
+      - "models/llm/llm.py"

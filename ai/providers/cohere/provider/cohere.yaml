@@ -1,0 +1,110 @@
+background: '#ECE9E3'
+configurate_methods:
+- predefined-model
+- customizable-model
+extra:
+  python:
+    model_sources:
+    - models/llm/llm.py
+    - models/rerank/rerank.py
+    - models/text_embedding/text_embedding.py
+    provider_source: provider/cohere.py
+help:
+  title:
+    en_US: Get your API key from cohere
+    zh_Hans: 从 cohere 获取 API Key
+  url:
+    en_US: https://dashboard.cohere.com/api-keys
+icon_large:
+  en_US: icon_l_en.svg
+icon_small:
+  en_US: icon_s_en.svg
+label:
+  en_US: Cohere
+  zh_Hans: Cohere
+model_credential_schema:
+  credential_form_schemas:
+  - default: chat
+    label:
+      en_US: Completion mode
+    options:
+    - label:
+        en_US: Completion
+        zh_Hans: 补全
+      value: completion
+    - label:
+        en_US: Chat
+        zh_Hans: 对话
+      value: chat
+    placeholder:
+      en_US: Select completion mode
+      zh_Hans: 选择对话类型
+    required: false
+    show_on:
+    - value: llm
+      variable: __model_type
+    type: select
+    variable: mode
+  - label:
+      en_US: API Key
+    placeholder:
+      en_US: Enter your API Key
+      zh_Hans: 在此输入您的 API Key
+    required: true
+    type: secret-input
+    variable: api_key
+  - label:
+      en_US: API Base
+      zh_Hans: API Base
+    placeholder:
+      en_US: Enter your API Base, e.g. https://api.cohere.ai/v1
+      zh_Hans: 在此输入您的 API Base，如 https://api.cohere.ai/v1
+    required: false
+    type: text-input
+    variable: base_url
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter your model name
+      zh_Hans: 输入模型名称
+models:
+  llm:
+    position: models/llm/_position.yaml
+    predefined:
+    - models/llm/*.yaml
+  rerank:
+    position: models/rerank/_position.yaml
+    predefined:
+    - models/rerank/*.yaml
+  text_embedding:
+    position: models/text_embedding/_position.yaml
+    predefined:
+    - models/text_embedding/*.yaml
+provider: cohere
+provider_credential_schema:
+  credential_form_schemas:
+  - label:
+      en_US: API Key
+      zh_Hans: API Key
+    placeholder:
+      en_US: Enter your API Key
+      zh_Hans: 在此输入您的 API Key
+    required: true
+    show_on: []
+    type: secret-input
+    variable: api_key
+  - label:
+      en_US: API Base
+      zh_Hans: API Base
+    placeholder:
+      en_US: Enter your API Base, e.g. https://api.cohere.ai/v1
+      zh_Hans: 在此输入您的 API Base，如 https://api.cohere.ai/v1
+    required: false
+    type: text-input
+    variable: base_url
+supported_model_types:
+- llm
+- text-embedding
+- rerank

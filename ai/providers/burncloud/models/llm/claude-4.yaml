@@ -1,0 +1,41 @@
+model: claude-sonnet-4-20250514
+label:
+  zh_Hans: Claude 4.0
+  en_US: Claude 4.0
+model_type: llm
+features:
+  - agent-thought
+model_properties:
+  mode: chat
+  context_size: 200000
+parameter_rules:
+  - name: temperature
+    use_template: temperature
+    min: 0
+    max: 2
+    default: 1
+  - name: top_p
+    use_template: top_p
+    min: 0
+    max: 1
+    default: 1
+  - name: max_tokens
+    use_template: max_tokens
+    min: 1
+    max: 4096
+    default: 1024
+  - name: frequency_penalty
+    use_template: frequency_penalty
+    min: -2
+    max: 2
+    default: 0
+  - name: presence_penalty
+    use_template: presence_penalty
+    min: -2
+    max: 2
+    default: 0
+pricing:
+  input: '0.15'
+  output: '0.75'
+  unit: '0.0001'
+  currency: CNY 

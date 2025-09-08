@@ -1,0 +1,44 @@
+background: "#EFFDFD"
+configurate_methods:
+  - predefined-model
+description:
+  en_US: Embedding and Rerank Model Supported
+extra:
+  python:
+    model_sources:
+      - models/text_embedding/text_embedding.py
+      - models/rerank/rerank.py
+    provider_source: provider/mixedbread.py
+help:
+  title:
+    en_US: Get your API key from Mixedbread AI
+    zh_Hans: 从 Mixedbread 获取 API Key
+  url:
+    en_US: https://mixedbread.com/
+icon_large:
+  en_US: icon_l_en.png
+icon_small:
+  en_US: icon_s_en.png
+label:
+  en_US: Mixedbread
+models:
+  rerank:
+    predefined:
+      - models/rerank/*.yaml
+  text_embedding:
+    predefined:
+      - models/text_embedding/*.yaml
+provider: mixedbread
+provider_credential_schema:
+  credential_form_schemas:
+    - label:
+        en_US: API Key
+      placeholder:
+        en_US: Enter your API Key
+        zh_Hans: 在此输入您的 API Key
+      required: true
+      type: secret-input
+      variable: api_key
+supported_model_types:
+  - text-embedding
+  - rerank

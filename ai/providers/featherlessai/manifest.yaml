@@ -1,0 +1,52 @@
+version: 0.0.1
+type: plugin
+author: featherlessai
+name: featherlessai
+label:
+  en_US: FeatherlessAI
+  ja_JP: FeatherlessAI
+  zh_Hans: FeatherlessAI
+  pt_BR: FeatherlessAI
+description:
+  en_US: Featherless AI is a serverless inference provider that provides access to over 4200+ open source models, including LLama, Mistral, DeepSeek, Qwen, and more. 
+  ja_JP: Featherless AI はサーバーレス推論プロバイダーで、LLama、Mistral、DeepSeek、Qwenなど、4200以上のオープンソースモデルへのアクセスを提供します。
+  zh_Hans: Featherless AI 是一个无服务器推理提供商，提供对超过 4200 个开源模型的访问，包括 LLama、Mistral、DeepSeek、Qwen 等。
+  pt_BR: Featherless AI é um provedor de inferência sem servidor que oferece acesso a mais de 4200 modelos de código aberto, incluindo LLama, Mistral, DeepSeek, Qwen e mais.
+icon: featherless.svg
+resource:
+  memory: 268435456
+  permission:
+    tool:
+      enabled: false
+    model:
+      enabled: true
+      llm: true
+      text_embedding: false
+      rerank: false
+      tts: false
+      speech2text: false
+      moderation: false
+    node:
+      enabled: false
+    endpoint:
+      enabled: false
+    app:
+      enabled: false
+    storage:
+      enabled: true
+      size: 1048576
+plugins:
+  models:
+    - provider/featherlessai.yaml
+meta:
+  version: 0.0.1
+  arch:
+    - amd64
+    - arm64
+  runner:
+    language: python
+    version: "3.12"
+    entrypoint: main
+created_at: 2025-05-26T14:18:56.3292241+02:00
+privacy: PRIVACY.md
+verified: false

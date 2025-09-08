@@ -1,0 +1,56 @@
+background: '#F6F7F7'
+configurate_methods:
+- predefined-model
+description:
+  en_US: Models provided by Tencent Hunyuan, such as hunyuan-standard, hunyuan-standard-256k,
+    hunyuan-pro and hunyuan-lite.
+  zh_Hans: 腾讯混元提供的模型，例如 hunyuan-standard、 hunyuan-standard-256k, hunyuan-pro 和 hunyuan-lite。
+extra:
+  python:
+    model_sources:
+    - models/llm/llm.py
+    - models/text_embedding/text_embedding.py
+    provider_source: provider/hunyuan.py
+help:
+  title:
+    en_US: Get your API Key from Tencent Hunyuan
+    zh_Hans: 从腾讯混元获取 API Key
+  url:
+    en_US: https://console.cloud.tencent.com/cam/capi
+icon_large:
+  en_US: icon_l_en.png
+icon_small:
+  en_US: icon_s_en.png
+label:
+  en_US: Hunyuan
+  zh_Hans: 腾讯混元
+models:
+  llm:
+    position: models/llm/_position.yaml
+    predefined:
+    - models/llm/*.yaml
+  text_embedding:
+    predefined:
+    - models/text_embedding/*.yaml
+provider: hunyuan
+provider_credential_schema:
+  credential_form_schemas:
+  - label:
+      en_US: Secret ID
+    placeholder:
+      en_US: Enter your Secret ID
+      zh_Hans: 在此输入您的 Secret ID
+    required: true
+    type: secret-input
+    variable: secret_id
+  - label:
+      en_US: Secret Key
+    placeholder:
+      en_US: Enter your Secret Key
+      zh_Hans: 在此输入您的 Secret Key
+    required: true
+    type: secret-input
+    variable: secret_key
+supported_model_types:
+- llm
+- text-embedding

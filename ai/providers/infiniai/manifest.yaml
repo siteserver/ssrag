@@ -1,0 +1,42 @@
+version: 0.0.3
+type: plugin
+author: infiniai
+name: infiniai
+label:
+  en_US: 无问芯穹
+  ja_JP: 无问芯穹
+  zh_Hans: 无问芯穹
+  pt_BR: 无问芯穹
+description:
+  en_US: InfiniAI provides high-performance APIs for accelerating large model inference, covering multiple modalities such as text, images, and videos. It supports the latest open-source LLM models like DeepSeek, as well as SOTA embedding and reranking models such as Jina/bge. Configuration can be done via model names, API keys, and other parameters.
+  ja_JP: InfiniAIは、テキスト、画像、動画などの多様なモダリティをカバーする大規模モデル推論高速化のための高性能APIを提供します。DeepSeekなどの最新オープンソースLLMモデルや、Jina/bgeなどのSOTA埋め込み・再ランキングモデルをサポートし、モデル名、APIキー、その他のパラメータで設定できます。
+  zh_Hans: 无问芯穹提供大模型推理加速高性能API，涵盖文本、图像、视频等多种模态，支持最新开源DeepSeek等系列LLM模型，以及Jina/bge等sota嵌入重排模型，可通过模型名称、API密钥和其他参数进行配置。
+  pt_BR: InfiniAI fornece APIs de alto desempenho para acelerar a inferência de modelos grandes, abrangendo várias modalidades, como texto, imagens e vídeos. Ele suporta os mais recentes modelos LLM de código aberto, como DeepSeek, bem como modelos SOTA de incorporação e reclassificação, como Jina/bge. A configuração pode ser feita por meio de nomes de modelos, chaves de API e outros parâmetros.
+  
+icon: icon.svg
+resource:
+  memory: 268435456
+  permission:
+    model:
+      enabled: true
+      llm: true
+      text_embedding: true
+      rerank: true
+      tts: true
+      speech2text: true
+      moderation: true
+plugins:
+  models:
+    - provider/infiniai.yaml
+meta:
+  version: 0.0.1
+  arch:
+    - amd64
+    - arm64
+  runner:
+    language: python
+    version: "3.12"
+    entrypoint: main
+created_at: 2025-03-12T17:15:12.677072+08:00
+privacy: PRIVACY.md
+verified: false

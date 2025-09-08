@@ -1,0 +1,41 @@
+model: meta-llama/llama-4-maverick-17b-128e-instruct-fp8
+label:
+  zh_Hans: Llama 4 Maverick Instruct
+  en_US: Llama 4 Maverick Instruct
+model_type: llm
+features:
+  - agent-thought
+model_properties:
+  mode: chat
+  context_size: 1048576
+parameter_rules:
+  - name: temperature
+    use_template: temperature
+    min: 0
+    max: 2
+    default: 1
+  - name: top_p
+    use_template: top_p
+    min: 0
+    max: 1
+    default: 1
+  - name: max_tokens
+    use_template: max_tokens
+    min: 1
+    max: 2048
+    default: 512
+  - name: frequency_penalty
+    use_template: frequency_penalty
+    min: -2
+    max: 2
+    default: 0
+  - name: presence_penalty
+    use_template: presence_penalty
+    min: -2
+    max: 2
+    default: 0
+pricing:
+  input: '0.0145'
+  output: '0.062'
+  unit: '0.0001'
+  currency: CNY

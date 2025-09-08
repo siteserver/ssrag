@@ -1,0 +1,49 @@
+background: '#F5F5F4'
+configurate_methods:
+- predefined-model
+description:
+  en_US: GroqCloud provides access to the Groq Cloud API, which hosts models like
+    LLama2 and Mixtral.
+  zh_Hans: GroqCloud 提供对 Groq Cloud API 的访问，其中托管了 LLama2 和 Mixtral 等模型。
+extra:
+  python:
+    model_sources:
+    - models/llm/llm.py
+    - models/speech2text/speech2text.py
+    provider_source: provider/groq.py
+help:
+  title:
+    en_US: Get your API Key from GroqCloud
+    zh_Hans: 从 GroqCloud 获取 API Key
+  url:
+    en_US: https://console.groq.com/keys
+icon_large:
+  en_US: icon_l_en.svg
+icon_small:
+  en_US: icon_s_en.svg
+label:
+  en_US: GroqCloud
+  zh_Hans: GroqCloud
+models:
+  llm:
+    position: models/llm/_position.yaml
+    predefined:
+    - models/llm/*.yaml
+  speech2text:
+    position: models/speech2text/_position.yaml
+    predefined:
+    - models/speech2text/*.yaml
+provider: groq
+provider_credential_schema:
+  credential_form_schemas:
+  - label:
+      en_US: API Key
+    placeholder:
+      en_US: Enter your API Key
+      zh_Hans: 在此输入您的 API Key
+    required: true
+    type: secret-input
+    variable: api_key
+supported_model_types:
+- llm
+- speech2text

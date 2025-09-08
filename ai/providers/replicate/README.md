@@ -1,0 +1,2 @@
+# Overview
+Replicate is a cloud-based platform designed to simplify the deployment and scaling of machine learning models. It provides users with access to a vast library of open-source AI models, enabling developers to run and fine-tune these models with minimal coding effort. The platform aims to democratize machine learning by making it accessible to a broader audience, including software engineers, data scientists, and product managers.

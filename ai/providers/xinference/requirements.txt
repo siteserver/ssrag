@@ -1,0 +1,2 @@
+openai~=1.55.1
+xinference_client~=1.0.1

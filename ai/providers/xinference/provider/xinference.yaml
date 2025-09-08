@@ -1,0 +1,87 @@
+background: "#FAF5FF"
+configurate_methods:
+  - customizable-model
+extra:
+  python:
+    model_sources:
+      - models/llm/llm.py
+      - models/rerank/rerank.py
+      - models/text_embedding/text_embedding.py
+      - models/tts/tts.py
+      - models/speech2text/speech2text.py
+    provider_source: provider/xinference.py
+help:
+  title:
+    en_US: How to deploy Xinference
+    zh_Hans: 如何部署 Xinference
+  url:
+    en_US: https://github.com/xorbitsai/inference
+icon_large:
+  en_US: icon_l_en.svg
+icon_small:
+  en_US: icon_s_en.svg
+label:
+  en_US: Xorbits Inference
+model_credential_schema:
+  credential_form_schemas:
+    - label:
+        en_US: Server url
+        zh_Hans: 服务器URL
+      placeholder:
+        en_US: Enter the url of your Xinference, e.g. http://192.168.1.100:9997
+        zh_Hans: 在此输入Xinference的服务器地址，如 http://192.168.1.100:9997
+      required: true
+      type: secret-input
+      variable: server_url
+    - label:
+        en_US: Model uid
+        zh_Hans: 模型UID
+      placeholder:
+        en_US: Enter the model uid
+        zh_Hans: 在此输入您的Model UID
+      required: true
+      type: text-input
+      variable: model_uid
+    - label:
+        en_US: API key
+        zh_Hans: API密钥
+      placeholder:
+        en_US: Enter the api key
+        zh_Hans: 在此输入您的API密钥
+      required: false
+      type: secret-input
+      variable: api_key
+    - default: "60"
+      label:
+        en_US: invoke timeout (unit:second)
+        zh_Hans: 调用超时时间 (单位:秒)
+      placeholder:
+        en_US: Enter invoke timeout value
+        zh_Hans: 在此输入调用超时时间
+      required: true
+      type: text-input
+      variable: invoke_timeout
+    - default: "3"
+      label:
+        en_US: max retries
+        zh_Hans: 调用重试次数
+      placeholder:
+        en_US: Enter max retries
+        zh_Hans: 在此输入调用重试次数
+      required: true
+      type: text-input
+      variable: max_retries
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter your model name
+      zh_Hans: 输入模型名称
+provider: xinference
+supported_model_types:
+  - llm
+  - text-embedding
+  - rerank
+  - speech2text
+  - tts

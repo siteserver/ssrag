@@ -1,0 +1,116 @@
+background: '#FCFDFF'
+configurate_methods:
+- predefined-model
+- customizable-model
+extra:
+  python:
+    model_sources:
+    - models/llm/llm.py
+    - models/text_embedding/text_embedding.py
+    provider_source: provider/fireworks.py
+help:
+  title:
+    en_US: Get your API Key from Fireworks AI
+    zh_Hans: 从 Fireworks AI 获取 API Key
+  url:
+    en_US: https://fireworks.ai/account/api-keys
+icon_large:
+  en_US: icon_l_en.svg
+icon_small:
+  en_US: icon_s_en.svg
+label:
+  en_US: Fireworks AI
+  zh_Hans: Fireworks AI
+model_credential_schema:
+  credential_form_schemas:
+  - label:
+      en_US: The zh_Hans of Model
+      zh_Hans: 模型中文名称
+    placeholder:
+      en_US: Enter your zh_Hans of Model
+      zh_Hans: 在此输入您的模型中文名称
+    required: true
+    type: text-input
+    variable: model_label_zh_Hanns
+  - label:
+      en_US: The en_US of Model
+      zh_Hans: 模型英文名称
+    placeholder:
+      en_US: Enter your en_US of Model
+      zh_Hans: 在此输入您的模型英文名称
+    required: true
+    type: text-input
+    variable: model_label_en_US
+  - label:
+      en_US: API Key
+    placeholder:
+      en_US: Enter your API Key
+      zh_Hans: 在此输入您的 API Key
+    required: true
+    type: secret-input
+    variable: fireworks_api_key
+  - default: '4096'
+    label:
+      en_US: Model context size
+      zh_Hans: 模型上下文长度
+    placeholder:
+      en_US: Enter your Model context size
+      zh_Hans: 在此输入您的模型上下文长度
+    required: true
+    type: text-input
+    variable: context_size
+  - default: '4096'
+    label:
+      en_US: Upper bound for max tokens
+      zh_Hans: 最大 token 上限
+    show_on:
+    - value: llm
+      variable: __model_type
+    type: text-input
+    variable: max_tokens
+  - default: no_call
+    label:
+      en_US: Function calling
+    options:
+    - label:
+        en_US: Not Support
+        zh_Hans: 不支持
+      value: no_call
+    - label:
+        en_US: Support
+        zh_Hans: 支持
+      value: function_call
+    required: false
+    show_on:
+    - value: llm
+      variable: __model_type
+    type: select
+    variable: function_calling_type
+  model:
+    label:
+      en_US: Model URL
+      zh_Hans: 模型URL
+    placeholder:
+      en_US: Enter your Model URL
+      zh_Hans: 输入模型URL
+models:
+  llm:
+    predefined:
+    - models/llm/*.yaml
+  text_embedding:
+    predefined:
+    - models/text_embedding/*.yaml
+provider: fireworks
+provider_credential_schema:
+  credential_form_schemas:
+  - label:
+      en_US: API Key
+    placeholder:
+      en_US: Enter your API Key
+      zh_Hans: 在此输入您的 API Key
+    required: true
+    type: secret-input
+    variable: fireworks_api_key
+supported_model_types:
+- llm
+- text-embedding

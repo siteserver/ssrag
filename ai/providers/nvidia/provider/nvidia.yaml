@@ -1,0 +1,53 @@
+background: '#FFFFFF'
+configurate_methods:
+  - predefined-model
+description:
+  en_US: API Catalog
+  zh_Hans: API Catalog
+extra:
+  python:
+    model_sources:
+      - models/llm/llm.py
+      - models/rerank/rerank.py
+      - models/text_embedding/text_embedding.py
+    provider_source: provider/nvidia.py
+help:
+  title:
+    en_US: Get your API Key from NVIDIA
+    zh_Hans: 从 NVIDIA 获取 API Key
+  url:
+    en_US: https://build.nvidia.com/explore/discover
+icon_large:
+  en_US: icon_l_en.png
+icon_small:
+  en_US: icon_s_en.svg
+label:
+  en_US: API Catalog
+models:
+  llm:
+    position: models/llm/_position.yaml
+    predefined:
+      - models/llm/*.yaml
+  rerank:
+    position: models/rerank/_position.yaml
+    predefined:
+      - models/rerank/*.yaml
+  text_embedding:
+    position: models/text_embedding/_position.yaml
+    predefined:
+      - models/text_embedding/*.yaml
+provider: nvidia
+provider_credential_schema:
+  credential_form_schemas:
+    - label:
+        en_US: API Key
+      placeholder:
+        en_US: Enter your API Key
+        zh_Hans: 在此输入您的 API Key
+      required: true
+      type: secret-input
+      variable: api_key
+supported_model_types:
+  - llm
+  - text-embedding
+  - rerank

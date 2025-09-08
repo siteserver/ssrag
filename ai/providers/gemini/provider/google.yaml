@@ -1,0 +1,49 @@
+background: '#FCFDFF'
+configurate_methods:
+- predefined-model
+description:
+  en_US: Google's Gemini model.
+  zh_Hans: 谷歌提供的 Gemini 模型.
+extra:
+  python:
+    model_sources:
+    - models/llm/llm.py
+    provider_source: provider/google.py
+help:
+  title:
+    en_US: Get your API Key from Google
+    zh_Hans: 从 Google 获取 API Key
+  url:
+    en_US: https://ai.google.dev/
+icon_large:
+  en_US: icon_l_en.svg
+icon_small:
+  en_US: icon_s_en.svg
+label:
+  en_US: Gemini
+models:
+  llm:
+    position: models/llm/_position.yaml
+    predefined:
+    - models/llm/*.yaml
+provider: google
+provider_credential_schema:
+  credential_form_schemas:
+  - label:
+      en_US: API Key
+    placeholder:
+      en_US: Enter your API Key
+      zh_Hans: 在此输入您的 API Key
+    required: true
+    type: secret-input
+    variable: google_api_key
+  - label:
+      en_US: Files URL
+    placeholder:
+      en_US: Enter the Local FILES URL prefix to get better upload performance
+      zh_Hans: 在此输入本地文件地址的URL前缀
+    required: false
+    type: text-input
+    variable: file_url
+supported_model_types:
+- llm

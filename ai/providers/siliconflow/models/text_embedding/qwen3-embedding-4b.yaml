@@ -1,0 +1,6 @@
+model: Qwen/Qwen3-Embedding-4B
+model_type: text-embedding
+model_properties:
+  context_size: 32768
+  vector_dimension: 2560
+order: 2

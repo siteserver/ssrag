@@ -1,0 +1,111 @@
+background: '#93c5fd'
+configurate_methods:
+- customizable-model
+description:
+  en_US: Azure AI Studio
+  zh_Hans: Azure AI Studio
+extra:
+  python:
+    model_sources:
+    - models/llm/llm.py
+    - models/rerank/rerank.py
+    provider_source: provider/azure_ai_studio.py
+help:
+  title:
+    en_US: How to deploy customized model on Azure AI Studio
+    zh_Hans: 如何在Azure AI Studio上的私有化部署的模型
+  url:
+    en_US: https://learn.microsoft.com/en-us/azure/ai-studio/how-to/deploy-models
+    zh_Hans: https://learn.microsoft.com/zh-cn/azure/ai-studio/how-to/deploy-models
+icon_large:
+  en_US: icon_l_en.png
+icon_small:
+  en_US: icon_s_en.png
+label:
+  en_US: Azure AI Studio
+  zh_Hans: Azure AI Studio
+model_credential_schema:
+  credential_form_schemas:
+  - label:
+      en_US: Azure AI Studio Endpoint
+    placeholder:
+      en_US: 'Enter your API Endpoint, eg: https://example.com'
+      zh_Hans: 请输入你的Azure AI Studio推理端点
+    required: true
+    type: text-input
+    variable: endpoint
+  - label:
+      en_US: API Key
+      zh_Hans: API Key
+    placeholder:
+      en_US: Enter your Azure AI Studio API Key
+      zh_Hans: 在此输入您的 Azure AI Studio API Key
+    required: true
+    show_on:
+    - value: llm
+      variable: __model_type
+    type: secret-input
+    variable: api_key
+  - label:
+      en_US: Select completion mode
+      zh_Hans: 选择对话类型
+    placeholder:
+      en_US: 'Select completion model'
+      zh_Hans: 选择对话类型
+    required: true
+    show_on:
+    - value: llm
+      variable: __model_type
+    type: select
+    variable: mode
+    options:
+    - value: chat
+      label:
+        en_US: Chat
+        zh_Hans: 对话
+    - value: completion
+      label:
+        en_US: Completion
+        zh_Hans: 补全
+  - label:
+      en_US: Model context size
+      zh_Hans: 模型上下文长度
+    placeholder:
+      en_US: Enter your Model context size
+      zh_Hans: 在此输入您的模型上下文长度
+    show_on:
+    - value: llm
+      variable: __model_type
+    required: true
+    type: text-input
+    variable: context_size
+  - label:
+      en_US: JWT Token
+      zh_Hans: JWT令牌
+    placeholder:
+      en_US: Enter your Azure AI Studio JWT Token
+      zh_Hans: 在此输入您的 Azure AI Studio 推理 API Key
+    required: true
+    show_on:
+    - value: rerank
+      variable: __model_type
+    type: secret-input
+    variable: jwt_token
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter your model name
+      zh_Hans: 输入模型名称
+models:
+  llm:
+    predefined:
+    - models/llm/*.yaml
+  rerank:
+    predefined:
+    - models/rerank/*.yaml
+provider: azure_ai_studio
+supported_model_types:
+- llm
+- rerank

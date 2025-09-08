@@ -1,0 +1,37 @@
+version: 0.0.3
+type: plugin
+author: higgs-projects
+name: lkeap
+label:
+  en_US: LKEAP
+  zh_Hans: 腾讯知识引擎
+description:
+  en_US: Models provide by Tencent LKEAP, such as deepseek-v3-0324, deepseek-r1-0528.
+  zh_Hans: 腾讯知识引擎大模型相关原子能力，如deepseek-v3-0324, deepseek-r1-0528.
+icon: icon_s_en.svg
+resource:
+  memory: 268435456
+  permission:
+    model:
+      enabled: true
+      llm: true
+      text_embedding: true
+      rerank: true
+      tts: false
+      speech2text: false
+      moderation: false
+plugins:
+  models:
+    - provider/lkeap.yaml
+meta:
+  version: 0.0.3
+  arch:
+    - amd64
+    - arm64
+  runner:
+    language: python
+    version: "3.12"
+    entrypoint: main
+created_at: 2025-03-15T19:34:58.986286+08:00
+privacy: PRIVACY.md
+verified: false

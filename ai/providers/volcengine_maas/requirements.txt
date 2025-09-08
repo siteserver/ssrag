@@ -1,0 +1,2 @@
+volcengine-python-sdk==3.0.11
+pytz==2024.2
