@@ -19,8 +19,10 @@ core/src/SSRAG.Web/wwwroot/ssrag/
 ai/upload_files/
 ai/wwwroot/
 ai/.venv/
+ai/.vscode/extensions.json
 /publish/
 /docker/volumes/
+__pycache__/
 
 .env
 *.env
