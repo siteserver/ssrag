@@ -13,7 +13,8 @@ core/src/SSRAG.Web/.vs/
 core/src/SSRAG.Web/.vscode/
 core/src/SSRAG.Web/.config/
 core/src/SSRAG.Web/version.txt
-core/src/SSRAG.Web/wwwroot/sitefiles/
+core/src/SSRAG.Web/wwwroot/sitefiles/templates/
+core/src/SSRAG.Web/wwwroot/sitefiles/temporaryfiles/
 core/src/SSRAG.Web/wwwroot/blog/
 core/src/SSRAG.Web/wwwroot/ssrag/
 ai/upload_files/

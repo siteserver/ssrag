@@ -1,0 +1,401 @@
+﻿var $url = "/settings/sitesAdd";
+var $urlUpload = $apiUrl + "/settings/sitesAdd/actions/upload";
+
+var data = utils.init({
+  pageType: utils.getQueryString("type") || "selectType",
+
+  siteTemplates: null,
+  rootExists: null,
+  sites: null,
+
+  page: utils.getQueryInt("page", 1),
+  word: utils.getQueryString("word"),
+  tag: utils.getQueryString("tag"),
+  price: utils.getQueryString("price"),
+  order: utils.getQueryString("order"),
+  buy: utils.getQueryString("buy"),
+  themes: null,
+  count: null,
+  pages: null,
+  tags: [],
+  orderedUuids: [],
+
+  parentIds: [0],
+  form: {
+    uuid: null,
+    createType: utils.getQueryString("createType"),
+    localDirectoryName: utils.getQueryString("localDirectoryName"),
+    cloudThemeUserName: utils.getQueryString("cloudThemeUserName"),
+    cloudThemeName: utils.getQueryString("cloudThemeName"),
+    isCloudThemeFree: utils.getQueryBoolean("isCloudThemeFree"),
+    siteName: "",
+    root: false,
+    parentId: 0,
+    siteDir: "",
+    isImportContents: true,
+    isImportTableStyles: true,
+  },
+
+  total: 1,
+  current: 0,
+  message: "",
+  success: false,
+
+  uploadPanel: false,
+  uploadLoading: false,
+  uploadList: [],
+
+  errorMessage: "",
+});
+
+var methods = {
+  apiGet: function () {
+    var $this = this;
+
+    $api
+      .get($url)
+      .then(function (response) {
+        var res = response.data;
+
+        $this.siteTemplates = res.siteTemplates;
+        $this.rootExists = res.rootExists;
+        $this.sites = res.sites;
+        $this.form.uuid = res.uuid;
+      })
+      .catch(function (error) {
+        $this.errorMessage = utils.getErrorMessage(error);
+        $this.pageType = "error";
+        //utils.error(error);
+      })
+      .then(function () {
+        utils.loading($this, false);
+        if ($this.pageType == "selectCloud") {
+          $this.load();
+        }
+      });
+  },
+
+  apiSubmit: function () {
+    var $this = this;
+
+    var interval = setTimeout(function () {
+      $this.apiProcess();
+    }, 3000);
+
+    utils.loading(this, true);
+    this.form.parentId =
+      this.parentIds && this.parentIds.length > 0 ? this.parentIds[this.parentIds.length - 1] : 0;
+    $api
+      .post($url, this.form)
+      .then(function (response) {
+        var res = response.data;
+
+        $this.total = 1;
+        $this.current = 1;
+        $this.message = "知识库创建成功！";
+        $this.success = true;
+        setTimeout(function () {
+          parent.location.href = utils.getIndexUrl({ siteId: res.value });
+        }, 1000);
+      })
+      .catch(function (error) {
+        clearTimeout(interval);
+        $this.pageType = "submit";
+        utils.loading($this, false);
+        utils.error(error);
+      });
+  },
+
+  apiProcess: function () {
+    var $this = this;
+    $this.pageType = "process";
+
+    $api
+      .post($url + "/actions/process", {
+        uuid: this.form.uuid,
+      })
+      .then(function (response) {
+        var res = response.data;
+        if ($this.success) return;
+
+        $this.total = res.total || 1;
+        $this.current = res.current;
+        $this.message = res.message;
+
+        if ($this.current > $this.total) {
+          $this.current = $this.total;
+        }
+
+        if ($this.total > $this.current) {
+          setTimeout(function () {
+            $this.apiProcess();
+          }, 3000);
+        }
+        utils.loading($this, false);
+      })
+      .catch(function (error) {
+        utils.error(error);
+      });
+  },
+
+  getTemplatesUrl: function () {
+    return cloud.host + "/templates/";
+  },
+
+  getDisplayUrl: function (userName, name) {
+    return cloud.getThemesUrl("template.html?userName=" + userName + "&name=" + name);
+  },
+
+  getCoverUrl: function (theme) {
+    return (
+      cloud.hostStorage +
+      "/themes/" +
+      theme.userName +
+      "/" +
+      theme.name +
+      "/" +
+      _.trim(theme.coverUrl, "/")
+    );
+  },
+
+  isCreatable: function (theme) {
+    return theme.price === 0 || this.orderedUuids.indexOf(theme.uuid) !== -1;
+  },
+
+  btnImageClick: function (theme) {
+    window.open(this.getDisplayUrl(theme.userName, theme.name));
+  },
+
+  btnPreviewClick: function (theme) {
+    window.open(cloud.hostDemo + "/" + theme.userName + "/" + theme.name + "/");
+  },
+
+  getPageUrl: function (page) {
+    if (page < 1 || page > this.pages || page == this.page) return "javascript:;";
+    return this.getUrl(page, this.word, this.tag, this.price, this.order);
+  },
+
+  getTagUrl: function (tag) {
+    return this.getUrl(this.page, this.word, tag, this.price, this.order);
+  },
+
+  getPriceUrl: function (price) {
+    return this.getUrl(this.page, this.word, this.tag, price, this.order);
+  },
+
+  getOrderUrl: function (order) {
+    return this.getUrl(this.page, this.word, this.tag, this.price, order);
+  },
+
+  btnRedirectClick: function (url) {
+    location.href = url;
+  },
+
+  handlePageChange: function (page) {
+    location.href = this.getPageUrl(page);
+  },
+
+  getUrl: function (page, word, tag, price, order) {
+    var url = "?type=selectCloud&page=" + page;
+    if (word) {
+      url += "&word=" + word;
+    }
+    if (tag) {
+      url += "&tag=" + tag;
+    }
+    if (price) {
+      url += "&price=" + price;
+    }
+    if (order) {
+      url += "&order=" + order;
+    }
+    return url;
+  },
+
+  priceChanged: function () {
+    this.load();
+  },
+
+  orderChanged: function () {
+    this.load();
+  },
+
+  load: function () {
+    var $this = this;
+
+    utils.loading(this, true);
+    cloud
+      .getThemes(this.page, this.word, this.tag, this.price, this.order)
+      .then(function (response) {
+        var res = response.data;
+
+        $this.themes = res.themes;
+        $this.count = res.count;
+        $this.pages = res.pages;
+        $this.tags = res.tags;
+        $this.orderedUuids = res.orderedUuids;
+
+        if ($this.buy) {
+          var userName = $this.buy.split(".")[0];
+          var name = $this.buy.split(".")[1];
+          $this.btnBuyClick(userName, name);
+        }
+      })
+      .catch(function (error) {
+        utils.error(error, {
+          ignoreAuth: true,
+        });
+      })
+      .then(function () {
+        utils.loading($this, false);
+      });
+  },
+
+  btnLocalClick: function () {
+    this.pageType = "selectLocal";
+    this.form.createType = "local";
+  },
+
+  btnCloudClick: function () {
+    this.pageType = "selectCloud";
+    this.form.createType = "cloud";
+    this.load();
+  },
+
+  btnCancelClick: function () {
+    this.pageType = "selectType";
+  },
+
+  btnCreateEmptyClick: function () {
+    this.form.createType = "empty";
+    this.pageType = "submit";
+  },
+
+  btnCreateLocalClick: function (localDirectoryName, siteTemplateName) {
+    this.form.createType = "local";
+    this.form.localDirectoryName = localDirectoryName;
+    this.form.siteName = siteTemplateName;
+    this.pageType = "submit";
+  },
+
+  btnCreateCloudClick: function (theme) {
+    this.form.createType = "cloud";
+    this.form.cloudThemeUserName = theme.userName;
+    this.form.cloudThemeName = theme.name;
+    this.form.isCloudThemeFree = theme.price === 0;
+    this.pageType = "submit";
+  },
+
+  getThemeUrl: function (theme) {
+    if (theme) {
+      return (
+        cloud.host +
+        "/templates/template.html?userName=" +
+        encodeURIComponent(theme.userName) +
+        "&name=" +
+        encodeURIComponent(theme.name)
+      );
+    }
+    return "javascript:;";
+  },
+
+  btnBuyClick: function (userName, name) {
+    var $this = this;
+    var url = utils.addQuery(location.href, {
+      buy: userName + "." + name,
+    });
+    cloud.checkAuth(function () {
+      utils.openLayer({
+        title: "购买",
+        width: 600,
+        height: 500,
+        url:
+          cloud.host + "/layer/pay.html?resourceType=Theme&userName=" + userName + "&name=" + name,
+      });
+
+      window.addEventListener(
+        "message",
+        function (e) {
+          if (e.origin !== cloud.host) return;
+          var userName = e.data.userName;
+          var name = e.data.name;
+          if (userName && name) {
+            $this.btnCreateCloudClick(e.data);
+            window.layer.closeAll();
+          }
+        },
+        false
+      );
+    }, url);
+  },
+
+  btnSubmitClick: function () {
+    var $this = this;
+
+    var $this = this;
+    this.$refs.form.validate(function (valid) {
+      if (valid) {
+        $this.apiSubmit();
+      }
+    });
+  },
+
+  btnCloseClick: function () {
+    utils.removeTab();
+  },
+
+  btnUploadClick: function () {
+    this.uploadPanel = true;
+  },
+
+  uploadBefore(file) {
+    var isZip = file.name.indexOf(".zip", file.name.length - ".zip".length) !== -1;
+    if (!isZip) {
+      utils.error("上传知识库模板只能是 Zip 格式!");
+    }
+    return isZip;
+  },
+
+  uploadProgress: function () {
+    utils.loading(this, true);
+  },
+
+  uploadSuccess: function (res, file) {
+    utils.loading(this, false);
+    this.form.createType = "local";
+    this.form.localDirectoryName = res.directoryName;
+    this.pageType = "submit";
+    this.uploadPanel = false;
+    utils.success("知识库模板上传成功！");
+  },
+
+  uploadError: function (err) {
+    utils.loading(this, false);
+    var error = JSON.parse(err.message);
+    utils.error(error.message);
+  },
+};
+
+var $vue = new Vue({
+  el: "#main",
+  data: data,
+  methods: methods,
+  created: function () {
+    var $this = this;
+    utils.keyPress(
+      function () {
+        if ($this.pageType === "submit") {
+          $this.btnSubmitClick();
+        }
+      },
+      function () {
+        if ($this.pageType === "submit") {
+          $this.btnCancelClick();
+        } else {
+          $this.btnCloseClick();
+        }
+      }
+    );
+    this.apiGet();
+  },
+});
