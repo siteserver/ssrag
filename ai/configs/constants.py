@@ -9,8 +9,6 @@ DEFAULT_CHUNK_IS_CHUNK_DELETES = False
 
 MODEL_PROPERTY_VECTOR_DIMENSION = "vector_dimension"
 
-SSRAG_API_KEY = "sk-xxx"
+SSRAG_API_KEY = "sk-gmyuwaanwnbvyrdzpoifqfgddigmhkkrzifijsfuevhaszhc"
 DEFAULT_LLM_MODEL_PATH = "./providers/ssrag/models/llm/qwen3-30b-a3b.yaml"
-DEFAULT_TEXT_EMBEDDING_MODEL_PATH = (
-    "./providers/ssrag/models/text_embedding/qwen3-embedding-4b.yaml"
-)
+DEFAULT_TEXT_EMBEDDING_MODEL_PATH = "./providers/ssrag/models/text_embedding/qwen3-embedding-4b.yaml"

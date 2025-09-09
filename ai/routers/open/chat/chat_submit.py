@@ -17,7 +17,7 @@ async def chat_with_llm(
     systemMessage: str | None = None
     if searching:
         response = bocha_utils.bocha_websearch_tool(
-            api_key="sk-xxx",
+            api_key="sk-0156fc92f825461b98a1c05ad08941ba",
             query=message,
             freshness="noLimit",
             summary=True,

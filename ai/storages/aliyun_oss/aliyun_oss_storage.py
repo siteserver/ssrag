@@ -1,10 +1,10 @@
 import alibabacloud_oss_v2 as oss
 import posixpath
-from typing import BinaryIO
 from ..storage_base import StorageBase
 from ..storage_type import StorageType
 from .aliyun_oss_config import AliyunOssConfig
 from utils import file_utils
+import urllib.parse
 
 
 class AliyunOssStorage(StorageBase):
@@ -50,6 +50,22 @@ class AliyunOssStorage(StorageBase):
                 )
             )
             file_url = pre_result.url if pre_result.url else ""
+            if file_url and self.bucket_url:
+                # 将file_url中域名部分替换为self.bucket_url
+                parsed_url = urllib.parse.urlparse(file_url)
+                bucket_url_parsed = urllib.parse.urlparse(self.bucket_url)
+                # 如果self.bucket_url没有scheme，补全
+                if not bucket_url_parsed.scheme:
+                    bucket_url_parsed = urllib.parse.urlparse("https://" + self.bucket_url)
+                # 组装新的url
+                file_url = urllib.parse.urlunparse((
+                    bucket_url_parsed.scheme,
+                    bucket_url_parsed.netloc,
+                    parsed_url.path,
+                    parsed_url.params,
+                    parsed_url.query,
+                    parsed_url.fragment
+                ))
         elif self.bucket_url:
             file_url = file_utils.combine_url(self.bucket_url, self.prefix, filename)
         else:

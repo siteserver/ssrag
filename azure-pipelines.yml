@@ -10,7 +10,7 @@ variables:
   netCoreSdkVersion: '9.0.302'
   buildConfiguration: 'Release'
   imageName: 'ssrag/core'
-  productVersion: '0.0.1'
+  productVersion: '0.0.2'
 
 jobs:
 

@@ -4,12 +4,12 @@
     <TargetFramework>net9.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <PackageId>SSRAG</PackageId>
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Authors>SSRAG</Authors>
     <Company>SSRAG</Company>
     <PackageDescription>SSRAG .NET Core abstractions for developers.</PackageDescription>
     <Copyright>Copyright © SSRAG</Copyright>
-    <RepositoryUrl>https://github.com/siteserver/cms/</RepositoryUrl>
+    <RepositoryUrl>https://github.com/siteserver/ssrag/</RepositoryUrl>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageIcon>logo.png</PackageIcon>
     <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>

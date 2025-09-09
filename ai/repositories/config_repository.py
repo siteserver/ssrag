@@ -11,6 +11,7 @@ from enums import ModelType
 from utils import string_utils
 import uuid
 from utils import yaml_utils
+from vectors import Vector
 
 
 class ConfigRepository:
@@ -114,8 +115,12 @@ class ConfigRepository:
         ):
             config_values.defaultTextEmbeddingProviderId = ProviderType.SSRAG
             config_values.defaultTextEmbeddingModelId = defaultTextEmbeddingModelId
+        
         config_values.init = True
         self.update_values(config_values)
+        
+        vector = Vector()
+        vector.create_collection()
 
         return config_values
 

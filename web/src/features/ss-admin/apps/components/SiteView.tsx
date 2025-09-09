@@ -8,6 +8,7 @@ const SiteView: React.FC<{
   onClose: () => void
 }> = ({ site, onClose }) => {
   const isApp = isAppSite(site.siteType)
+  const siteUrl = '/' + (site.root ? '' : site.siteDir)
 
   return (
     <Modal
@@ -56,8 +57,8 @@ const SiteView: React.FC<{
         </Descriptions.Item>
 
         <Descriptions.Item label='访问地址'>
-          <a href={'/' + site.siteDir} target='_blank'>
-            {'/' + site.siteDir}
+          <a href={siteUrl} target='_blank'>
+            {siteUrl}
           </a>
         </Descriptions.Item>
         <Descriptions.Item label={isApp ? '应用介绍' : '知识库介绍'} span={2}>
