@@ -12,13 +12,19 @@ from .app_manager_get_in_variables import app_manager_get_in_variables
 from .app_manager_process_dataset import app_manager_process_dataset
 from .app_manager_process_intent import app_manager_process_intent
 from .app_manager_chat import app_manager_chat
+from .app_manager_initialize import app_manager_initialize
 from vectors import Vector
+from models import ConfigValues
 
 
 class AppManager:
     def __init__(self, site: Site):
         self.site = site
         self.vector = Vector()
+        
+    @classmethod
+    def initialize(cls, config_values: ConfigValues) -> ConfigValues:
+        return app_manager_initialize(config_values)
 
     def get_settings(self, flow_node: FlowNode) -> FlowNodeSettings:
         return app_manager_get_flow_node_settings(flow_node)

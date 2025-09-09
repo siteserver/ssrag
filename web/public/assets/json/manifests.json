@@ -23,7 +23,7 @@
               "en_US": "SSRAG is a default option built into the product, users can enjoy the service without filling in the API Key.",
               "zh_Hans": "内置默认选项，将硅基流动模型服务内置在产品中，无需申请与填写 API Key 即可轻松使用。"
           },
-          "icon": "ssrag_square.svg",
+          "icon": "ssrag_square.png",
           "plugins": {
               "models": [
                   "provider/ssrag.yaml"

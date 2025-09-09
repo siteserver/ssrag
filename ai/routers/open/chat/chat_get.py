@@ -3,11 +3,13 @@ from fastapi import HTTPException
 from repositories import (
     site_repository,
     chat_message_repository,
+    config_repository,
 )
 from .__base import GetResult
 from models import Site
 from enums import PromptPosition
 from repositories import prompt_repository
+from services import AppManager
 
 
 async def chat_get(
@@ -39,6 +41,10 @@ async def chat_get(
     inputPrompts = [
         prompt for prompt in prompts if prompt.position == PromptPosition.INPUT
     ]
+    
+    config_values = config_repository.get_values()
+    if not config_values.init:
+        AppManager.initialize(config_values)
 
     return GetResult(
         site=site,
