@@ -429,6 +429,7 @@ const ChatApp: React.FC<{
               </div>
             )}
             <div
+              className='content'
               dangerouslySetInnerHTML={{
                 __html: mdToHtml(content),
               }}

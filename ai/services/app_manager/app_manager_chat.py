@@ -8,6 +8,7 @@ from .app_manager_process_dataset import app_manager_process_dataset
 from .app_manager_process_llm import app_manager_process_llm
 import uuid
 from vectors import Vector
+from utils import string_utils
 
 
 def app_manager_chat(
@@ -18,9 +19,7 @@ def app_manager_chat(
 
     providerModelId = site_values.providerModelId
     if not providerModelId:
-        providerModelId = (
-            f"{config_values.defaultLLMProviderId}:{config_values.defaultLLMModelId}"
-        )
+        providerModelId = string_utils.get_default_provider_model_id(config_values.defaultLLMProviderId, config_values.defaultLLMModelId)
 
     settings = FlowNodeSettings(
         id=site.uuid,
@@ -64,7 +63,7 @@ def app_manager_chat(
         RunVariable(name="context", value=outVariables),
     ]
     inVariablesDict[settings.id] = inVariables
-    process = app_manager_process_llm(settings, inVariables, thinking)
+    process = app_manager_process_llm(settings, thinking, inVariables)
     if process.response is None:
         raise Exception("Response not found")
     return process.response

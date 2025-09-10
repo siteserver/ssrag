@@ -29,6 +29,7 @@ class DocumentRepository:
     def get_total_count(
         self, siteId: int, channelId: int, contentId: int, search: str = ""
     ) -> int:
+        count = 0
         with Session(engine) as session:
             query = select(func.count(Document.id))  # type: ignore
             if siteId != 0:
@@ -40,6 +41,8 @@ class DocumentRepository:
             if search:
                 query = query.where(Document.title.like(f"%{search}%"))  # type: ignore
             count = session.exec(query).first()
+        if count is None:
+            return 0
         return count
 
     def get_documents(

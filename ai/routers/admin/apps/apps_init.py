@@ -5,6 +5,7 @@ from repositories import (
     flow_variable_repository,
     site_repository,
     prompt_repository,
+    config_repository,
 )
 from models import FlowEdge, FlowVariable
 from models.flow_node import NodeType, FlowNodeSettings
@@ -14,12 +15,19 @@ import uuid
 from dto import BoolResult
 from enums import SiteType, PromptPosition
 from models import Prompt
+from utils import string_utils
 
 
 async def apps_init(request: InitRequest) -> BoolResult:
     site = site_repository.get(request.siteId)
     if site is None or not SiteType.is_app_site(SiteType(site.siteType)):
         return BoolResult(value=False)
+      
+    config_values = config_repository.get_values()
+    values = site.site_values
+    values.providerModelId = string_utils.get_default_provider_model_id(config_values.defaultLLMProviderId, config_values.defaultLLMModelId)
+    site.site_values = values
+    site_repository.update_site(site)
 
     prompts = []
     prompts.append(

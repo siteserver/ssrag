@@ -154,3 +154,9 @@ def extract_provider_model_id(provider_model_id: str) -> tuple[str, str]:
     if not provider_id or not model_id:
         return "", ""
     return provider_id, model_id
+
+
+def get_default_provider_model_id(defaultLLMProviderId: str | None, defaultLLMModelId: str | None) -> str:
+    if not defaultLLMProviderId or not defaultLLMModelId:
+        return ""
+    return f"{defaultLLMProviderId}:{defaultLLMModelId}"

@@ -20,7 +20,7 @@ async def flow_run(request: RunRequest) -> RunResult:
         settings.llmIsReply = False
 
     try:
-        result = app_manager.process_node(settings, request.inVariables)
+        result = app_manager.process_node(settings, False, request.inVariables)
     except Exception as e:
         return RunResult(success=False, errorMessage=str(e))
 

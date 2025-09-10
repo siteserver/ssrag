@@ -54,20 +54,6 @@ class PGVector(VectorBase):
 
     def get_type(self) -> str:
         return VectorType.PGVECTOR
-      
-    def is_table_exists(self) -> bool:
-        with self._engine.connect() as conn:
-          # 判断PostgreSQL表是否存在
-          sql = f"""
-              SELECT EXISTS (
-                  SELECT FROM information_schema.tables 
-                  WHERE table_schema = %s AND table_name = %s
-              )
-          """
-          schema = self._config.schema if self._config.schema else "public"
-          result = conn.execute(text(sql), (schema, self._table_name))
-          exists = result.scalar()
-          return exists
 
     def add(self, document: Document, segments: list[Segment]) -> None:
         inputs = [segment.text for segment in segments if segment.text is not None]

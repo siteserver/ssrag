@@ -24,11 +24,11 @@ class LLMManager:
         return llm_manager_run_invoke(settings, inVariables)
 
     def run_stream(
-        self, settings: FlowNodeSettings, inVariables: list[RunVariable], thinking: bool
+        self, settings: FlowNodeSettings, thinking: bool, inVariables: list[RunVariable]
     ):
         from .llm_manager_run_stream import llm_manager_run_stream
 
-        return llm_manager_run_stream(settings, inVariables, thinking)
+        return llm_manager_run_stream(settings, thinking, inVariables)
 
     def chat(
         self,

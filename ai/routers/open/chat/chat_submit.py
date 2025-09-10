@@ -51,7 +51,7 @@ async def run_chat(
     return app_manager.chat(message, thinking, searching)
 
 
-async def run_chatflow(site: Site, message: str) -> StreamingResponse:
+async def run_chatflow(site: Site, message: str, thinking: bool) -> StreamingResponse:
     app_manager = AppManager(site)
     node = flow_node_repository.get_start_node(site.id)
     if not node:
@@ -63,7 +63,7 @@ async def run_chatflow(site: Site, message: str) -> StreamingResponse:
     outVaraiblesDict: dict[str, list[RunVariable]] = {}
     inVariablesDict[node.uuid] = inVariables
 
-    return app_manager.process(settings, inVariablesDict, outVaraiblesDict)
+    return app_manager.process(settings, thinking, inVariablesDict, outVaraiblesDict)
 
 
 async def chat_submit(request: SubmitRequest) -> StreamingResponse:
@@ -76,6 +76,6 @@ async def chat_submit(request: SubmitRequest) -> StreamingResponse:
             site, request.message, request.thinking, request.searching
         )
     elif site.siteType == SiteType.CHATFLOW or site.siteType == SiteType.AGENT:
-        return await run_chatflow(site, request.message)
+        return await run_chatflow(site, request.message, request.thinking)
     else:
         raise HTTPException(status_code=400, detail="Invalid site type")

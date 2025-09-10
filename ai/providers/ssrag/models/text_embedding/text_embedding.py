@@ -21,7 +21,7 @@ class TextEmbedding(TextEmbeddingBase):
             "Content-Type": "application/json",
         }
 
-        response = httpx.post(self.endpoint, json=payload, headers=headers)
+        response = httpx.post(self.endpoint, json=payload, headers=headers, timeout=120.0)
         if response.status_code == 200:
             result = response.json()
             for item in result["data"]:

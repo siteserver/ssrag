@@ -6,10 +6,11 @@ from dto import Message
 from extensions import LLMFactory
 from enums import ModelType
 from repositories import model_provider_repository
+from repositories import config_repository
 
 
 def llm_manager_run_stream(
-    settings: FlowNodeSettings, inVariables: list[RunVariable], thinking: bool
+    settings: FlowNodeSettings, thinking: bool, inVariables: list[RunVariable]
 ) -> StreamingResponse:
     messages = []
 
@@ -23,9 +24,14 @@ def llm_manager_run_stream(
     if settings.llmSystemPrompt:
         systemMessage = string_utils.parse_jinja2(settings.llmSystemPrompt, dict)
         messages.append(Message(role="system", content=systemMessage))
+        
+    providerModelId = settings.providerModelId
+    if not providerModelId:
+        config_values = config_repository.get_values()
+        providerModelId = string_utils.get_default_provider_model_id(config_values.defaultLLMProviderId, config_values.defaultLLMModelId)
 
     provider_id, model_id = string_utils.extract_provider_model_id(
-        settings.providerModelId
+        providerModelId
     )
     if not provider_id or not model_id:
         raise Exception("Provider model id is required")

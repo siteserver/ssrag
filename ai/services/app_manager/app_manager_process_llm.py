@@ -5,7 +5,7 @@ from ..llm_manager import LLMManager
 
 
 def app_manager_process_llm(
-    settings: FlowNodeSettings, inVariables: list[RunVariable], thinking: bool
+    settings: FlowNodeSettings, thinking: bool, inVariables: list[RunVariable]
 ) -> RunProcess:
     out_variables = []
     response = None
@@ -13,7 +13,7 @@ def app_manager_process_llm(
     llm_manager = LLMManager()
 
     if settings.llmIsReply:
-        response = llm_manager.run_stream(settings, inVariables, thinking)
+        response = llm_manager.run_stream(settings, thinking, inVariables)
     else:
         result = llm_manager.run_invoke(settings, inVariables)
         content = str(result)

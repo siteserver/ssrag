@@ -22,7 +22,7 @@ async def flow_run_node(request: RunNodeRequest) -> RunNodeResult:
     nextNodeId = ""
     isOutput = False
     try:
-        process = app_manager.process_node(settings, inVariables)
+        process = app_manager.process_node(settings, False, inVariables)
         outVariables = process.outVariables
         nextNode = app_manager.get_next_node(settings)
         if nextNode is None:

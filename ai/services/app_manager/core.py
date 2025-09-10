@@ -82,23 +82,24 @@ class AppManager:
     def process(
         self,
         settings: FlowNodeSettings,
+        thinking: bool,
         inVariablesDict: dict[str, list[RunVariable]],
         outVariablesDict: dict[str, list[RunVariable]],
     ) -> StreamingResponse:
         inVariables = self.get_in_variables(settings, inVariablesDict, outVariablesDict)
         inVariablesDict[settings.id] = inVariables
-        process = self.process_node(settings, inVariables)
+        process = self.process_node(settings, thinking, inVariables)
         outVariables = process.outVariables
         outVariablesDict[settings.id] = outVariables
         next_node = self.get_next_node(settings)
         if next_node is not None:
-            return self.process(next_node, inVariablesDict, outVariablesDict)
+            return self.process(next_node, thinking, inVariablesDict, outVariablesDict)
         if process.response is None:
             raise Exception("Response not found")
         return process.response
 
     def process_node(
-        self, settings: FlowNodeSettings, inVariables: list[RunVariable]
+        self, settings: FlowNodeSettings, thinking: bool, inVariables: list[RunVariable]
     ) -> RunProcess:
         process = RunProcess(outVariables=[])
 
@@ -111,7 +112,7 @@ class AppManager:
         elif settings.nodeType == NodeType.DATASET:
             process = app_manager_process_dataset(self.vector, settings, inVariables)
         elif settings.nodeType == NodeType.LLM:
-            process = app_manager_process_llm(settings, inVariables)
+            process = app_manager_process_llm(settings, thinking, inVariables)
         elif settings.nodeType == NodeType.INTENT:
             process = app_manager_process_intent(settings, inVariables)
 
