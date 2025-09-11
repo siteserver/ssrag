@@ -10,7 +10,7 @@ const filter = require('gulp-filter');
 const runSequence = require('gulp4-run-sequence');
 const ALY = require('aliyun-sdk');
 
-const version = process.env.PRODUCTVERSION || '0.0.2';
+const version = process.env.PRODUCTVERSION || '0.9.11';
 const timestamp = (new Date()).getTime();
 let publishDir = '';
 let htmlDict = {};

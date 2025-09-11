@@ -1,5 +1,6 @@
 ROOT = "/api/ai/"
 PING = "/api/ai/ping"
+UPGRADE = "/api/ai/upgrade"
 
 OPEN_HOME = "/api/ai/open/home"
 OPEN_CHAT = "/api/ai/open/chat"

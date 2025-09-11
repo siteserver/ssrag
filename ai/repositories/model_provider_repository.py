@@ -50,6 +50,13 @@ class ModelProviderRepository:
             session.commit()
             session.refresh(provider)
         return provider
+      
+    def update(self, provider: ModelProvider) -> ModelProvider:
+        with Session(engine) as session:
+            session.add(provider)
+            session.commit()
+            session.refresh(provider)
+        return provider
 
     def delete(self, provider_id: str):
         with Session(engine) as session:

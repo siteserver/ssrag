@@ -7,6 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from repositories import error_log_repository
 from configs import router_prefix
 from routers.ping import router as ping_router
+from routers.upgrade import router as upgrade_router
 from routers.open.home import home as open_home
 from routers.open.chat import chat as open_chat
 from routers.open.copilot import copilot as open_copilot
@@ -106,6 +107,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 
 app.include_router(ping_router)
+app.include_router(upgrade_router)
 
 app.include_router(open_home.router)
 app.include_router(open_chat.router)
