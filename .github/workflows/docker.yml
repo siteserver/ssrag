@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ "main" ]
 
-vars:
+env:
   VERSION: "0.9.11"
 
 jobs:
@@ -44,8 +44,8 @@ jobs:
       working-directory: ./build
       run: |
         dotnet build ./build.sln -c Release --no-restore
-        dotnet publish ./build/src/SSRAG.Cli/SSRAG.Cli.csproj -c Release -o ./publish/ssrag-${{ vars.VERSION }}
-        dotnet publish ./build/src/SSRAG.Web/SSRAG.Web.csproj -c Release -o ./publish/ssrag-${{ vars.VERSION }}
+        dotnet publish ./build/src/SSRAG.Cli/SSRAG.Cli.csproj -c Release -o ./publish/ssrag-$VERSION
+        dotnet publish ./build/src/SSRAG.Web/SSRAG.Web.csproj -c Release -o ./publish/ssrag-$VERSION
 
     - name: Copy
       run: npm run copy
