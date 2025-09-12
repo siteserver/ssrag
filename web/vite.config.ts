@@ -40,9 +40,9 @@ export default defineConfig({
           __dirname,
           'ss-admin/apps/settings/index.html'
         ),
-        'ss-admin/apps/logs': path.resolve(
+        'ss-admin/apps/messages': path.resolve(
           __dirname,
-          'ss-admin/apps/logs/index.html'
+          'ss-admin/apps/messages/index.html'
         ),
         'ss-admin/apps/publish': path.resolve(
           __dirname,
