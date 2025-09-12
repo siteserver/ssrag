@@ -77,5 +77,18 @@ jobs:
       run: |
         cd ./core
         docker build -f Dockerfile --no-cache -t ssrag/core:latest -t ssrag/core:$VERSION .
-        cd ./ai
+        cd ../ai
         docker build -f Dockerfile --no-cache -t ssrag/ai:latest -t ssrag/ai:$VERSION .
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Push to Docker Hub
+      run: |
+        docker push ssrag/core:latest
+        docker push ssrag/core:$VERSION
+        docker push ssrag/ai:latest
+        docker push ssrag/ai:$VERSION
