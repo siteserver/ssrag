@@ -40,6 +40,8 @@ SSRAG 是一款完全开源的产品，源代码托管在 [Github](https://githu
 
 您也可以通过 [码云](https://gitee.com/siteserver/ssrag) 获取最新源码或 [提交 bug 或建议](https://gitee.com/siteserver/ssrag/issues)。
 
+如果您觉得我们的项目还不错，还请在 Github 或 Gitee 上给我们点个 Star，我们需要您的支持和鼓励~~
+
 ## 关注最新动态
 
 [![qrcode](https://sscms.com/assets/images/qrcode_for_wx.jpg)](https://ssrag.com/)
