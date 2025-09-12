@@ -63,6 +63,7 @@ jobs:
 
     - name: Archive
       run: |
+        mkdir -p ./publish/dist
         tar -czf ./publish/dist/ssrag-$VERSION.tar.gz ./publish/ssrag-$VERSION
         zip -r ./publish/dist/ssrag-$VERSION.zip ./publish/ssrag-$VERSION
 
