@@ -21,4 +21,5 @@ jobs:
       working-directory: ./core
       run: dotnet restore
     - name: Build
+      working-directory: ./core
       run: dotnet build ./build.sln -c Release --no-restore
