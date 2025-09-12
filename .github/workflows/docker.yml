@@ -31,6 +31,12 @@ jobs:
         npm install
         npm run build
 
+    - name: Build Web
+      working-directory: ./web
+      run: |
+        npm install
+        npm run build
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
