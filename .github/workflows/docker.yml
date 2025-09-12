@@ -72,3 +72,10 @@ jobs:
 
     - name: Publish Zip
       run: npm run publish-zip
+
+    - name: Docker build
+      run: |
+        cd ./core
+        docker build -f Dockerfile --no-cache -t ssrag/core:latest -t ssrag/core:$VERSION .
+        cd ./ai
+        docker build -f Dockerfile --no-cache -t ssrag/ai:latest -t ssrag/ai:$VERSION .
