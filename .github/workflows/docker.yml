@@ -14,10 +14,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
+      working-directory: ./core
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.0.x
     - name: Restore dependencies
+      working-directory: ./core
       run: dotnet restore
     - name: Build
-      run: dotnet build ./core/build.sln -c Release --no-restore
+      run: dotnet build ./build.sln -c Release --no-restore
