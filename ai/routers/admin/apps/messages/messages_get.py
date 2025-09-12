@@ -2,7 +2,7 @@ from repositories import chat_group_repository
 from .__base import GetRequest, GetResponse
 
 
-async def logs_get(request: GetRequest) -> GetResponse:
+async def messages_get(request: GetRequest) -> GetResponse:
     chatGroups = chat_group_repository.get_all_by_site_id(
         request.siteId,
         request.page,

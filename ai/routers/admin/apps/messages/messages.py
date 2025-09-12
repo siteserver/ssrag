@@ -1,10 +1,10 @@
 from fastapi import APIRouter
-from .logs_get import logs_get
-from .logs_messages import logs_messages
+from .messages_get import messages_get
+from .messages_messages import messages_messages
 from .__base import GetRequest, GetResponse, MessageRequest, MessageResponse
 from configs import router_prefix
 
-router = APIRouter(prefix=router_prefix.ADMIN_APPS_LOGS, tags=["apps/logs"])
+router = APIRouter(prefix=router_prefix.ADMIN_APPS_MESSAGES, tags=["apps/messages"])
 
 
 @router.get("")
@@ -24,9 +24,9 @@ async def get(
         dateEnd=dateEnd,
         title=title,
     )
-    return await logs_get(request)
+    return await messages_get(request)
 
 
 @router.post("/actions/messages")
 async def messages(request: MessageRequest) -> MessageResponse:
-    return await logs_messages(request)
+    return await messages_messages(request)

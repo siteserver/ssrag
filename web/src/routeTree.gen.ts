@@ -23,7 +23,7 @@ import { Route as SsAdminDatasetSettingsImport } from './routes/ss-admin/dataset
 import { Route as SsAdminDatasetDocumentsImport } from './routes/ss-admin/dataset/documents'
 import { Route as SsAdminAppsSettingsImport } from './routes/ss-admin/apps/settings'
 import { Route as SsAdminAppsPublishImport } from './routes/ss-admin/apps/publish'
-import { Route as SsAdminAppsLogsImport } from './routes/ss-admin/apps/logs'
+import { Route as SsAdminAppsMessagesImport } from './routes/ss-admin/apps/messages'
 import { Route as SsAdminAppsFlowImport } from './routes/ss-admin/apps/flow'
 
 // Create/Update Routes
@@ -101,9 +101,9 @@ const SsAdminAppsPublishRoute = SsAdminAppsPublishImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const SsAdminAppsLogsRoute = SsAdminAppsLogsImport.update({
-  id: '/ss-admin/apps/logs',
-  path: '/ss-admin/apps/logs',
+const SsAdminAppsMessagesRoute = SsAdminAppsMessagesImport.update({
+  id: '/ss-admin/apps/messages',
+  path: '/ss-admin/apps/messages',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -124,11 +124,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SsAdminAppsFlowImport
       parentRoute: typeof rootRoute
     }
-    '/ss-admin/apps/logs': {
-      id: '/ss-admin/apps/logs'
-      path: '/ss-admin/apps/logs'
-      fullPath: '/ss-admin/apps/logs'
-      preLoaderRoute: typeof SsAdminAppsLogsImport
+    '/ss-admin/apps/messages': {
+      id: '/ss-admin/apps/messages'
+      path: '/ss-admin/apps/messages'
+      fullPath: '/ss-admin/apps/messages'
+      preLoaderRoute: typeof SsAdminAppsMessagesImport
       parentRoute: typeof rootRoute
     }
     '/ss-admin/apps/publish': {
@@ -222,7 +222,7 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/ss-admin/apps/flow': typeof SsAdminAppsFlowRoute
-  '/ss-admin/apps/logs': typeof SsAdminAppsLogsRoute
+  '/ss-admin/apps/messages': typeof SsAdminAppsMessagesRoute
   '/ss-admin/apps/publish': typeof SsAdminAppsPublishRoute
   '/ss-admin/apps/settings': typeof SsAdminAppsSettingsRoute
   '/ss-admin/dataset/documents': typeof SsAdminDatasetDocumentsRoute
@@ -239,7 +239,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/ss-admin/apps/flow': typeof SsAdminAppsFlowRoute
-  '/ss-admin/apps/logs': typeof SsAdminAppsLogsRoute
+  '/ss-admin/apps/messages': typeof SsAdminAppsMessagesRoute
   '/ss-admin/apps/publish': typeof SsAdminAppsPublishRoute
   '/ss-admin/apps/settings': typeof SsAdminAppsSettingsRoute
   '/ss-admin/dataset/documents': typeof SsAdminDatasetDocumentsRoute
@@ -257,7 +257,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/ss-admin/apps/flow': typeof SsAdminAppsFlowRoute
-  '/ss-admin/apps/logs': typeof SsAdminAppsLogsRoute
+  '/ss-admin/apps/messages': typeof SsAdminAppsMessagesRoute
   '/ss-admin/apps/publish': typeof SsAdminAppsPublishRoute
   '/ss-admin/apps/settings': typeof SsAdminAppsSettingsRoute
   '/ss-admin/dataset/documents': typeof SsAdminDatasetDocumentsRoute
@@ -276,7 +276,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/ss-admin/apps/flow'
-    | '/ss-admin/apps/logs'
+    | '/ss-admin/apps/messages'
     | '/ss-admin/apps/publish'
     | '/ss-admin/apps/settings'
     | '/ss-admin/dataset/documents'
@@ -292,7 +292,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/ss-admin/apps/flow'
-    | '/ss-admin/apps/logs'
+    | '/ss-admin/apps/messages'
     | '/ss-admin/apps/publish'
     | '/ss-admin/apps/settings'
     | '/ss-admin/dataset/documents'
@@ -308,7 +308,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/ss-admin/apps/flow'
-    | '/ss-admin/apps/logs'
+    | '/ss-admin/apps/messages'
     | '/ss-admin/apps/publish'
     | '/ss-admin/apps/settings'
     | '/ss-admin/dataset/documents'
@@ -326,7 +326,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   SsAdminAppsFlowRoute: typeof SsAdminAppsFlowRoute
-  SsAdminAppsLogsRoute: typeof SsAdminAppsLogsRoute
+  SsAdminAppsMessagesRoute: typeof SsAdminAppsMessagesRoute
   SsAdminAppsPublishRoute: typeof SsAdminAppsPublishRoute
   SsAdminAppsSettingsRoute: typeof SsAdminAppsSettingsRoute
   SsAdminDatasetDocumentsRoute: typeof SsAdminDatasetDocumentsRoute
@@ -343,7 +343,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   SsAdminAppsFlowRoute: SsAdminAppsFlowRoute,
-  SsAdminAppsLogsRoute: SsAdminAppsLogsRoute,
+  SsAdminAppsMessagesRoute: SsAdminAppsMessagesRoute,
   SsAdminAppsPublishRoute: SsAdminAppsPublishRoute,
   SsAdminAppsSettingsRoute: SsAdminAppsSettingsRoute,
   SsAdminDatasetDocumentsRoute: SsAdminDatasetDocumentsRoute,
@@ -369,7 +369,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/ss-admin/apps/flow",
-        "/ss-admin/apps/logs",
+        "/ss-admin/apps/messages",
         "/ss-admin/apps/publish",
         "/ss-admin/apps/settings",
         "/ss-admin/dataset/documents",
@@ -387,8 +387,8 @@ export const routeTree = rootRoute
     "/ss-admin/apps/flow": {
       "filePath": "ss-admin/apps/flow.tsx"
     },
-    "/ss-admin/apps/logs": {
-      "filePath": "ss-admin/apps/logs.tsx"
+    "/ss-admin/apps/messages": {
+      "filePath": "ss-admin/apps/messages.tsx"
     },
     "/ss-admin/apps/publish": {
       "filePath": "ss-admin/apps/publish.tsx"

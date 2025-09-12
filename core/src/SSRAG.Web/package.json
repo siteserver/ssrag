@@ -581,7 +581,7 @@
         ],
         "order": 202
       },
-      "site_appsLogs": {
+      "site_appsMessages": {
         "text": "对话日志",
         "type": [
           "chat",
@@ -1722,17 +1722,17 @@
         ],
         "order": 202
       },
-      "site_appsLogs": {
+      "site_appsMessages": {
         "text": "对话日志",
         "type": [
           "chat",
           "chatflow",
           "agent"
         ],
-        "link": "./apps/logs/",
+        "link": "./apps/messages/",
         "iconClass": "el-icon-mobile",
         "permissions": [
-          "site_appsLogs"
+          "site_appsMessages"
         ],
         "order": 203
       },

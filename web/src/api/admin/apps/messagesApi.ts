@@ -1,7 +1,7 @@
 import { ChatGroup, ChatMessage } from '@/models'
 import api from '../..'
 
-const url = '/ai/admin/apps/logs'
+const url = '/ai/admin/apps/messages'
 const urlMessages = `${url}/actions/messages`
 
 interface GetRequest extends Record<string, unknown> {
@@ -26,7 +26,7 @@ interface MessagesResult {
   messages: ChatMessage[]
 }
 
-const logsApi = {
+const messagesApi = {
   get: async (request: GetRequest) => {
     return await api.get<GetResult>(url, request)
   },
@@ -36,4 +36,4 @@ const logsApi = {
   },
 }
 
-export default logsApi
+export default messagesApi

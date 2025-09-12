@@ -15,7 +15,7 @@ from routers.open.copilot import copilot as open_copilot
 from routers.admin.apps import apps as admin_apps
 from routers.admin.apps.flow import flow as admin_apps_flow
 from routers.admin.apps.settings import settings as admin_apps_settings
-from routers.admin.apps.logs import logs as admin_apps_logs
+from routers.admin.apps.messages import messages as admin_apps_messages
 from routers.admin.apps.publish import publish as admin_apps_publish
 from routers.admin.apps.modals.dataset_select import (
     dataset_select as admin_apps_modals_dataset_select,
@@ -124,7 +124,7 @@ app.include_router(open_copilot.router)
 app.include_router(admin_apps.router)
 app.include_router(admin_apps_flow.router)
 app.include_router(admin_apps_settings.router)
-app.include_router(admin_apps_logs.router)
+app.include_router(admin_apps_messages.router)
 app.include_router(admin_apps_publish.router)
 app.include_router(admin_apps_modals_dataset_select.router)
 app.include_router(admin_apps_modals_dataset_config.router)
