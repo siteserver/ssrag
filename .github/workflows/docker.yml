@@ -14,7 +14,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
-      working-directory: ./core
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.0.x
