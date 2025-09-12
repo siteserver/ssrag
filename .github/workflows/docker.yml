@@ -14,6 +14,11 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env: # 设置作业级别的环境变量
+      OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
+      OSS_SECRET_ACCESS_KEY: ${{ secrets.OSS_SECRET_ACCESS_KEY }}
+      OSS_BUCKET_DL: ${{ secrets.OSS_BUCKET_DL }}
+
     strategy:
       matrix:
         node-version: [22.x]
@@ -56,4 +61,13 @@ jobs:
     - name: Copy
       run: npm run copy
 
-        
+    - name: Archive
+      run: |
+        tar -czf ./publish/dist/ssrag-$VERSION.tar.gz ./publish/ssrag-$VERSION
+        zip -r ./publish/dist/ssrag-$VERSION.zip ./publish/ssrag-$VERSION
+
+    - name: Publish Tgz
+      run: npm run publish-tgz
+
+    - name: Publish Zip
+      run: npm run publish-zip

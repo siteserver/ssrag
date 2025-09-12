@@ -10,7 +10,7 @@ const filter = require('gulp-filter');
 const runSequence = require('gulp4-run-sequence');
 const ALY = require('aliyun-sdk');
 
-const version = process.env.PRODUCTVERSION || '0.9.11';
+const version = '0.9.11';
 const timestamp = (new Date()).getTime();
 let publishDir = '';
 let htmlDict = {};
@@ -241,9 +241,9 @@ gulp.task("copy", async function (callback) {
 });
 
 gulp.task("publish-tgz", async function () {
-  writeOss(process.env.OSS_BUCKET_DL, `cms/${version}/ssrag-${version}.tar.gz`, `ssrag-${version}.tar.gz`);
+  writeOss(process.env.OSS_BUCKET_DL, `rag/${version}/ssrag-${version}.tar.gz`, `ssrag-${version}.tar.gz`);
 });
 
 gulp.task("publish-zip", async function () {
-  writeOss(process.env.OSS_BUCKET_DL, `cms/${version}/ssrag-${version}.zip`, `ssrag-${version}.zip`);
+  writeOss(process.env.OSS_BUCKET_DL, `rag/${version}/ssrag-${version}.zip`, `ssrag-${version}.zip`);
 });
