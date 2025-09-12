@@ -52,11 +52,10 @@ jobs:
       run: dotnet restore
 
     - name: Build
-      working-directory: ./build
       run: |
-        dotnet build ./build.sln -c Release --no-restore
-        dotnet publish ./src/SSRAG.Cli/SSRAG.Cli.csproj -c Release -o ./publish/ssrag-$VERSION
-        dotnet publish ./src/SSRAG.Web/SSRAG.Web.csproj -c Release -o ./publish/ssrag-$VERSION
+        dotnet build ./build/build.sln -c Release --no-restore
+        dotnet publish ./build/src/SSRAG.Cli/SSRAG.Cli.csproj -c Release -o ./publish/ssrag-$VERSION
+        dotnet publish ./build/src/SSRAG.Web/SSRAG.Web.csproj -c Release -o ./publish/ssrag-$VERSION
 
     - name: Copy
       run: npm run copy
@@ -64,8 +63,8 @@ jobs:
     - name: Archive
       run: |
         mkdir -p ./publish/dist
-        tar -czf ./publish/dist/ssrag-$VERSION.tar.gz ./publish/ssrag-$VERSION
-        zip -r ./publish/dist/ssrag-$VERSION.zip ./publish/ssrag-$VERSION
+        tar -czf ./publish/dist/ssrag-$VERSION.tar.gz -C ./publish/ssrag-$VERSION .
+        zip -r ./publish/dist/ssrag-$VERSION.zip ./publish/ssrag-$VERSION/*
 
     - name: Publish Tgz
       run: npm run publish-tgz
