@@ -55,6 +55,9 @@ class Storage:
 
     def delete(self, filename):
         return self._storage.delete(filename)
+      
+    def delete_by_prefix(self, prefix):
+        return self._storage.delete_by_prefix(prefix)
 
     def scan(
         self, path: str, files: bool = True, directories: bool = False

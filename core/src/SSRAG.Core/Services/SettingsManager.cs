@@ -140,7 +140,7 @@ namespace SSRAG.Core.Services
             var securityKey = config.GetValue<string>(nameof(SecurityKey));
             var databaseType = TranslateUtils.ToEnum(isProtectData
                         ? Decrypt(config.GetValue<string>("Database:Type"), securityKey)
-                        : config.GetValue<string>("Database:Type"), DatabaseType.PostgreSql);
+                        : config.GetValue<string>("Database:Type"), DatabaseType.Postgres);
             var databaseConnectionString = isProtectData
                         ? Decrypt(config.GetValue<string>("Database:ConnectionString"), securityKey)
                         : config.GetValue<string>("Database:ConnectionString");

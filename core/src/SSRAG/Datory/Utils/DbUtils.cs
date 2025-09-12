@@ -27,17 +27,17 @@ namespace SSRAG.Datory.Utils
             {
                 instance = SqlServerImpl.Instance;
             }
-            else if (databaseType == DatabaseType.PostgreSql)
+            else if (databaseType == DatabaseType.Postgres)
             {
-                instance = PostgreSqlImpl.Instance;
+                instance = PostgresImpl.Instance;
             }
             else if (databaseType == DatabaseType.SQLite)
             {
                 instance = SQLiteImpl.Instance;
             }
-            else if (databaseType == DatabaseType.KingbaseES)
+            else if (databaseType == DatabaseType.Kingbase)
             {
-                instance = KingbaseESImpl.Instance;
+                instance = KingbaseImpl.Instance;
             }
             else if (databaseType == DatabaseType.Dm)
             {

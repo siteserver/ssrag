@@ -58,7 +58,7 @@ namespace SSRAG.Core.Services
 
                 IsProtectData = false;
                 IsSafeMode = false;
-                DatabaseType = TranslateUtils.ToEnum(envDbType, DatabaseType.PostgreSql);
+                DatabaseType = TranslateUtils.ToEnum(envDbType, DatabaseType.Postgres);
                 var dbPort = TranslateUtils.ToInt(envDbPort);
                 DatabaseConnectionString = DbUtils.GetConnectionString(DatabaseType, envDbHost, dbPort == 0, dbPort, envDbUser, envDbPassword, envDbDatabase, envDbSchema);
                 var redisPort = TranslateUtils.ToInt(envRedisPort);
@@ -73,7 +73,7 @@ namespace SSRAG.Core.Services
                 DatabaseType = TranslateUtils.ToEnum(
                     IsProtectData
                         ? Decrypt(_config.GetValue<string>("Database:Type"))
-                        : _config.GetValue<string>("Database:Type"), DatabaseType.PostgreSql);
+                        : _config.GetValue<string>("Database:Type"), DatabaseType.Postgres);
                 DatabaseConnectionString = DatabaseType == DatabaseType.SQLite
                     ? $"Data Source={DbUtils.LocalDbHostVirtualPath};Version=3;"
                     : IsProtectData

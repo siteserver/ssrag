@@ -132,7 +132,7 @@ namespace SSRAG.Core.Utils
                 {
                     var securityKey = EncryptUtils.GenerateSecurityKey();
 
-                    SaveSettings(contentRootPath, false, false, false, securityKey, DatabaseType.PostgreSql.GetValue(),
+                    SaveSettings(contentRootPath, false, false, false, securityKey, DatabaseType.Postgres.GetValue(),
                         string.Empty, string.Empty, string.Empty, null, null, false, null);
                 }
             }

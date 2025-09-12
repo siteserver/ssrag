@@ -95,7 +95,7 @@ namespace SSRAG.Cli.Jobs
 
             var databaseTypeInput = console.GetSelect("Database type", databaseValues);
 
-            var databaseType = TranslateUtils.ToEnum(databaseTypeInput, DatabaseType.PostgreSql);
+            var databaseType = TranslateUtils.ToEnum(databaseTypeInput, DatabaseType.Postgres);
             var databaseName = string.Empty;
             var databaseHost = string.Empty;
             var isDatabaseDefaultPort = true;

@@ -2,7 +2,11 @@ from dto import ChunkConfig
 from models import Document
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.readers import StringIterableReader
+import fitz
+import pymupdf4llm
 import re
+import base64
+from storages import Storage
 
 
 # 替换掉连续的空格、换行符和制表符
@@ -93,3 +97,40 @@ def chunk_document_md(
         chunks.append(text)
 
     return chunks
+
+
+def save_base64_images_and_replace(storage: Storage, dirPath, uuid, content):
+    # 匹配 ![title](data:image/xxx;base64,xxxx) 的正则
+    pattern = r'!\[([^\]]*)\]\((data:image\/[a-zA-Z0-9+]+;base64,[^\)]+)\)'
+    img_counter = [1]  # 使用列表作为可变对象以便在闭包中修改
+
+    def repl(match):
+        title = match.group(1)
+        data_url = match.group(2)
+        # 提取图片类型
+        m = re.match(r'data:image/([a-zA-Z0-9+]+);base64,(.+)', data_url)
+        if not m:
+            return match.group(0)
+        ext = m.group(1)
+        base64_data = m.group(2)
+        # 生成按自然数顺序的文件名
+        filename = f"{dirPath}/{uuid}_{img_counter[0]}.{ext}"
+        img_counter[0] += 1
+        # 保存图片
+        storage.save_stream(filename, base64.b64decode(base64_data), True)
+        file_url = storage.get_file_url(filename, False)
+        # 替换为本地图片url
+        return f'![{title}]({file_url})'
+
+    content = re.sub(pattern, repl, content)
+    return content
+  
+  
+def convert_pdf_to_md(storage: Storage, file_path: str) -> str:
+    pdf_bytes = storage.load_bytes(file_path)
+    doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+    md_text = pymupdf4llm.to_markdown(
+        doc,
+        embed_images=True
+    )
+    return md_text

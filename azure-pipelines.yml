@@ -9,7 +9,6 @@ trigger:
 variables:
   netCoreSdkVersion: '9.0.302'
   buildConfiguration: 'Release'
-  imageName: 'ssrag/core'
   productVersion: '0.9.11'
 
 jobs:
@@ -60,18 +59,3 @@ jobs:
       OSS_SECRET_ACCESS_KEY: $(ossSecretAccessKey)
       OSS_BUCKET_DL: $(ossBucketDl)
       OSS_BUCKET_WWW: $(ossBucketWww)
-  - task: PublishPipelineArtifact@1
-    inputs:
-      targetPath: './publish/dist'
-      artifactName: 'ssrag-$(productVersion)-linux'
-  - script: docker build -f docker/Dockerfile --no-cache -t $(imageName):latest -t $(imageName):$(productVersion) .
-  - task: Docker@2
-    displayName: Push image
-    inputs:
-      containerRegistry: |
-        docker
-      repository: $(imageName)
-      command: push
-      tags: |
-        latest
-        $(productVersion)

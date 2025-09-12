@@ -527,7 +527,7 @@ namespace SSRAG.Datory
             {
                 where = $"CHARINDEX(?, [{columnName}]) > 0";
             }
-            else if (databaseType == DatabaseType.PostgreSql)
+            else if (databaseType == DatabaseType.Postgres)
             {
                 where = $"POSITION(? IN [{columnName}]) > 0";
             }
@@ -535,7 +535,7 @@ namespace SSRAG.Datory
             {
                 where = $"INSTR([{columnName}], ?) > 0";
             }
-            else if (databaseType == DatabaseType.KingbaseES)
+            else if (databaseType == DatabaseType.Kingbase)
             {
                 where = $"POSITION(? IN [{columnName}]) > 0";
             }
@@ -581,7 +581,7 @@ namespace SSRAG.Datory
             {
                 where = $"CHARINDEX([{columnName}], ?) > 0";
             }
-            else if (databaseType == DatabaseType.PostgreSql)
+            else if (databaseType == DatabaseType.Postgres)
             {
                 where = $"POSITION([{columnName}] IN ?) > 0";
             }
@@ -589,7 +589,7 @@ namespace SSRAG.Datory
             {
                 where = $"INSTR(?, [{columnName}]) > 0";
             }
-            else if (databaseType == DatabaseType.KingbaseES)
+            else if (databaseType == DatabaseType.Kingbase)
             {
                 where = $"POSITION([{columnName}] IN ?) > 0";
             }
@@ -635,7 +635,7 @@ namespace SSRAG.Datory
             {
                 where = $"CHARINDEX(?, [{columnName}]) = 0";
             }
-            else if (databaseType == DatabaseType.PostgreSql)
+            else if (databaseType == DatabaseType.Postgres)
             {
                 where = $"POSITION(? IN [{columnName}]) = 0";
             }
@@ -643,7 +643,7 @@ namespace SSRAG.Datory
             {
                 where = $"INSTR([{columnName}], ?) = 0";
             }
-            else if (databaseType == DatabaseType.KingbaseES)
+            else if (databaseType == DatabaseType.Kingbase)
             {
                 where = $"POSITION(? IN [{columnName}]) = 0";
             }

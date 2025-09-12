@@ -129,7 +129,7 @@
           <el-form-item label="数据库密码" prop="databasePassword" :rules="{ required: true, message: '请输入数据库密码' }">
             <el-input v-model="databaseForm.databasePassword" type="password" placeholder="连接数据库的密码"></el-input>
           </el-form-item>
-          <el-form-item v-if="databaseForm.databaseType === $kingbaseES || databaseForm.databaseType === $dm"
+          <el-form-item v-if="databaseForm.databaseType === $kingbase || databaseForm.databaseType === $dm"
             label="数据库实例" prop="databaseName" :rules="{ required: true, message: '请输入数据库实例' }">
             <el-input v-model="databaseForm.databaseName" placeholder="连接的数据库实例"></el-input>
           </el-form-item>
@@ -140,7 +140,7 @@
               <el-option v-for="databaseName in databaseNames" :label="databaseName" :value="databaseName"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item v-if="databaseForm.databaseType === $postgreSql" label="数据库模式名" prop="databaseSchema">
+          <el-form-item v-if="databaseForm.databaseType === $postgres" label="数据库模式名" prop="databaseSchema">
             <el-input v-model="databaseForm.databaseSchema" placeholder="连接数据库的模式名"></el-input>
             <small class="tips">连接数据库的模式名（Schema），可以为空</small>
           </el-form-item>

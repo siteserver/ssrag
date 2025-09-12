@@ -114,6 +114,53 @@ class AliyunOssStorage(StorageBase):
                 key=self._combine_path(filename),
             )
         )
+        
+    def delete_by_prefix(self, prefix):
+        prefix = self._combine_path(prefix)
+        
+        # 1. 获取所有匹配前缀的对象
+        objects_to_delete = []
+        
+        # 分页获取所有对象
+        next_marker = ''
+        while True:
+            
+            request = oss.ListObjectsRequest(
+                bucket=self.bucket_name,
+                prefix=prefix,
+                marker=next_marker,
+            )
+            result = self.client.list_objects(request)
+            if result.contents is None:
+                break
+            # 添加当前页的对象到删除列表
+            for obj in result.contents:
+                objects_to_delete.append(obj.key)
+            
+            # 检查是否还有更多结果
+            if result.is_truncated:
+                next_marker = result.next_marker
+            else:
+                break
+        
+        # 2. 如果没有找到对象，提前返回
+        if not objects_to_delete:
+            return
+        
+        # 3. 批量删除对象（每次最多1000个）
+        # 分批删除（OSS 限制每次最多删除1000个）
+        for i in range(0, len(objects_to_delete), 1000):
+            batch = objects_to_delete[i:i+1000]
+            
+            batch = [oss.DeleteObject(key=obj) for obj in batch]
+            # 创建批量删除请求
+            delete_request = oss.DeleteMultipleObjectsRequest(
+                bucket=self.bucket_name,
+                objects=batch
+            )
+            
+            # 执行删除
+            result = self.client.delete_multiple_objects(delete_request)
 
     def scan(
         self, path: str, files: bool = True, directories: bool = False

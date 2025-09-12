@@ -77,17 +77,17 @@ namespace SSRAG.Datory
             {
                 conn = SqlServerImpl.Instance.GetConnection(ConnectionString);
             }
-            else if (DatabaseType == DatabaseType.PostgreSql)
+            else if (DatabaseType == DatabaseType.Postgres)
             {
-                conn = PostgreSqlImpl.Instance.GetConnection(ConnectionString);
+                conn = PostgresImpl.Instance.GetConnection(ConnectionString);
             }
             else if (DatabaseType == DatabaseType.SQLite)
             {
                 conn = SQLiteImpl.Instance.GetConnection(ConnectionString);
             }
-            else if (DatabaseType == DatabaseType.KingbaseES)
+            else if (DatabaseType == DatabaseType.Kingbase)
             {
-                conn = KingbaseESImpl.Instance.GetConnection(ConnectionString);
+                conn = KingbaseImpl.Instance.GetConnection(ConnectionString);
             }
             else if (DatabaseType == DatabaseType.Dm)
             {
@@ -290,7 +290,7 @@ namespace SSRAG.Datory
                 }
             }
 
-            if (DatabaseType != DatabaseType.SQLite && DatabaseType != DatabaseType.KingbaseES)
+            if (DatabaseType != DatabaseType.SQLite && DatabaseType != DatabaseType.Kingbase)
             {
                 if (identityColumn != null)
                 {
@@ -429,17 +429,17 @@ namespace SSRAG.Datory
             {
                 list = await SqlServerImpl.Instance.GetTableColumnsAsync(ConnectionString, tableName);
             }
-            else if (DatabaseType == DatabaseType.PostgreSql)
+            else if (DatabaseType == DatabaseType.Postgres)
             {
-                list = await PostgreSqlImpl.Instance.GetTableColumnsAsync(ConnectionString, tableName);
+                list = await PostgresImpl.Instance.GetTableColumnsAsync(ConnectionString, tableName);
             }
             else if (DatabaseType == DatabaseType.SQLite)
             {
                 list = await SQLiteImpl.Instance.GetTableColumnsAsync(ConnectionString, tableName);
             }
-            else if (DatabaseType == DatabaseType.KingbaseES)
+            else if (DatabaseType == DatabaseType.Kingbase)
             {
-                list = await KingbaseESImpl.Instance.GetTableColumnsAsync(ConnectionString, tableName);
+                list = await KingbaseImpl.Instance.GetTableColumnsAsync(ConnectionString, tableName);
             }
             else if (DatabaseType == DatabaseType.Dm)
             {
@@ -472,17 +472,17 @@ namespace SSRAG.Datory
             {
                 tableNames = await SqlServerImpl.Instance.GetDatabaseNamesAsync(ConnectionString);
             }
-            else if (DatabaseType == DatabaseType.PostgreSql)
+            else if (DatabaseType == DatabaseType.Postgres)
             {
-                tableNames = await PostgreSqlImpl.Instance.GetDatabaseNamesAsync(ConnectionString);
+                tableNames = await PostgresImpl.Instance.GetDatabaseNamesAsync(ConnectionString);
             }
             else if (DatabaseType == DatabaseType.SQLite)
             {
                 tableNames = await SQLiteImpl.Instance.GetDatabaseNamesAsync(ConnectionString);
             }
-            else if (DatabaseType == DatabaseType.KingbaseES)
+            else if (DatabaseType == DatabaseType.Kingbase)
             {
-                tableNames = await KingbaseESImpl.Instance.GetDatabaseNamesAsync(ConnectionString);
+                tableNames = await KingbaseImpl.Instance.GetDatabaseNamesAsync(ConnectionString);
             }
             else if (DatabaseType == DatabaseType.Dm)
             {
@@ -508,17 +508,17 @@ namespace SSRAG.Datory
             {
                 exists = await SqlServerImpl.Instance.IsTableExistsAsync(ConnectionString, tableName);
             }
-            else if (DatabaseType == DatabaseType.PostgreSql)
+            else if (DatabaseType == DatabaseType.Postgres)
             {
-                exists = await PostgreSqlImpl.Instance.IsTableExistsAsync(ConnectionString, tableName);
+                exists = await PostgresImpl.Instance.IsTableExistsAsync(ConnectionString, tableName);
             }
             else if (DatabaseType == DatabaseType.SQLite)
             {
                 exists = await SQLiteImpl.Instance.IsTableExistsAsync(ConnectionString, tableName);
             }
-            else if (DatabaseType == DatabaseType.KingbaseES)
+            else if (DatabaseType == DatabaseType.Kingbase)
             {
-                exists = await KingbaseESImpl.Instance.IsTableExistsAsync(ConnectionString, tableName);
+                exists = await KingbaseImpl.Instance.IsTableExistsAsync(ConnectionString, tableName);
             }
             else if (DatabaseType == DatabaseType.Dm)
             {
@@ -544,17 +544,17 @@ namespace SSRAG.Datory
             {
                 tableNames = await SqlServerImpl.Instance.GetTableNamesAsync(ConnectionString);
             }
-            else if (DatabaseType == DatabaseType.PostgreSql)
+            else if (DatabaseType == DatabaseType.Postgres)
             {
-                tableNames = await PostgreSqlImpl.Instance.GetTableNamesAsync(ConnectionString);
+                tableNames = await PostgresImpl.Instance.GetTableNamesAsync(ConnectionString);
             }
             else if (DatabaseType == DatabaseType.SQLite)
             {
                 tableNames = await SQLiteImpl.Instance.GetTableNamesAsync(ConnectionString);
             }
-            else if (DatabaseType == DatabaseType.KingbaseES)
+            else if (DatabaseType == DatabaseType.Kingbase)
             {
-                tableNames = await KingbaseESImpl.Instance.GetTableNamesAsync(ConnectionString);
+                tableNames = await KingbaseImpl.Instance.GetTableNamesAsync(ConnectionString);
             }
             else if (DatabaseType == DatabaseType.Dm)
             {

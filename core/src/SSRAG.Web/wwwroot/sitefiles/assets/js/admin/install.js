@@ -1,8 +1,8 @@
 var $url = "/install";
 var $routeUnCheckedList = "unCheckedList";
-var $postgreSql = "PostgreSql";
+var $postgres = "Postgres";
 var $sqlite = "SQLite";
-var $kingbaseES = "KingbaseES";
+var $kingbase = "Kingbase";
 var $dm = "Dm";
 
 var data = utils.init({
@@ -104,7 +104,7 @@ var methods = {
 
         if (
           $this.containerized ||
-          $this.databaseForm.databaseType === $kingbaseES ||
+          $this.databaseForm.databaseType === $kingbase ||
           $this.databaseForm.databaseType === $dm
         ) {
           $this.pageIndex++;

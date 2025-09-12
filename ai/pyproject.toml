@@ -27,4 +27,5 @@ dependencies = [
     "weaviate-client==4.15.4",
     "alibabacloud-oss-v2==1.1.2",
     "psycopg2-binary==2.9.10",
+    "pymupdf4llm==0.0.27",
 ]

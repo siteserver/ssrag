@@ -37,6 +37,12 @@ class LocalStorage(StorageBase):
 
     def delete(self, filename):
         os.remove(self._combine_path(filename))
+        
+    def delete_by_prefix(self, prefix):
+        for file in os.listdir(self._combine_path(prefix)):
+            if file.endswith("/"):
+                continue
+            os.remove(self._combine_path(file))
 
     def scan(
         self, path: str, files: bool = True, directories: bool = False

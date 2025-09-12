@@ -31,13 +31,17 @@ def document_process(
     )
 
     md_content = ""
-    if task.extName and task.extName.lower() != ".md":
+    if task.extName and task.extName.lower() == ".pdf":
+        md_content = md_utils.convert_pdf_to_md(storage, file_path)
+    elif task.extName and task.extName.lower() != ".md":
         result = markItDown.convert_stream(
-            io.BytesIO(storage.load_bytes(file_path)), file_extension=task.extName
+            io.BytesIO(storage.load_bytes(file_path)), file_extension=task.extName, keep_data_uris=True
         )
-        md_content = result.text_content
+        md_content = result.markdown
     else:
         md_content = storage.load_text(file_path)
+        
+    md_content = md_utils.save_base64_images_and_replace(storage, task.dirPath, task.uuid, md_content)
 
     storage.save_text(md_path, md_content)
 

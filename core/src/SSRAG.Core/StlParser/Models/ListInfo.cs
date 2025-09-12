@@ -372,12 +372,12 @@ namespace SSRAG.Core.StlParser.Models
                     var databaseType = parseManager.SettingsManager.Configuration[value];
                     if (!string.IsNullOrEmpty(databaseType))
                     {
-                        listInfo.DatabaseType = TranslateUtils.ToEnum(databaseType, DatabaseType.PostgreSql);
+                        listInfo.DatabaseType = TranslateUtils.ToEnum(databaseType, DatabaseType.Postgres);
                     }
                 }
                 else if (contextType == ParseType.SqlContent && StringUtils.EqualsIgnoreCase(name, StlSqlContents.DatabaseType))
                 {
-                    listInfo.DatabaseType = TranslateUtils.ToEnum(value, DatabaseType.PostgreSql);
+                    listInfo.DatabaseType = TranslateUtils.ToEnum(value, DatabaseType.Postgres);
                 }
                 else if (contextType == ParseType.SqlContent && StringUtils.EqualsIgnoreCase(name, StlSqlContents.ConnectionStringName))
                 {

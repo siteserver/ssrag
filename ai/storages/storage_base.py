@@ -38,6 +38,10 @@ class StorageBase(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def delete_by_prefix(self, prefix):
+        raise NotImplementedError
+
+    @abstractmethod
     def scan(
         self, path: str, files: bool = True, directories: bool = False
     ) -> list[str]:

@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
-using Npgsql;
 using SqlKata.Compilers;
 using SSRAG.Datory.Utils;
-using System;
+using Kdbndp;
 
 namespace SSRAG.Datory.DatabaseImpl
 {
-    internal class PostgreSqlImpl : IDatabaseImpl
+    internal class KingbaseImpl : IDatabaseImpl
     {
         private static IDatabaseImpl _instance;
         public static IDatabaseImpl Instance
@@ -18,7 +18,7 @@ namespace SSRAG.Datory.DatabaseImpl
             get
             {
                 if (_instance != null) return _instance;
-                _instance = new PostgreSqlImpl();
+                _instance = new KingbaseImpl();
                 return _instance;
             }
         }
@@ -31,23 +31,19 @@ namespace SSRAG.Datory.DatabaseImpl
             {
                 connectionString += $"Port={port};";
             }
+            else
+            {
+                connectionString += "Port=54321;";
+            }
             connectionString += $"User Id={userName};Password={password};";
-            if (!string.IsNullOrEmpty(databaseName))
-            {
-                connectionString += $"Database={databaseName};";
-            }
-            if (!string.IsNullOrEmpty(schema))
-            {
-                connectionString += $"Search Path={schema};";
-            }
+            connectionString += $"Database={databaseName};";
 
             return connectionString;
         }
 
         public DbConnection GetConnection(string connectionString)
         {
-            var connection = new NpgsqlConnection(connectionString);
-            return connection;
+            return new KdbndpConnection(connectionString);
         }
 
         public Compiler GetCompiler()
@@ -74,43 +70,32 @@ namespace SSRAG.Datory.DatabaseImpl
             return databaseNames;
         }
 
-        public static string GetConnectionStringSchema(string connectionString)
-        {
-            foreach (var pair in Utilities.GetStringList(connectionString, ';'))
-            {
-                if (string.IsNullOrEmpty(pair) || pair.IndexOf("=", StringComparison.Ordinal) == -1) continue;
-                var key = pair.Substring(0, pair.IndexOf("=", StringComparison.Ordinal));
-                var value = pair.Substring(pair.IndexOf("=", StringComparison.Ordinal) + 1);
-                if (Utilities.EqualsIgnoreCase(key, "Search Path"))
-                {
-                    return value;
-                }
-            }
-
-            return string.Empty;
-        }
-
         public async Task<bool> IsTableExistsAsync(string connectionString, string tableName)
         {
             bool exists;
             var databaseName = Utilities.GetConnectionStringDatabase(connectionString);
-            var schema = GetConnectionStringSchema(connectionString);
             tableName = Utilities.FilterSql(tableName);
 
             try
             {
                 var sql = $"SELECT COUNT(*) FROM information_schema.tables WHERE table_catalog = '{databaseName}' AND table_name = '{tableName}'";
-                if (!string.IsNullOrEmpty(schema))
-                {
-                    sql += $" AND table_schema = '{schema}'";
-                }
 
                 using var connection = GetConnection(connectionString);
                 exists = await connection.ExecuteScalarAsync<int>(sql) == 1;
             }
             catch
             {
-                exists = false;
+                try
+                {
+                    var sql = $"select 1 from {tableName} where 1 = 0";
+
+                    using var connection = GetConnection(connectionString);
+                    exists = await connection.ExecuteScalarAsync<int>(sql) == 1;
+                }
+                catch
+                {
+                    exists = false;
+                }
             }
 
             return exists;
@@ -119,20 +104,11 @@ namespace SSRAG.Datory.DatabaseImpl
         public async Task<List<string>> GetTableNamesAsync(string connectionString)
         {
             IEnumerable<string> tableNames;
-            var schema = GetConnectionStringSchema(connectionString);
 
             using (var connection = GetConnection(connectionString))
             {
                 var sqlString =
-                    $"SELECT table_name FROM information_schema.tables WHERE table_catalog = '{connection.Database}' AND table_type = 'BASE TABLE'";
-                if (!string.IsNullOrEmpty(schema))
-                {
-                    sqlString += $" AND table_schema = '{schema}'";
-                }
-                else
-                {
-                    sqlString += " AND table_schema NOT IN ('pg_catalog', 'information_schema')";
-                }
+                    $"SELECT table_name FROM information_schema.tables WHERE table_catalog = '{connection.Database}' AND table_type = 'BASE TABLE' AND table_schema NOT IN ('pg_catalog', 'information_schema')";
 
                 tableNames = await connection.QueryAsync<string>(sqlString);
             }
@@ -142,64 +118,67 @@ namespace SSRAG.Datory.DatabaseImpl
 
         public string ColumnIncrement(string columnName, int plusNum = 1)
         {
-            return $"COALESCE({GetQuotedIdentifier(columnName)}, 0) + {plusNum}";
+            return $"IFNULL({GetQuotedIdentifier(columnName)}, 0) + {plusNum}";
         }
 
         public string ColumnDecrement(string columnName, int minusNum = 1)
         {
-            return $"COALESCE({GetQuotedIdentifier(columnName)}, 0) - {minusNum}";
+            return $"IFNULL({GetQuotedIdentifier(columnName)}, 0) - {minusNum}";
         }
 
         public string GetAutoIncrementDataType(bool alterTable = false)
         {
-            return "SERIAL";
+            return "integer AUTO_INCREMENT";
         }
 
-        private string ToColumnString(DataType type, string attributeName, int length)
+        private string ToColumnString(DataType type, string columnName, int length)
         {
-            attributeName = GetQuotedIdentifier(attributeName);
             if (type == DataType.Boolean)
             {
-                return $"{attributeName} bool";
+                return $"{columnName} boolean";
             }
             if (type == DataType.DateTime)
             {
-                return $"{attributeName} timestamptz";
+                return $"{columnName} timestamptz";
             }
             if (type == DataType.Decimal)
             {
-                return $"{attributeName} numeric(18, 2)";
+                return $"{columnName} dec(18, 2)";
             }
             if (type == DataType.Integer)
             {
-                return $"{attributeName} int4";
+                return $"{columnName} integer";
             }
             if (type == DataType.Text)
             {
-                return $"{attributeName} text";
+                return $"{columnName} text";
             }
-            return $"{attributeName} varchar({length})";
+            return $"{columnName} varchar({length})";
         }
 
         public string GetColumnSqlString(TableColumn tableColumn)
         {
+            var columnName = GetQuotedIdentifier(tableColumn.AttributeName);
             if (tableColumn.IsIdentity)
             {
-                return $@"{GetQuotedIdentifier(tableColumn.AttributeName)} {GetAutoIncrementDataType()}";
+                return $@"{columnName} {GetAutoIncrementDataType()}";
             }
 
-            return ToColumnString(tableColumn.DataType, tableColumn.AttributeName, tableColumn.DataLength);
+            return ToColumnString(tableColumn.DataType, columnName, tableColumn.DataLength);
         }
 
         public string GetPrimaryKeySqlString(string tableName, string attributeName)
         {
-            tableName = tableName.Replace("\"", "");
-            var pkName = GetQuotedIdentifier($"PK_{tableName}_{attributeName}");
-            return $@"CONSTRAINT {pkName} PRIMARY KEY ({GetQuotedIdentifier(attributeName)})";
+            return $@"PRIMARY KEY ({attributeName})";
         }
 
         public string GetQuotedIdentifier(string identifier)
         {
+            if (string.IsNullOrEmpty(identifier) || identifier == "*")
+            {
+                return identifier;
+            }
+
             return $@"""{identifier}""";
         }
 
@@ -212,23 +191,23 @@ namespace SSRAG.Datory.DatabaseImpl
             dataTypeStr = Utilities.TrimAndToLower(dataTypeStr);
             switch (dataTypeStr)
             {
-                case "varchar":
-                    dataType = DataType.VarChar;
-                    break;
-                case "bool":
+                case "boolean":
                     dataType = DataType.Boolean;
                     break;
                 case "timestamptz":
                     dataType = DataType.DateTime;
                     break;
-                case "numeric":
+                case "dec":
                     dataType = DataType.Decimal;
                     break;
-                case "int4":
+                case "integer":
                     dataType = DataType.Integer;
                     break;
                 case "text":
                     dataType = DataType.Text;
+                    break;
+                case "varchar":
+                    dataType = DataType.VarChar;
                     break;
             }
 
@@ -238,18 +217,12 @@ namespace SSRAG.Datory.DatabaseImpl
         public async Task<List<TableColumn>> GetTableColumnsAsync(string connectionString, string tableName)
         {
             var list = new List<TableColumn>();
-            var schema = GetConnectionStringSchema(connectionString);
             tableName = Utilities.FilterSql(tableName);
 
             using (var connection = GetConnection(connectionString))
             {
                 var sqlString =
-                   $@"SELECT COLUMN_NAME AS ""ColumnName"", UDT_NAME AS ""UdtName"", CHARACTER_MAXIMUM_LENGTH AS ""CharacterMaximumLength"", COLUMN_DEFAULT AS ""ColumnDefault"" FROM information_schema.columns WHERE table_catalog = '{connection.Database}' AND table_name = '{tableName}'";
-                if (!string.IsNullOrEmpty(schema))
-                {
-                    sqlString += $" AND table_schema = '{schema}'";
-                }
-                sqlString += " ORDER BY ordinal_position";
+                   $@"SELECT COLUMN_NAME AS ""ColumnName"", UDT_NAME AS ""UdtName"", CHARACTER_MAXIMUM_LENGTH AS ""CharacterMaximumLength"", COLUMN_DEFAULT AS ""ColumnDefault"" FROM information_schema.columns WHERE table_catalog = '{connection.Database}' AND table_name = '{tableName}' ORDER BY ordinal_position";
 
                 var columns = await connection.QueryAsync<dynamic>(sqlString);
                 foreach (var column in columns)
@@ -279,11 +252,7 @@ namespace SSRAG.Datory.DatabaseImpl
                 }
 
                 sqlString =
-                    $@"SELECT column_name AS ""ColumnName"", constraint_name AS ""ConstraintName"" FROM information_schema.key_column_usage WHERE table_catalog = '{connection.Database}' AND table_name = '{tableName}'";
-                if (!string.IsNullOrEmpty(schema))
-                {
-                    sqlString += $" AND table_schema = '{schema}'";
-                }
+                    $@"select column_name AS ""ColumnName"", constraint_name AS ""ConstraintName"" from information_schema.key_column_usage where table_catalog = '{connection.Database}' and table_name = '{tableName}';";
 
                 var rows = connection.Query<dynamic>(sqlString);
                 foreach (var row in rows)

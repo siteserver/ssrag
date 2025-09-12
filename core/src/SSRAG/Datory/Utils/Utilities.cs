@@ -387,7 +387,7 @@ namespace SSRAG.Datory.Utils
                     connectionString += $"Database={databaseName};";
                 }
             }
-            else if (databaseType == DatabaseType.PostgreSql)
+            else if (databaseType == DatabaseType.Postgres)
             {
                 connectionString = $"Server={server};";
                 if (!isDefaultPort && port > 0)
