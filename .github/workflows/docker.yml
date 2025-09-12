@@ -63,8 +63,9 @@ jobs:
     - name: Archive
       run: |
         mkdir -p ./publish/dist
-        tar -czf ./publish/dist/ssrag-$VERSION.tar.gz -C ./publish/ssrag-$VERSION .
-        zip -r ./publish/dist/ssrag-$VERSION.zip ./publish/ssrag-$VERSION/*
+        cd ./publish/ssrag-$VERSION
+        tar -czf ./publish/dist/ssrag-$VERSION.tar.gz .
+        zip -r ./publish/dist/ssrag-$VERSION.zip .
 
     - name: Publish Tgz
       run: npm run publish-tgz
