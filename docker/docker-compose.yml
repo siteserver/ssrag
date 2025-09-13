@@ -64,7 +64,7 @@ services:
 
   # AI service
   ssrag-ai-api:
-    image: ssrag/ai:latest
+    image: registry.cn-beijing.aliyuncs.com/ssrag/ai:latest
     volumes:
       - ssrag-data:/app/wwwroot
     environment: 
@@ -78,7 +78,7 @@ services:
 
   # AI worker
   ssrag-ai-worker:
-    image: ssrag/ai:latest
+    image: registry.cn-beijing.aliyuncs.com/ssrag/ai:latest
     volumes:
       - ssrag-data:/app/wwwroot
     environment: 
@@ -89,7 +89,7 @@ services:
 
   # Application service
   ssrag-core:
-    image: ssrag/core:latest
+    image: registry.cn-beijing.aliyuncs.com/ssrag/core:latest
     volumes:
       - ssrag-data:/app/wwwroot
     environment: 
