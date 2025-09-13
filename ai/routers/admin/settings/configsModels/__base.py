@@ -5,6 +5,7 @@ from models import ConfigValues
 class GetResult(BaseModel):
     providers: list[dict]
     configValues: ConfigValues
+    tenantId: str
 
 
 class GetManifestsResult(BaseModel):

@@ -1,7 +1,6 @@
 from sqlmodel import Session, select
 from utils.db_utils import engine
 from models import Config, ConfigValues
-from enums import ProviderType
 
 
 class ConfigRepository:
@@ -17,9 +16,9 @@ class ConfigRepository:
         if not config_values:
             config_values = ConfigValues(
                 init=False,
-                defaultLLMProviderId=ProviderType.SSRAG,
+                defaultLLMProviderId=None,
                 defaultLLMModelId=None,
-                defaultTextEmbeddingProviderId=ProviderType.SSRAG,
+                defaultTextEmbeddingProviderId=None,
                 defaultTextEmbeddingModelId=None,
             )
 

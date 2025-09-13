@@ -26,6 +26,7 @@ async def configsModels_submit_default(request: SubmitDefaultsRequest) -> String
     config_values.defaultSpeech2TextModelId = request.defaultSpeech2TextModelId
     config_values.defaultTTSProviderId = request.defaultTTSProviderId
     config_values.defaultTTSModelId = request.defaultTTSModelId
+    config_values.init = True
     config_repository.update_values(config_values)
 
     task_id = ""

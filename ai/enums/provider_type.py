@@ -5,13 +5,13 @@ class ProviderType(str, Enum):
     """
     Enumeration of provider types.
     """
-
+    
     SSRAG = "ssrag"
+    SILICONFLOW = "siliconflow"
     OLLAMA = "ollama"
     OPENAI = "openai"
     TONGYI = "tongyi"
     DEEPSEEK = "deepseek"
-    SILICONFLOW = "siliconflow"
     OPENAI_API_COMPATIBLE = "openai_api_compatible"
     GEMINI = "gemini"
     VOLCENGINE_MAAS = "volcengine_maas"

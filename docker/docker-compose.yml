@@ -1,6 +1,8 @@
 x-shared-env: &shared-env
-  TENANT_ID: ${TENANT_ID:-}
   SECURITY_KEY: ${SECURITY_KEY:-a3e8b1d902f7c54e8f2a6b09c1d3e7f1.5b0a8c3e9d2f6a14b7e831c0d4f9a2b6}
+  SSRAG_BIND_ADDRESS: ${SSRAG_BIND_ADDRESS:-0.0.0.0}
+  SSRAG_PORT: ${SSRAG_PORT:-80}
+  TENANT_ID: ${TENANT_ID:-}
   DB_TYPE: ${DB_TYPE:-postgres}
   DB_HOST: ${DB_HOST:-postgres}
   DB_PORT: ${DB_PORT:-5432}
@@ -56,8 +58,7 @@ services:
       - ssrag-ai-worker
       - ssrag-core
     ports:
-      - 80:80
-      - 443:443
+      - "${SSRAG_BIND_ADDRESS:-0.0.0.0}:${SSRAG_PORT:-80}:80"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 

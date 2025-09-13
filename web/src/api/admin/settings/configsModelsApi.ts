@@ -3,7 +3,6 @@ import { ModelProvider, ProviderManifest } from '@/models'
 import api from '../..'
 
 const url = '/ai/admin/settings/configsModels'
-// const urlManifests = `${url}/manifests`
 const urlSubmitProvider = `${url}/actions/submitProvider`
 const urlSubmitModel = `${url}/actions/submitModel`
 const urlDeleteProvider = `${url}/actions/deleteProvider`
@@ -26,6 +25,7 @@ interface GetResult {
     defaultTTSProviderId: string
     defaultTTSModelId: string
   }
+  tenantId: string
 }
 
 interface GetManifestsResult {
@@ -95,7 +95,7 @@ const configsModelsApi = {
   },
 
   getManifests: async () => {
-    // return await api.get<GetManifestsResult>(urlManifests)
+    // return await api.get<GetManifestsResult>(`${url}/manifests`)
     return await fetch('/assets/json/manifests.json').then((response) => {
       return response.json() as Promise<GetManifestsResult>
     })

@@ -49,7 +49,13 @@ const ConfigsModelsApp: React.FC = () => {
         if (manifests.length === 0) {
           const resManifests = await configsModelsApi.getManifests()
           if (resManifests) {
-            setManifests(resManifests.manifests || [])
+            let manifests = resManifests.manifests || []
+            if (!res.tenantId) {
+              manifests = resManifests.manifests.filter(
+                (m) => m.name !== 'ssrag'
+              )
+            }
+            setManifests(manifests)
           }
         }
         if (

@@ -2,6 +2,7 @@ from repositories import config_repository, model_provider_repository, model_rep
 from .__base import GetResult
 from utils import encrypt_utils, string_utils
 from services import AppManager
+from configs import app_configs
 
 
 async def configsModels_get() -> GetResult:
@@ -38,4 +39,4 @@ async def configsModels_get() -> GetResult:
     if not config_values.init:
         config_values = AppManager.initialize(config_values)
 
-    return GetResult(providers=providers, configValues=config_values)
+    return GetResult(providers=providers, configValues=config_values, tenantId=app_configs.TENANT_ID)

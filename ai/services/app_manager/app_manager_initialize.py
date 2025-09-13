@@ -5,9 +5,13 @@ from vectors import Vector
 from models import ModelProvider, Model, ConfigValues
 from enums import ProviderType, ModelType
 from utils import encrypt_utils, string_utils, yaml_utils
+from configs import app_configs
 
 
 def app_manager_initialize(config_values: ConfigValues) -> ConfigValues:
+    if not app_configs.TENANT_ID:
+        return config_values
+    
     provider = model_provider_repository.get_by_provider_id(ProviderType.SSRAG)
     if not provider:
         provider = ModelProvider(

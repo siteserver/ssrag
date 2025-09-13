@@ -2,8 +2,6 @@
 
 SSRAG 是基于 LLM 的开源知识库平台，涵盖内容管理（CMS）、知识库问答（RAG）、可视化 AI 工作流编排（Workflow）到智能体（Agent）的全面应用。
 
-SSRAG 针对企业级客户开发，完全开源免费，可以用于商业用途不需要支付任何产品或授权费用。
-
 ## 产品特性
 
 **开箱即用**
@@ -24,11 +22,30 @@ SSRAG 支持近百种大语言模型及向量模型，涵盖了国内外主流�
 
 **数据处理能力**
 
-SSRAG 知识库系统支持各种类型的导入文档格式，包括：PDF、PowerPoint、Word、Excel、Images、Audio、HTML、Markdown、文本文件(txt、csv、json、xml...)、ZIP 压缩包、EPubs 等。
+SSRAG 知识库系统支持各种类型的导入文档格式，包括：PDF、PowerPoint、Word、Excel、HTML、Markdown、文本文件(txt、csv、json、xml...)、ZIP 压缩包、EPubs 等。
 
 **渐进式能力升级**
 
 从基础问答（RAG）开始，逐步升级到复杂流程自动化（Workflow）， 最终实现智能体（Agent）的全面应用。
+
+## 快速启动
+
+启动 SSRAG 服务的最简单方法是采用 Docker Compose 运行 docker 目录下的 docker-compose.yml 文件（在运行安装命令之前，请确保您的机器上安装了 Docker 和 Docker Compose）：
+
+```sh
+# 克隆 SSRAG 源代码至本地环境
+git clone https://github.com/siteserver/ssrag.git
+# 进入 SSRAG 源代码的 Docker 目录
+cd ssrag/docker
+# 复制环境配置文件
+cp .env.example .env
+# 启动 Docker 容器
+docker compose up -d
+```
+
+运行后，可以在浏览器上访问 http://localhost/ss-admin/ 进入 SSRAG 后台并开始初始化安装操作。
+
+可以访问 SSRAG 文档中心 [Docker Compose 部署](https://ssrag.com/docs/getting-started/community/docker-compose.html) 查看详细安装步骤。
 
 ## 按月迭代
 
@@ -36,7 +53,7 @@ SSRAG 将每月发布新版本，快速响应用户需求，持续优化产品�
 
 ## 参与贡献
 
-SSRAG 是一款完全开源的产品，源代码托管在 [Github](https://github.com/siteserver/ssrag) 之上，如果对产品满意，还请到 Github 中为我们标星，产品 bug 或建议请提交到 [Github issues](https://github.com/siteserver/ssrag/issues/) 中，bug 我们将第一时间修复，建议我们将尽可能通过产品或插件满足；从提交问题，撰写文档，到提交代码，我们欢迎并期待任何形式的贡献！
+SSRAG 是一款完全开源的产品，源代码托管在 [Github](https://github.com/siteserver/ssrag) 之上，产品 bug 或建议请提交到 [Github issues](https://github.com/siteserver/ssrag/issues/) 中，bug 我们将第一时间修复，建议我们将尽可能通过产品或插件满足；从提交问题，撰写文档，到提交代码，我们欢迎并期待任何形式的贡献！
 
 您也可以通过 [码云](https://gitee.com/siteserver/ssrag) 获取最新源码或 [提交 bug 或建议](https://gitee.com/siteserver/ssrag/issues)。
 

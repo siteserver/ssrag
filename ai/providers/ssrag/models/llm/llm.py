@@ -8,7 +8,7 @@ from configs import constants
 class LLM(LLMBase):
     def __init__(self, model_credentials: ModelCredentials):
         self.endpoint = "https://api.siliconflow.cn/v1/chat/completions"
-        self.api_key = constants.SSRAG_API_KEY
+        self.api_key = model_credentials.credentials["api_key"]
         self.model_id = model_credentials.modelId
 
     def chat(self, messages: list[Message], payload: dict | None = None) -> str:
