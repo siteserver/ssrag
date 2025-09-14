@@ -95,10 +95,10 @@ const configsModelsApi = {
   },
 
   getManifests: async () => {
-    // return await api.get<GetManifestsResult>(`${url}/manifests`)
-    return await fetch('/assets/json/manifests.json').then((response) => {
-      return response.json() as Promise<GetManifestsResult>
-    })
+    return await api.get<GetManifestsResult>(`${url}/manifests`)
+    // return await fetch('/assets/json/manifests.json').then((response) => {
+    //   return response.json() as Promise<GetManifestsResult>
+    // })
   },
 
   submitProvider: async (request: SubmitProviderRequest) => {

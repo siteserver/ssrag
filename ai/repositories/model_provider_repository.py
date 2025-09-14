@@ -4,7 +4,7 @@ from utils.db_utils import engine
 from utils import encrypt_utils
 from dto import ModelCredentials
 from enums import ModelType
-from repositories import config_repository
+from repositories import ConfigRepository
 
 
 class ModelProviderRepository:
@@ -75,6 +75,7 @@ class ModelProviderRepository:
     ) -> ModelCredentials | None:
         provider = self.get_by_provider_id(providerId)
         if provider is None:
+            config_repository = ConfigRepository()
             configs = config_repository.get_values()
             if model_type == ModelType.LLM:
                 providerId = configs.defaultLLMProviderId or ""

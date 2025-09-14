@@ -2,7 +2,7 @@ from models import Document, Segment
 import hashlib
 from extensions import TextEmbeddingModel
 from utils import string_utils
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, text, Engine
 from dto import SearchScope
 from ..vector_base import VectorBase
 from ..vector_type import VectorType
@@ -23,6 +23,8 @@ ATTR_SEARCHING = "searching"
 
 
 class PGVector(VectorBase):
+    _engine: Engine | None = None
+    
     def __init__(self, text_embedding: TextEmbeddingModel, config: PGVectorConfig):
         super().__init__(text_embedding)
         self._config = config
@@ -217,11 +219,9 @@ WHERE {ATTR_ID} = :{ATTR_ID}
         maxCount: int = 10,
         minScore: float = 0.3,
     ) -> list[Result]:
-        if not self._engine:
+        if not query or not self._engine:
             return []
           
-        if not query:
-            return []
         embedding = self._text_embedding.embedding_input(query)
         with self._engine.connect() as conn:
             where_clause = self._get_where_clause(searchScope)

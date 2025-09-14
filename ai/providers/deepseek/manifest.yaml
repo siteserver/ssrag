@@ -1,8 +1,8 @@
 author: ssrag
 created_at: '2024-09-20T00:13:50.29298939-04:00'
 description:
-  en_US: Models provided by deepseek, such as deepseek-chat、deepseek-coder.
-  zh_Hans: 深度求索提供的模型，例如 deepseek-chat、deepseek-coder 。
+  en_US: Models provided by deepseek, such as deepseek-chat、deepseek-reasoner.
+  zh_Hans: 深度求索提供的模型，例如 deepseek-chat、deepseek-reasoner 。
 icon: icon_s_en.svg
 label:
   en_US: DeepSeek

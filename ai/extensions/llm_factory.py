@@ -13,6 +13,14 @@ class LLMFactory:
             from providers.siliconflow.models.llm.llm import LLM as SiliconflowLLM
 
             return SiliconflowLLM(model_credentials)
+        elif model_credentials.providerId == ProviderType.BAILIAN:
+            from providers.bailian.models.llm.llm import LLM as BailianLLM
+
+            return BailianLLM(model_credentials)
+        elif model_credentials.providerId == ProviderType.DEEPSEEK:
+            from providers.deepseek.models.llm.llm import LLM as DeepseekLLM
+
+            return DeepseekLLM(model_credentials)
         elif model_credentials.providerId == ProviderType.SSRAG and app_configs.TENANT_ID:
             from providers.ssrag.models.llm.llm import LLM as SSRAGLLM
 

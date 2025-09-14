@@ -8,9 +8,9 @@ class ProviderType(str, Enum):
     
     SSRAG = "ssrag"
     SILICONFLOW = "siliconflow"
+    BAILIAN="bailian"
     OLLAMA = "ollama"
     OPENAI = "openai"
-    TONGYI = "tongyi"
     DEEPSEEK = "deepseek"
     OPENAI_API_COMPATIBLE = "openai_api_compatible"
     GEMINI = "gemini"

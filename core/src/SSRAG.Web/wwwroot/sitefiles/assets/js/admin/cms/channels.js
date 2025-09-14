@@ -554,17 +554,6 @@ var methods = {
     this.apiGet(row.value);
   },
 
-  btnKnowledgeClick: function (row) {
-    if (!row.channel.knowledge) return;
-    utils.addTab(
-      "栏目知识库",
-      utils.getRootUrl("documents", {
-        siteId: this.siteId,
-        channelId: row.value,
-      })
-    );
-  },
-
   syncEditors: function () {
     var $this = this;
     if (UE) {

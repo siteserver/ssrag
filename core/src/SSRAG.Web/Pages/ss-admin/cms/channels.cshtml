@@ -175,10 +175,6 @@
                 {{ menu.text }}
               </el-link>
 
-              <el-link :disabled="!data.channel.knowledge" :underline="false" type="primary" size="small"
-                style="margin-left: 5px" v-on:click.stop.native="btnKnowledgeClick(data)">
-                知识库
-              </el-link>
               <el-link :underline="false" type="primary" size="small" style="margin-left: 5px"
                 v-on:click.stop.native="btnEditClick(data)">
                 编辑

@@ -13,6 +13,12 @@ class TextEmbeddingFactory:
             )
 
             return SiliconflowTextEmbedding(model_credentials)
+        elif model_credentials.providerId == ProviderType.BAILIAN:
+            from providers.bailian.models.text_embedding.text_embedding import (
+                TextEmbedding as BailianTextEmbedding,
+            )
+
+            return BailianTextEmbedding(model_credentials)
         elif model_credentials.providerId == ProviderType.SSRAG and app_configs.TENANT_ID:
             from providers.ssrag.models.text_embedding.text_embedding import (
                 TextEmbedding as SSRAGTextEmbedding,
