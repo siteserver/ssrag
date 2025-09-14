@@ -12,6 +12,8 @@ def app_manager_initialize(config_values: ConfigValues) -> ConfigValues:
     if not app_configs.TENANT_ID:
         return config_values
     
+    defaultLLMModelId = ""
+    defaultTextEmbeddingModelId = ""
     provider = model_provider_repository.get_by_provider_id(ProviderType.SSRAG)
     if not provider:
         provider = ModelProvider(
@@ -33,7 +35,6 @@ def app_manager_initialize(config_values: ConfigValues) -> ConfigValues:
                 llm_model = model
                 break
 
-        defaultLLMModelId = None
         if not llm_model:
             file_model = yaml_utils.yaml_to_json(constants.DEFAULT_LLM_MODEL_PATH)
             defaultLLMModelId = file_model["model"]
@@ -54,7 +55,6 @@ def app_manager_initialize(config_values: ConfigValues) -> ConfigValues:
                 text_embedding_model = model
                 break
 
-        defaultTextEmbeddingModelId = None
         if not text_embedding_model:
             file_model = yaml_utils.yaml_to_json(
                 constants.DEFAULT_TEXT_EMBEDDING_MODEL_PATH
