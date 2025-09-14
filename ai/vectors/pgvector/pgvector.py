@@ -56,6 +56,9 @@ class PGVector(VectorBase):
         return VectorType.PGVECTOR
 
     def add(self, document: Document, segments: list[Segment]) -> None:
+        if not self._engine:
+          return
+        
         inputs = [segment.text for segment in segments if segment.text is not None]
         if not inputs:
             return
@@ -100,6 +103,9 @@ INSERT INTO {self._table_name} (
             conn.commit()
 
     def update(self, uuid: str, value: str):
+        if not self._engine:
+            return
+          
         embedding = self._text_embedding.embedding_input(value)
         searching = string_utils.jieba_cut_to_str(value)
         with self._engine.connect() as conn:
@@ -123,6 +129,9 @@ WHERE {ATTR_ID} = :{ATTR_ID}
             conn.commit()
 
     def exists(self, id: str) -> bool:
+        if not self._engine:
+            return False
+          
         if not id:
             return False
         with self._engine.connect() as conn:
@@ -133,6 +142,9 @@ WHERE {ATTR_ID} = :{ATTR_ID}
             return result is not None
 
     def delete_by_ids(self, ids: list[str]) -> None:
+        if not self._engine:
+            return
+          
         if not ids:
             return
         with self._engine.connect() as conn:
@@ -143,6 +155,9 @@ WHERE {ATTR_ID} = :{ATTR_ID}
             conn.commit()
 
     def delete_by_site_id(self, site_id: int) -> None:
+        if not self._engine:
+            return
+          
         with self._engine.connect() as conn:
             conn.execute(
                 text(f"DELETE FROM {self._table_name} WHERE {ATTR_SITE_ID} = :site_id"),
@@ -151,6 +166,9 @@ WHERE {ATTR_ID} = :{ATTR_ID}
             conn.commit()
 
     def delete_by_channel_id(self, site_id: int, channel_id: int) -> None:
+        if not self._engine:
+            return
+          
         with self._engine.connect() as conn:
             conn.execute(
                 text(
@@ -163,6 +181,9 @@ WHERE {ATTR_ID} = :{ATTR_ID}
     def delete_by_content_id(
         self, site_id: int, channel_id: int, content_id: int
     ) -> None:
+        if not self._engine:
+            return
+          
         with self._engine.connect() as conn:
             conn.execute(
                 text(
@@ -177,6 +198,9 @@ WHERE {ATTR_ID} = :{ATTR_ID}
             conn.commit()
 
     def delete_by_document_id(self, document_id: int) -> None:
+        if not self._engine:
+            return
+          
         with self._engine.connect() as conn:
             conn.execute(
                 text(
@@ -193,6 +217,9 @@ WHERE {ATTR_ID} = :{ATTR_ID}
         maxCount: int = 10,
         minScore: float = 0.3,
     ) -> list[Result]:
+        if not self._engine:
+            return []
+          
         if not query:
             return []
         embedding = self._text_embedding.embedding_input(query)
@@ -250,6 +277,9 @@ LIMIT :max_count;
         maxCount: int = 10,
         minScore: float = 0.3,
     ) -> list[Result]:
+        if not self._engine:
+            return []
+          
         if not query:
             return []
         cut_query = string_utils.jieba_cut_to_str(query, " | ")
@@ -310,6 +340,9 @@ LIMIT :max_count;
         maxCount: int = 10,
         minScore: float = 0.3,
     ) -> list[Result]:
+        if not self._engine:
+            return []
+          
         if not query:
             return []
         semantic_results = self.search_by_semantic(
@@ -364,11 +397,17 @@ LIMIT :max_count;
         return results
 
     def delete_all(self) -> None:
+        if not self._engine:
+            return
+          
         with self._engine.connect() as conn:
             conn.execute(text(f"DELETE FROM {self._table_name}"))
             conn.commit()
 
     def create_collection(self):
+        if not self._engine:
+            return
+          
         with self._engine.connect() as conn:
             if self._config.schema:
                 conn.execute(

@@ -57,6 +57,8 @@ services:
       - ssrag-ai-api
       - ssrag-ai-worker
       - ssrag-core
+      - postgres
+      - redis
     ports:
       - "${SSRAG_BIND_ADDRESS:-0.0.0.0}:${SSRAG_PORT:-80}:80"
     volumes:
@@ -64,7 +66,7 @@ services:
 
   # AI service
   ssrag-ai-api:
-    image: registry.cn-beijing.aliyuncs.com/ssrag/ai:latest
+    image: registry.cn-beijing.aliyuncs.com/ssrag/ai:0.9.11
     volumes:
       - ssrag-data:/app/wwwroot
     environment: 
@@ -78,7 +80,7 @@ services:
 
   # AI worker
   ssrag-ai-worker:
-    image: registry.cn-beijing.aliyuncs.com/ssrag/ai:latest
+    image: registry.cn-beijing.aliyuncs.com/ssrag/ai:0.9.11
     volumes:
       - ssrag-data:/app/wwwroot
     environment: 
@@ -89,7 +91,7 @@ services:
 
   # Application service
   ssrag-core:
-    image: registry.cn-beijing.aliyuncs.com/ssrag/core:latest
+    image: registry.cn-beijing.aliyuncs.com/ssrag/core:0.9.11
     volumes:
       - ssrag-data:/app/wwwroot
     environment: 

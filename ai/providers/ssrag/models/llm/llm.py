@@ -81,7 +81,8 @@ class LLM(LLMBase):
         # 创建流式响应
         def generate_stream():
             with httpx.stream(
-                "POST", url=self.endpoint, headers=headers, json=payload_submit
+                # timeout=None：不设置超时时间，适合流式响应。
+                "POST", url=self.endpoint, headers=headers, json=payload_submit, timeout=600
             ) as response:
                 for chunk in response.iter_lines():
                     yield f"{chunk}\n\n"

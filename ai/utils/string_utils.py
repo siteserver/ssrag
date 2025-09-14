@@ -106,7 +106,7 @@ def split(text: str | None = None) -> list[str]:
 def split_to_int(text: str | None = None) -> list[int]:
     if not text:
         return []
-    return [int(item) for item in text.split(",")]
+    return [int(item) for item in text.split(",") if item.strip() != ""]
 
 
 def join(list: list[str] | list[int] | None = None, separator: str = ",") -> str:
