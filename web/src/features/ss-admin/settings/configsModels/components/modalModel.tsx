@@ -5,7 +5,12 @@ import {
   ModelType,
   ModelSkill,
 } from '@/enums'
-import { ManifestModelJson, Model, ProviderManifest } from '@/models'
+import {
+  getModelLabel,
+  ManifestModelJson,
+  Model,
+  ProviderManifest,
+} from '@/models'
 import {
   FormInstance,
   Modal,
@@ -160,7 +165,7 @@ const ModalModel: React.FC<ModalModelProps> = ({
                   return (a.order || 999) - (b.order || 999)
                 })
                 .map((model) => ({
-                  label: model.model,
+                  label: getModelLabel(model),
                   value: model.model,
                 }))}
             />

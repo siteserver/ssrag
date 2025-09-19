@@ -1,0 +1,14 @@
+name: volcengine
+author: ssrag
+label:
+  en_US: Volcengine
+  zh_Hans: 火山方舟
+description:
+  en_US: Volcengine Ark models.
+  zh_Hans: 火山方舟提供的模型，例如 Doubao-pro-4k、Doubao-pro-32k 和 Doubao-pro-128k。
+icon: icon_s_en.svg
+plugins:
+  models:
+    - provider/volcengine.yaml
+type: plugin
+version: 0.0.23

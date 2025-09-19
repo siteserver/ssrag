@@ -1,4 +1,4 @@
-from extensions import TextEmbeddingBase
+from .text_embedding_base import TextEmbeddingBase
 from dto import ModelCredentials
 from enums import ProviderType
 from configs import app_configs

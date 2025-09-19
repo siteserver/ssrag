@@ -14,7 +14,7 @@ class ProviderType(str, Enum):
     DEEPSEEK = "deepseek"
     OPENAI_API_COMPATIBLE = "openai_api_compatible"
     GEMINI = "gemini"
-    VOLCENGINE_MAAS = "volcengine_maas"
+    VOLCENGINE = "volcengine"
     XINFERENCE = "xinference"
     ANTHROPIC = "anthropic"
     AZURE_OPENAI = "azure_openai"

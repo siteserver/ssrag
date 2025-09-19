@@ -20,6 +20,8 @@ interface GetResult {
     defaultTextEmbeddingModelId: string
     defaultRerankProviderId: string
     defaultRerankModelId: string
+    defaultToImageProviderId: string
+    defaultToImageModelId: string
     defaultSpeech2TextProviderId: string
     defaultSpeech2TextModelId: string
     defaultTTSProviderId: string
@@ -65,6 +67,8 @@ export interface GetDefaultsResult {
   defaultTextEmbeddingModelId: string
   defaultRerankProviderId: string
   defaultRerankModelId: string
+  defaultToImageProviderId: string
+  defaultToImageModelId: string
   defaultSpeech2TextProviderId: string
   defaultSpeech2TextModelId: string
   defaultTTSProviderId: string
@@ -72,6 +76,7 @@ export interface GetDefaultsResult {
   llmProviders: ModelProvider[]
   textEmbeddingProviders: ModelProvider[]
   rerankProviders: ModelProvider[]
+  toImageProviders: ModelProvider[]
   speech2TextProviders: ModelProvider[]
   ttsProviders: ModelProvider[]
 }
@@ -83,6 +88,8 @@ interface SubmitDefaultsRequest extends Record<string, unknown> {
   defaultTextEmbeddingModelId: string
   defaultRerankProviderId: string
   defaultRerankModelId: string
+  defaultToImageProviderId: string
+  defaultToImageModelId: string
   defaultSpeech2TextProviderId: string
   defaultSpeech2TextModelId: string
   defaultTTSProviderId: string
@@ -95,10 +102,10 @@ const configsModelsApi = {
   },
 
   getManifests: async () => {
-    return await api.get<GetManifestsResult>(`${url}/manifests`)
-    // return await fetch('/assets/json/manifests.json').then((response) => {
-    //   return response.json() as Promise<GetManifestsResult>
-    // })
+    // return await api.get<GetManifestsResult>(`${url}/manifests`)
+    return await fetch('/assets/json/manifests.json').then((response) => {
+      return response.json() as Promise<GetManifestsResult>
+    })
   },
 
   submitProvider: async (request: SubmitProviderRequest) => {

@@ -9,6 +9,7 @@ async def configsModels_get_default() -> GetDefaultsResult:
     llmProviders = []
     textEmbeddingProviders = []
     rerankProviders = []
+    toImageProviders = []
     speech2TextProviders = []
     ttsProviders = []
 
@@ -17,6 +18,7 @@ async def configsModels_get_default() -> GetDefaultsResult:
         llmModels = []
         textEmbeddingModels = []
         rerankModels = []
+        toImageModels = []
         speech2TextModels = []
         ttsModels = []
         db_models = model_repository.get_all_by_provider_id(db_provider.providerId)
@@ -31,6 +33,8 @@ async def configsModels_get_default() -> GetDefaultsResult:
                 textEmbeddingModels.append(model)
             elif db_model.modelType == ModelType.RERANK:
                 rerankModels.append(model)
+            elif db_model.modelType == ModelType.TO_IMAGE:
+                toImageModels.append(model)
             elif db_model.modelType == ModelType.SPEECH2TEXT:
                 speech2TextModels.append(model)
             elif db_model.modelType == ModelType.TTS:
@@ -65,6 +69,16 @@ async def configsModels_get_default() -> GetDefaultsResult:
                     "models": rerankModels,
                 }
             )
+        if len(toImageModels) > 0:
+            toImageProviders.append(
+                {
+                    "providerId": db_provider.providerId,
+                    "providerName": db_provider.providerName,
+                    "iconUrl": db_provider.iconUrl,
+                    "description": db_provider.description,
+                    "models": toImageModels,
+                }
+            )
         if len(speech2TextModels) > 0:
             speech2TextProviders.append(
                 {
@@ -94,6 +108,8 @@ async def configsModels_get_default() -> GetDefaultsResult:
         defaultTextEmbeddingModelId=config_values.defaultTextEmbeddingModelId or "",
         defaultRerankProviderId=config_values.defaultRerankProviderId or "",
         defaultRerankModelId=config_values.defaultRerankModelId or "",
+        defaultToImageProviderId=config_values.defaultToImageProviderId or "",
+        defaultToImageModelId=config_values.defaultToImageModelId or "",
         defaultSpeech2TextProviderId=config_values.defaultSpeech2TextProviderId or "",
         defaultSpeech2TextModelId=config_values.defaultSpeech2TextModelId or "",
         defaultTTSProviderId=config_values.defaultTTSProviderId or "",
@@ -101,6 +117,7 @@ async def configsModels_get_default() -> GetDefaultsResult:
         llmProviders=llmProviders,
         textEmbeddingProviders=textEmbeddingProviders,
         rerankProviders=rerankProviders,
+        toImageProviders=toImageProviders,
         speech2TextProviders=speech2TextProviders,
         ttsProviders=ttsProviders,
     )

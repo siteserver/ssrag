@@ -22,6 +22,8 @@ async def configsModels_submit_default(request: SubmitDefaultsRequest) -> String
     config_values.defaultTextEmbeddingModelId = request.defaultTextEmbeddingModelId
     config_values.defaultRerankProviderId = request.defaultRerankProviderId
     config_values.defaultRerankModelId = request.defaultRerankModelId
+    config_values.defaultToImageProviderId = request.defaultToImageProviderId
+    config_values.defaultToImageModelId = request.defaultToImageModelId
     config_values.defaultSpeech2TextProviderId = request.defaultSpeech2TextProviderId
     config_values.defaultSpeech2TextModelId = request.defaultSpeech2TextModelId
     config_values.defaultTTSProviderId = request.defaultTTSProviderId

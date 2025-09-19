@@ -1,5 +1,4 @@
 author: axdlee
-created_at: 2025-06-13T10:25:38.28013+08:00
 description:
   en_US: SophNet provides full-blood DeepSeek R1/V3, Qwen, QwQ models, and its own DeepSeek V3 Fast model, as well as text-to-speech, image OCR, document parsing, and other models.
   zh_Hans: SophNet 提供满血版 DeepSeek R1/V3，Qwen, QwQ 模型，以及其独有的 DeepSeek V3 Fast 模型, 此外还提供文字转语音，图片OCR， 文档解析等模型。
@@ -7,34 +6,9 @@ icon: icon.svg
 label:
   en_US: SophNet
   zh_Hans: SophNet 算能
-meta:
-  arch:
-    - amd64
-    - arm64
-  runner:
-    language: python
-    version: "3.12"
-    entrypoint: main
-  version: 0.0.1
 name: sophnet
 plugins:
   models:
     - provider/sophnet.yaml
-resource:
-  memory: 268435456
-  permission:
-    model:
-      enabled: true
-      llm: true
-      moderation: false
-      rerank: false
-      speech2text: false
-      text_embedding: false
-      tts: false
-    tool:
-      enabled: true
 type: plugin
 version: 0.0.1
-privacy: PRIVACY.md
-repo: https://github.com/axdlee/sophnet
-verified: false

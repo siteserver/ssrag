@@ -15,6 +15,10 @@ export interface ModelProvider {
 
 export interface ManifestModelJson {
   model: string
+  label?: {
+    en_US?: string
+    zh_Hans?: string
+  }
   model_type: string
   model_properties: Record<string, unknown>
   skills: string[]
@@ -25,12 +29,6 @@ export interface ManifestModelJson {
 export interface ProviderManifestModel {
   background: string
   configurate_methods: string[]
-  extra: {
-    python: {
-      model_sources: string[]
-      provider_source: string
-    }
-  }
   help: {
     title: {
       en_US: string
@@ -148,4 +146,8 @@ export interface ProviderManifest {
   }
   type: string
   version: string
+}
+
+export function getModelLabel(model: ManifestModelJson): string {
+  return model.label?.zh_Hans || model.label?.en_US || model.model
 }

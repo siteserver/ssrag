@@ -38,6 +38,14 @@ async def configsModels_delete_model(request: DeleteModelRequest) -> BoolResult:
             config_values.defaultRerankProviderId = None
             config_values.defaultRerankModelId = None
             changed = True
+    elif model.modelType == ModelType.TO_IMAGE:
+        if (
+            config_values.defaultToImageProviderId == request.providerId
+            and config_values.defaultToImageModelId == request.modelId
+        ):
+            config_values.defaultToImageProviderId = None
+            config_values.defaultToImageModelId = None
+            changed = True
     elif model.modelType == ModelType.SPEECH2TEXT:
         if (
             config_values.defaultSpeech2TextProviderId == request.providerId

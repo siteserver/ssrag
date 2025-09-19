@@ -1,5 +1,4 @@
 author: cnjasonz
-created_at: "2024-02-13T14:45:00-04:00"
 description:
   en_US: PPIO is a cloud infrastructure provider offering a wide range of AI model services and cost-effective GPU computing services.
   zh_Hans: PPIO 派欧云一站式 AIGC 云服务平台，提供高性能、高性价比的大模型 API 和 GPU 算力服务，无缝集成最前沿的 AI 推理技术，全面覆盖不同业务阶段的 AI 需求，加速 AI 业务发展。
@@ -7,32 +6,10 @@ icon: icon_s_en.svg
 label:
   en_US: PPIO
   zh_Hans: PPIO 派欧云
-meta:
-  arch:
-  - amd64
-  - arm64
-  runner:
-    entrypoint: main
-    language: python
-    version: '3.10'
-  version: 0.0.2
 name: ppio
 plugins:
   models:
   - provider/ppio.yaml
-resource:
-  memory: 268435456
-  permission:
-    model:
-      enabled: true
-      llm: true
-      moderation: false
-      rerank: false
-      speech2text: false
-      text_embedding: false
-      tts: false
-    tool:
-      enabled: true
 type: plugin
 version: 0.0.2
 privacy: https://ppio.cn/legal/privacy-policy

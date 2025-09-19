@@ -9,6 +9,7 @@ class ModelType(str, Enum):
     LLM = "llm"
     TEXT_EMBEDDING = "text-embedding"
     RERANK = "rerank"
+    TO_IMAGE = "to-image"
     SPEECH2TEXT = "speech2text"
     TTS = "tts"
     MODERATION = "moderation"
@@ -19,6 +20,7 @@ class ModelType(str, Enum):
             cls.LLM: "对话",
             cls.TEXT_EMBEDDING: "文本嵌入",
             cls.RERANK: "重排序",
+            cls.TO_IMAGE: "图片生成",
             cls.SPEECH2TEXT: "语音转文本",
             cls.TTS: "文本转语音",
             cls.MODERATION: "内容审核",

@@ -4,7 +4,6 @@ label:
 description:
   en_US: "Models provided by lmstudio."
   zh_Hans: "LM Studio 提供的模型。"
-  ja_JP: "LM Studioが提供するモデル。"
 icon_small:
   en_US: icon.webp
 icon_large:
@@ -14,7 +13,6 @@ help:
   title:
     en_US: "How to integrate with LM Studio"
     zh_Hans: "如何集成 LM Studio"
-    ja_JP: "LM Studioとの統合方法"
   url:
     en_US: "https://github.com/stvlynn/"
 supported_model_types:
@@ -30,7 +28,6 @@ model_credential_schema:
       placeholder:
         en_US: "Base url of LM Studio server, e.g. http://localhost:1234"
         zh_Hans: "LM Studio server 的基础 URL，例如 http://localhost:1234"
-        ja_JP: "LM Studio サーバーの基本 URL、例: http://localhost:1234"
       required: true
       type: text-input
       variable: base_url
@@ -38,22 +35,18 @@ model_credential_schema:
       label:
         en_US: "Completion mode"
         zh_Hans: "模型类型"
-        ja_JP: "モデルタイプ"
       options:
         - label:
             en_US: "Chat"
             zh_Hans: "对话"
-            ja_JP: "チャット"
           value: chat
         - label:
             en_US: "Completion"
             zh_Hans: "补全"
-            ja_JP: "補完"
           value: completion
       placeholder:
         en_US: "Select completion mode"
         zh_Hans: "选择对话类型"
-        ja_JP: "チャットタイプを選択"
       required: true
       show_on:
         - value: llm
@@ -64,11 +57,9 @@ model_credential_schema:
       label:
         en_US: "Model context size"
         zh_Hans: "模型上下文长度"
-        ja_JP: "モデルコンテキストサイズ"
       placeholder:
         en_US: "Enter your Model context size"
         zh_Hans: "在此输入您的模型上下文长度"
-        ja_JP: "モデルコンテキストサイズを入力"
       required: true
       type: text-input
       variable: context_size
@@ -76,7 +67,6 @@ model_credential_schema:
       label:
         en_US: "Upper bound for max tokens"
         zh_Hans: "最大 token 上限"
-        ja_JP: "最大トークン上限"
       required: true
       show_on:
         - value: llm
@@ -87,11 +77,9 @@ model_credential_schema:
       label:
         en_US: "Embedding dimensions"
         zh_Hans: "嵌入向量维度"
-        ja_JP: "埋め込み次元"
       placeholder:
         en_US: "Enter the embedding dimensions"
         zh_Hans: "输入嵌入向量维度"
-        ja_JP: "埋め込み次元を入力"
       required: true
       show_on:
         - value: text-embedding
@@ -102,11 +90,9 @@ model_credential_schema:
     label:
       en_US: "Model Name"
       zh_Hans: "模型名称"
-      ja_JP: "モデル名"
     placeholder:
       en_US: "Enter your model name"
       zh_Hans: "输入模型名称"
-      ja_JP: "モデル名を入力"
 provider_credential_schema:
   credential_form_schemas:
     - variable: openai_api_key
@@ -117,7 +103,6 @@ provider_credential_schema:
       placeholder:
         zh_Hans: "在此输入您的 API Key"
         en_US: "Enter your API Key"
-        ja_JP: "API キーを入力"
 models:
   llm:
     predefined:

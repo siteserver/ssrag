@@ -45,6 +45,8 @@ class GetDefaultsResult(BaseModel):
     defaultTextEmbeddingModelId: str = ""
     defaultRerankProviderId: str = ""
     defaultRerankModelId: str = ""
+    defaultToImageProviderId: str = ""
+    defaultToImageModelId: str = ""
     defaultSpeech2TextProviderId: str = ""
     defaultSpeech2TextModelId: str = ""
     defaultTTSProviderId: str = ""
@@ -52,6 +54,7 @@ class GetDefaultsResult(BaseModel):
     llmProviders: list[dict] = []
     textEmbeddingProviders: list[dict] = []
     rerankProviders: list[dict] = []
+    toImageProviders: list[dict] = []
     speech2TextProviders: list[dict] = []
     ttsProviders: list[dict] = []
 
@@ -63,6 +66,8 @@ class SubmitDefaultsRequest(BaseModel):
     defaultTextEmbeddingModelId: str = ""
     defaultRerankProviderId: str = ""
     defaultRerankModelId: str = ""
+    defaultToImageProviderId: str = ""
+    defaultToImageModelId: str = ""
     defaultSpeech2TextProviderId: str = ""
     defaultSpeech2TextModelId: str = ""
     defaultTTSProviderId: str = ""

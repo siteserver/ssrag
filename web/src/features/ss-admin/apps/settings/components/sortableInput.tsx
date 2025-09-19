@@ -1,13 +1,14 @@
 import { DragOutlined, DeleteOutlined } from '@ant-design/icons'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Form, Input } from 'antd'
+import { Input } from 'antd'
 
 const SortableInput: React.FC<{
-  name: string
   index: number
+  text: string
+  onBlur: (text: string) => void
   onDelete: (index: number) => void
-}> = ({ name, index, onDelete }) => {
+}> = ({ index, text, onBlur, onDelete }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: index })
 
@@ -17,25 +18,25 @@ const SortableInput: React.FC<{
   }
 
   return (
-    <div key={index} ref={setNodeRef} style={style}>
-      <Form.Item name={[name, index, 'text']}>
-        <Input
-          placeholder='请输入提示词'
-          addonBefore={
-            <DragOutlined
-              {...attributes}
-              {...listeners}
-              style={{ cursor: 'move', color: '#999' }}
-            />
-          }
-          addonAfter={
-            <DeleteOutlined
-              style={{ cursor: 'pointer', color: '#999' }}
-              onClick={() => onDelete(index)}
-            />
-          }
-        />
-      </Form.Item>
+    <div ref={setNodeRef} style={style} className='mb-2'>
+      <Input
+        placeholder='请输入提示词'
+        defaultValue={text}
+        onBlur={(e) => onBlur(e.target.value)}
+        addonBefore={
+          <DragOutlined
+            {...attributes}
+            {...listeners}
+            style={{ cursor: 'move', color: '#999' }}
+          />
+        }
+        addonAfter={
+          <DeleteOutlined
+            style={{ cursor: 'pointer', color: '#999' }}
+            onClick={() => onDelete(index)}
+          />
+        }
+      />
     </div>
   )
 }

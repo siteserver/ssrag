@@ -21,11 +21,11 @@ const ModalDefaults: React.FC<ModalProviderProps> = ({
     ModelProvider[]
   >([])
   const [rerankProviders, setRerankProviders] = useState<ModelProvider[]>([])
+  const [toImageProviders, setToImageProviders] = useState<ModelProvider[]>([])
   const [speech2TextProviders, setSpeech2TextProviders] = useState<
     ModelProvider[]
   >([])
   const [ttsProviders, setTtsProviders] = useState<ModelProvider[]>([])
-
   const { isPending, data } = useQuery({
     queryKey: ['ss-admin', 'settings', 'configsDefaults'],
     queryFn: async () => {
@@ -48,6 +48,10 @@ const ModalDefaults: React.FC<ModalProviderProps> = ({
         data.defaultRerankProviderId && data.defaultRerankModelId
           ? `${data.defaultRerankProviderId}:${data.defaultRerankModelId}`
           : ''
+      const defaultToImageId =
+        data.defaultToImageProviderId && data.defaultToImageModelId
+          ? `${data.defaultToImageProviderId}:${data.defaultToImageModelId}`
+          : ''
       const defaultSpeech2TextId =
         data.defaultSpeech2TextProviderId && data.defaultSpeech2TextModelId
           ? `${data.defaultSpeech2TextProviderId}:${data.defaultSpeech2TextModelId}`
@@ -60,12 +64,14 @@ const ModalDefaults: React.FC<ModalProviderProps> = ({
         defaultLLMId,
         defaultTextEmbeddingId,
         defaultRerankId,
+        defaultToImageId,
         defaultSpeech2TextId,
         defaultTTSId,
       })
       setLlmProviders(data.llmProviders)
       setTextEmbeddingProviders(data.textEmbeddingProviders)
       setRerankProviders(data.rerankProviders)
+      setToImageProviders(data.toImageProviders)
       setSpeech2TextProviders(data.speech2TextProviders)
       setTtsProviders(data.ttsProviders)
     }
@@ -97,6 +103,14 @@ const ModalDefaults: React.FC<ModalProviderProps> = ({
         defaultRerankModelId = defaultRerankId[1]
       }
 
+      let defaultToImageProviderId = ''
+      let defaultToImageModelId = ''
+      if (values.defaultToImageId) {
+        const defaultToImageId = values.defaultToImageId.split(':')
+        defaultToImageProviderId = defaultToImageId[0]
+        defaultToImageModelId = defaultToImageId[1]
+      }
+
       let defaultSpeech2TextProviderId = ''
       let defaultSpeech2TextModelId = ''
       if (values.defaultSpeech2TextId) {
@@ -120,6 +134,8 @@ const ModalDefaults: React.FC<ModalProviderProps> = ({
           defaultTextEmbeddingModelId,
           defaultRerankProviderId,
           defaultRerankModelId,
+          defaultToImageProviderId,
+          defaultToImageModelId,
           defaultSpeech2TextProviderId,
           defaultSpeech2TextModelId,
           defaultTTSProviderId,
@@ -231,6 +247,38 @@ const ModalDefaults: React.FC<ModalProviderProps> = ({
             <Select
               style={{ width: '100%' }}
               options={rerankProviders.map((provider) => ({
+                label: (
+                  <span className='text-base font-bold'>
+                    {provider.providerName}
+                  </span>
+                ),
+                title: provider.providerName,
+                options: provider.models.map((model) => ({
+                  label: (
+                    <div className='flex items-center space-x-2'>
+                      <img
+                        src={`/assets/images/providers/${provider.providerId}/${provider.iconUrl}`}
+                        alt={provider.providerName}
+                        style={{
+                          maxWidth: 'fit-content',
+                        }}
+                        className='h-4 w-4 rounded object-contain'
+                      />
+                      <span>{model.modelId}</span>
+                    </div>
+                  ),
+                  value: `${provider.providerId}:${model.modelId}`,
+                })),
+              }))}
+            />
+          </Form.Item>
+          <Form.Item
+            name='defaultToImageId'
+            label={`${getModelTypeDisplayName(ModelType.TO_IMAGE)}模型`}
+          >
+            <Select
+              style={{ width: '100%' }}
+              options={toImageProviders.map((provider) => ({
                 label: (
                   <span className='text-base font-bold'>
                     {provider.providerName}

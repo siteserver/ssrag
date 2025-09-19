@@ -1,5 +1,4 @@
 author: zuiyue-com
-created_at: "2025-05-26T00:18:00+08:00"
 description:
   en_US: BurnCloud provides stable, cost-effective open-source model API services, supporting Claude 4.0/3.7/3.5, GPT 4o/4o-mini/o1/4.5 preview/o1-mini, GPT-image-1, Gemini 2.5 pro/2.0, DeepSeek R1/V3 and other industry-leading large models.
   zh_Hans: BurnCloud 提供稳定、高性价比的开源模型 API 服务，支持 Claude 4.0/3.7/3.5、GPT 4o/4o-mini/o1/4.5 preview/o1-mini、GPT-image-1、Gemini 2.5 pro/2.0、DeepSeek R1/V3 等行业领先大模型。
@@ -7,32 +6,9 @@ icon: icon_s_en.svg
 label:
   en_US: BurnCloud
   zh_Hans: BurnCloud
-meta:
-  arch:
-  - amd64
-  - arm64
-  runner:
-    entrypoint: main
-    language: python
-    version: '3.10'
-  version: 1.0.3
 name: burncloud
 plugins:
   models:
   - provider/burncloud.yaml
-resource:
-  memory: 268435456
-  permission:
-    model:
-      enabled: true
-      llm: true
-      moderation: false
-      rerank: false
-      speech2text: false
-      text_embedding: false
-      tts: false
-    tool:
-      enabled: true
 type: plugin
 version: 1.0.3
-privacy: https://www.burncloud.com/ai_1xPE.html

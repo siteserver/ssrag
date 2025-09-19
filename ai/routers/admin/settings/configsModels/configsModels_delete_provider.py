@@ -21,6 +21,10 @@ async def configsModels_delete_provider(request: DeleteProviderRequest) -> BoolR
         config_values.defaultRerankProviderId = None
         config_values.defaultRerankModelId = None
         changed = True
+    if config_values.defaultToImageProviderId == request.providerId:
+        config_values.defaultToImageProviderId = None
+        config_values.defaultToImageModelId = None
+        changed = True
     if config_values.defaultSpeech2TextProviderId == request.providerId:
         config_values.defaultSpeech2TextProviderId = None
         config_values.defaultSpeech2TextModelId = None

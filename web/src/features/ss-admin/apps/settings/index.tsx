@@ -109,16 +109,16 @@ const Settings: React.FC = () => {
 
   useEffect(() => {
     if (settings && site) {
-      const valuesHotPrompts = hotPrompts.map((prompt: Prompt) => ({
-        title: prompt.title,
-        iconUrl: prompt.iconUrl,
-        text: prompt.text,
-      }))
-      const valuesInputPrompts = inputPrompts.map((prompt: Prompt) => ({
-        title: prompt.title,
-        iconUrl: prompt.iconUrl,
-        text: prompt.text,
-      }))
+      // const valuesHotPrompts = hotPrompts.map((prompt: Prompt) => ({
+      //   title: prompt.title,
+      //   iconUrl: prompt.iconUrl,
+      //   text: prompt.text,
+      // }))
+      // const valuesInputPrompts = inputPrompts.map((prompt: Prompt) => ({
+      //   title: prompt.title,
+      //   iconUrl: prompt.iconUrl,
+      //   text: prompt.text,
+      // }))
 
       form.setFieldsValue({
         providerModelId: settings.providerModelId || '',
@@ -140,16 +140,16 @@ const Settings: React.FC = () => {
         iconUrl: site.iconUrl,
 
         hotPromptsTitle: settings.hotPromptsTitle || '',
-        hotPrompts: valuesHotPrompts,
+        // hotPrompts: valuesHotPrompts,
         functionPromptsTitle: settings.functionPromptsTitle || '',
-        inputPrompts: valuesInputPrompts,
+        // inputPrompts: valuesInputPrompts,
 
         senderPlaceholder:
           settings.senderPlaceholder || settingsDefaults.senderPlaceholder,
         senderAllowSpeech: settings.senderAllowSpeech,
       })
     }
-  }, [settings, site, form, hotPrompts, functionPrompts, inputPrompts])
+  }, [settings, site, form])
 
   const handleUploadChange = (info: UploadChangeParam) => {
     if (info.file.status === 'removed') {
@@ -175,23 +175,23 @@ const Settings: React.FC = () => {
 
       let res = null
       if (activeKey === 'styles') {
-        let hotPrompts = []
-        if (values.hotPrompts) {
-          hotPrompts = values.hotPrompts.map((prompt: Prompt) => ({
-            title: prompt.title,
-            iconUrl: prompt.iconUrl,
-            text: prompt.text,
-          }))
-        }
+        // let hotPrompts = []
+        // if (values.hotPrompts) {
+        //   hotPrompts = values.hotPrompts.map((prompt: Prompt) => ({
+        //     title: prompt.title,
+        //     iconUrl: prompt.iconUrl,
+        //     text: prompt.text,
+        //   }))
+        // }
 
-        let inputPrompts = []
-        if (values.inputPrompts) {
-          inputPrompts = values.inputPrompts.map((prompt: Prompt) => ({
-            title: prompt.title,
-            iconUrl: prompt.iconUrl,
-            text: prompt.text,
-          }))
-        }
+        // let inputPrompts = []
+        // if (values.inputPrompts) {
+        //   inputPrompts = values.inputPrompts.map((prompt: Prompt) => ({
+        //     title: prompt.title,
+        //     iconUrl: prompt.iconUrl,
+        //     text: prompt.text,
+        //   }))
+        // }
 
         res = await settingsApi.styles({
           siteId: store.siteId,
@@ -245,26 +245,46 @@ const Settings: React.FC = () => {
 
   const handleHotPromptsDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
-    if (active.id !== over?.id) {
-      const oldIndex = Number(active.id)
-      const newIndex = Number(over?.id)
-      const newPrompts = [...hotPrompts]
-      const [movedItem] = newPrompts.splice(oldIndex, 1)
-      newPrompts.splice(newIndex, 0, movedItem)
-      setHotPrompts(newPrompts)
+    if (!over || active.id === over.id) return
+    const oldIndex = Number(active.id)
+    const newIndex = Number(over.id)
+    if (
+      isNaN(oldIndex) ||
+      isNaN(newIndex) ||
+      oldIndex < 0 ||
+      newIndex < 0 ||
+      oldIndex >= hotPrompts.length ||
+      newIndex >= hotPrompts.length
+    ) {
+      return
     }
+    // 使用 uuid 作为唯一标识，避免 React 还原顺序
+    const newPrompts = [...hotPrompts]
+    const [movedItem] = newPrompts.splice(oldIndex, 1)
+    newPrompts.splice(newIndex, 0, movedItem)
+    setHotPrompts([...newPrompts])
   }
 
   const handleInputPromptsDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
-    if (active.id !== over?.id) {
-      const oldIndex = Number(active.id)
-      const newIndex = Number(over?.id)
-      const newPrompts = [...inputPrompts]
-      const [movedItem] = newPrompts.splice(oldIndex, 1)
-      newPrompts.splice(newIndex, 0, movedItem)
-      setInputPrompts(newPrompts)
+    if (!over || active.id === over.id) return
+    const oldIndex = Number(active.id)
+    const newIndex = Number(over.id)
+    if (
+      isNaN(oldIndex) ||
+      isNaN(newIndex) ||
+      oldIndex < 0 ||
+      newIndex < 0 ||
+      oldIndex >= inputPrompts.length ||
+      newIndex >= inputPrompts.length
+    ) {
+      return
     }
+    // 使用 uuid 作为唯一标识，避免 React 还原顺序
+    const newPrompts = [...inputPrompts]
+    const [movedItem] = newPrompts.splice(oldIndex, 1)
+    newPrompts.splice(newIndex, 0, movedItem)
+    setInputPrompts([...newPrompts])
   }
 
   const stylesItems = [
@@ -477,11 +497,7 @@ const Settings: React.FC = () => {
                 >
                   <Input placeholder='请输入热点话题标题' />
                 </Form.Item>
-                <Form.Item
-                  name='hotPrompts'
-                  label='热点话题'
-                  tooltip='设置热点话题'
-                >
+                <Form.Item label='热点话题' tooltip='设置热点话题'>
                   <DndContext
                     collisionDetection={closestCenter}
                     onDragEnd={handleHotPromptsDragEnd}
@@ -492,9 +508,16 @@ const Settings: React.FC = () => {
                     >
                       {hotPrompts.map((_, index) => (
                         <SortableInput
-                          key={index}
-                          name='hotPrompts'
+                          key={hotPrompts[index].uuid}
                           index={index}
+                          text={hotPrompts[index].text}
+                          onBlur={(text) => {
+                            if (text === hotPrompts[index].text) return
+                            const newPrompts = hotPrompts.map((item, i) =>
+                              i === index ? { ...item, text } : item
+                            )
+                            setHotPrompts(newPrompts)
+                          }}
                           onDelete={(i) => {
                             const newPrompts = hotPrompts.filter(
                               (_, j) => j !== i
@@ -513,19 +536,27 @@ const Settings: React.FC = () => {
                       <PlusOutlined style={{ verticalAlign: '-0.125em' }} />
                     }
                     onClick={() => {
-                      const values = form.getFieldValue('hotPrompts') || []
-                      const hotPrompts = values.map((prompt: Prompt) => ({
-                        title: prompt.title,
-                        iconUrl: prompt.iconUrl,
-                        text: prompt.text,
-                      }))
-                      hotPrompts.push({
-                        uuid: '',
-                        title: '',
-                        iconUrl: '',
-                        text: '',
-                      })
-                      setHotPrompts(hotPrompts)
+                      // const values = form.getFieldValue('hotPrompts') || []
+                      // const hotPrompts = values.map((prompt: Prompt) => ({
+                      //   title: prompt.title,
+                      //   iconUrl: prompt.iconUrl,
+                      //   text: prompt.text,
+                      // }))
+                      // hotPrompts.push({
+                      //   uuid: '',
+                      //   title: '',
+                      //   iconUrl: '',
+                      //   text: '',
+                      // })
+                      setHotPrompts([
+                        ...hotPrompts,
+                        {
+                          uuid: uuidv4(),
+                          title: '',
+                          iconUrl: '',
+                          text: '',
+                        },
+                      ])
                     }}
                   >
                     添加热点话题
@@ -642,11 +673,7 @@ const Settings: React.FC = () => {
             </Form.Item>
             {isInputPrompts && (
               <>
-                <Form.Item
-                  name='inputPrompts'
-                  label='输入框提示'
-                  tooltip='设置输入框提示'
-                >
+                <Form.Item label='输入框提示' tooltip='设置输入框提示'>
                   <DndContext
                     collisionDetection={closestCenter}
                     onDragEnd={handleInputPromptsDragEnd}
@@ -657,9 +684,16 @@ const Settings: React.FC = () => {
                     >
                       {inputPrompts.map((_, index) => (
                         <SortableInput
-                          key={index}
-                          name='inputPrompts'
+                          key={inputPrompts[index].uuid}
                           index={index}
+                          text={inputPrompts[index].text}
+                          onBlur={(text) => {
+                            if (text === inputPrompts[index].text) return
+                            const newPrompts = inputPrompts.map((item, i) =>
+                              i === index ? { ...item, text } : item
+                            )
+                            setInputPrompts(newPrompts)
+                          }}
                           onDelete={(i) => {
                             const newPrompts = inputPrompts.filter(
                               (_, j) => j !== i
@@ -678,19 +712,27 @@ const Settings: React.FC = () => {
                       <PlusOutlined style={{ verticalAlign: '-0.125em' }} />
                     }
                     onClick={() => {
-                      const values = form.getFieldValue('inputPrompts') || []
-                      const inputPrompts = values.map((prompt: Prompt) => ({
-                        title: prompt.title,
-                        iconUrl: prompt.iconUrl,
-                        text: prompt.text,
-                      }))
-                      inputPrompts.push({
-                        uuid: '',
-                        title: '',
-                        iconUrl: '',
-                        text: '',
-                      })
-                      setInputPrompts(inputPrompts)
+                      // const values = form.getFieldValue('inputPrompts') || []
+                      // const inputPrompts = values.map((prompt: Prompt) => ({
+                      //   title: prompt.title,
+                      //   iconUrl: prompt.iconUrl,
+                      //   text: prompt.text,
+                      // }))
+                      // inputPrompts.push({
+                      //   uuid: '',
+                      //   title: '',
+                      //   iconUrl: '',
+                      //   text: '',
+                      // })
+                      setInputPrompts([
+                        ...inputPrompts,
+                        {
+                          uuid: uuidv4(),
+                          title: '',
+                          iconUrl: '',
+                          text: '',
+                        },
+                      ])
                     }}
                   >
                     添加提示

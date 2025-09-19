@@ -86,6 +86,9 @@ class ModelProviderRepository:
             elif model_type == ModelType.RERANK:
                 providerId = configs.defaultRerankProviderId or ""
                 modelId = configs.defaultRerankModelId or ""
+            elif model_type == ModelType.TO_IMAGE:
+                providerId = configs.defaultToImageProviderId or ""
+                modelId = configs.defaultToImageModelId or ""
             elif model_type == ModelType.SPEECH2TEXT:
                 providerId = configs.defaultSpeech2TextProviderId or ""
                 modelId = configs.defaultSpeech2TextModelId or ""

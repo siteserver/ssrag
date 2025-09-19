@@ -1,4 +1,4 @@
-from extensions.llm_base import LLMBase
+from .llm_base import LLMBase
 from dto import ModelCredentials
 from enums import ProviderType
 from configs import app_configs

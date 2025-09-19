@@ -1,0 +1,6 @@
+model: BAAI/bge-large-zh-v1.5
+model_type: text-embedding
+model_properties:
+  context_size: 512
+  vector_dimension: 1024
+order: 6

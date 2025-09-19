@@ -15,6 +15,8 @@ class ConfigValues:
     defaultTextEmbeddingModelId: str | None = None
     defaultRerankProviderId: str | None = None
     defaultRerankModelId: str | None = None
+    defaultToImageProviderId: str | None = None
+    defaultToImageModelId: str | None = None
     defaultSpeech2TextProviderId: str | None = None
     defaultSpeech2TextModelId: str | None = None
     defaultTTSProviderId: str | None = None

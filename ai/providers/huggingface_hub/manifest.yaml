@@ -1,12 +1,3 @@
-meta:
-  arch:
-  - amd64
-  - arm64
-  runner:
-    entrypoint: main
-    language: python
-    version: '3.12'
-  version: 0.0.1
 name: huggingface_hub
 author: ssrag
 label:
@@ -14,16 +5,8 @@ label:
 description:
   en_US: Hugging Face Model
 icon: icon_s_en.svg
-created_at: '2024-09-20T00:13:50.29298939-04:00'
 plugins:
   models:
   - provider/huggingface_hub.yaml
-resource:
-  memory: 268435456
-  permission:
-    model:
-      enabled: false
-    tool:
-      enabled: false
 type: plugin
 version: 0.0.4

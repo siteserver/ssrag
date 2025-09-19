@@ -1,0 +1,106 @@
+background: "#ffecff"
+configurate_methods:
+  - predefined-model
+  - customizable-model
+help:
+  title:
+    en_US: Get your Ark Big Model API Key from Volcengine Console
+    zh_Hans: 从火山引擎控制台获取您的方舟大模型专用 API Key
+  url:
+    en_US: https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey?apikey=%7B%7D
+icon_large:
+  en_US: icon_l_en.svg
+  zh_Hans: icon_l_zh.svg
+icon_small:
+  en_US: icon_s_en.svg
+label:
+  en_US: Volcengine
+  zh_Hans: 火山方舟
+model_credential_schema:
+  credential_form_schemas:
+    - label:
+        en_US: API Key
+      placeholder:
+        en_US: Enter your API Key
+        zh_Hans: 在此输入您的 API Key
+      required: true
+      type: secret-input
+      variable: api_key
+    - default: "4096"
+      label:
+        en_US: Model context size
+        zh_Hans: 模型上下文长度
+      placeholder:
+        en_US: Enter your Model context size
+        zh_Hans: 在此输入您的模型上下文长度
+      required: true
+      type: text-input
+      variable: context_size
+    - default: "4096"
+      label:
+        en_US: Upper bound for max tokens
+        zh_Hans: 最大 token 上限
+      show_on:
+        - value: llm
+          variable: __model_type
+      type: text-input
+      variable: max_tokens
+    - default: no_call
+      label:
+        en_US: Function calling
+      options:
+        - label:
+            en_US: Not Support
+            zh_Hans: 不支持
+          value: no_call
+        - label:
+            en_US: Support
+            zh_Hans: 支持
+          value: function_call
+      required: false
+      show_on:
+        - value: llm
+          variable: __model_type
+      type: select
+      variable: function_calling_type
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter your model name
+      zh_Hans: 输入模型名称
+models:
+  llm:
+    position: models/llm/_position.yaml
+    predefined:
+      - models/llm/*.yaml
+  rerank:
+    predefined:
+      - models/rerank/*.yaml
+  speech2text:
+    predefined:
+      - models/speech2text/*.yaml
+  text_embedding:
+    predefined:
+      - models/text_embedding/*.yaml
+  tts:
+    predefined:
+      - models/tts/*.yaml
+provider: siliconflow
+provider_credential_schema:
+  credential_form_schemas:
+    - label:
+        en_US: API Key
+      placeholder:
+        en_US: Enter your API Key
+        zh_Hans: 在此输入您的 API Key
+      required: true
+      type: secret-input
+      variable: api_key
+supported_model_types:
+  - llm
+  - text-embedding
+  - rerank
+  - speech2text
+  - tts

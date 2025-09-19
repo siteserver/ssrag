@@ -92,6 +92,9 @@ models:
   text_embedding:
     predefined:
       - models/text_embedding/*.yaml
+  to_image:
+    predefined:
+      - models/to_image/*.yaml
   tts:
     predefined:
       - models/tts/*.yaml
@@ -110,5 +113,6 @@ supported_model_types:
   - llm
   - text-embedding
   - rerank
+  - to-image
   - speech2text
   - tts

@@ -1,0 +1,5 @@
+model: Qwen/Qwen-Image
+label:
+  zh_Hans: Qwen-Image
+  en_US: Qwen-Image
+model_type: to-image

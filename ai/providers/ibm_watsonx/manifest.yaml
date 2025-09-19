@@ -4,38 +4,12 @@ author: pedrogomes02
 name: ibm_watsonx
 label:
   en_US: IBM WatsonX
-  ja_JP: IBM WatsonX
   zh_Hans: IBM WatsonX
-  pt_BR: IBM WatsonX
 description:
   en_US: IBM WatsonX provider
-  ja_JP: IBM WatsonX provider
   zh_Hans: IBM WatsonX provider
-  pt_BR: IBM WatsonX provider
 icon: icon.svg
-resource:
-  memory: 268435456
-  permission:
-    model:
-      enabled: true
-      llm: true
-      text_embedding: false
-      rerank: false
-      tts: false
-      speech2text: false
-      moderation: false
 plugins:
   models:
     - provider/ibm_watsonx.yaml
-meta:
-  version: 0.0.1
-  arch:
-    - amd64
-    - arm64
-  runner:
-    language: python
-    version: "3.12"
-    entrypoint: main
-created_at: 2025-05-06T13:02:21.099091692+01:00
-privacy: PRIVACY.md
-verified: false
+
