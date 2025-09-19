@@ -65,7 +65,6 @@ jobs:
         mkdir -p ./publish/dist
         cd ./publish/ssrag-$VERSION
         tar -czf ../dist/ssrag-core-$VERSION.tar.gz .
-        zip -r ../dist/ssrag-core-$VERSION.zip .
         cd ../../ai
         tar -czf ../publish/dist/ssrag-ai-$VERSION.tar.gz --exclude='.venv' --exclude='__pycache__' .
 

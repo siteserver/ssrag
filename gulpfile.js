@@ -243,5 +243,4 @@ gulp.task("copy", async function (callback) {
 gulp.task("publish-zip", async function () {
   writeOss(process.env.OSS_BUCKET_DL, `ssrag/${version}/ssrag-core-${version}.tar.gz`, `ssrag-core-${version}.tar.gz`);
   writeOss(process.env.OSS_BUCKET_DL, `ssrag/${version}/ssrag-ai-${version}.tar.gz`, `ssrag-ai-${version}.tar.gz`);
-  writeOss(process.env.OSS_BUCKET_DL, `ssrag/${version}/ssrag-core-${version}.zip`, `ssrag-core-${version}.zip`);
 });
