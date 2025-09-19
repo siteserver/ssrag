@@ -4,9 +4,9 @@ EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /ssrag
-RUN wget https://dl.ssrag.com/rag/0.9.11/ssrag-0.9.11.tar.gz
-RUN tar -xzf ssrag-0.9.11.tar.gz
-RUN rm ssrag-0.9.11.tar.gz -f
+RUN wget https://dl.ssrag.com/rag/0.9.19/ssrag-0.9.19.tar.gz
+RUN tar -xzf ssrag-0.9.19.tar.gz
+RUN rm ssrag-0.9.19.tar.gz -f
 RUN mv /ssrag/wwwroot /ssrag/_wwwroot
 RUN echo `date +%Y-%m-%d-%H-%M-%S` > /ssrag/_wwwroot/sitefiles/version.txt
 

@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://ssrag.com" target="_blank"><img style="max-width: 500px" src="https://ssrag.com/images/logo/logo.png" alt="SSRAG"></a>
+  <a href="https://ssrag.com" target="_blank"><img style="max-width: 400px" src="https://ssrag.com/images/logo/logo.png" alt="SSRAG" /></a>
 </p>
 <p align="center">
     SSRAG 是基于 LLM 的开源知识库平台，涵盖内容管理（CMS）、知识库问答（RAG）、可视化 AI 工作流编排（Workflow）到智能体（Agent）的全面应用。

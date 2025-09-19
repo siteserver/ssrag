@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <Version>0.9.11</Version>
+    <Version>0.9.19</Version>
     <NoWarn>$(NoWarn);CA1416;CS0618;CS0162;NU1608;CS8632;</NoWarn>
     <CompressionEnabled>false</CompressionEnabled>
   </PropertyGroup>

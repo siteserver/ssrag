@@ -5,7 +5,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <ApplicationIcon>logo.ico</ApplicationIcon>
-    <Version>0.9.11</Version>
+    <Version>0.9.19</Version>
     <NoWarn>$(NoWarn);1591</NoWarn>
     <AssemblyName>SSRAG.Cli</AssemblyName>
     <StartupObject>SSRAG.Cli.Program</StartupObject>
