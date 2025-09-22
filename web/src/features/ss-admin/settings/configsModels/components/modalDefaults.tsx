@@ -68,12 +68,12 @@ const ModalDefaults: React.FC<ModalProviderProps> = ({
         defaultSpeech2TextId,
         defaultTTSId,
       })
-      setLlmProviders(data.llmProviders)
-      setTextEmbeddingProviders(data.textEmbeddingProviders)
-      setRerankProviders(data.rerankProviders)
-      setToImageProviders(data.toImageProviders)
-      setSpeech2TextProviders(data.speech2TextProviders)
-      setTtsProviders(data.ttsProviders)
+      setLlmProviders(data.llmProviders || [])
+      setTextEmbeddingProviders(data.textEmbeddingProviders || [])
+      setRerankProviders(data.rerankProviders || [])
+      setToImageProviders(data.toImageProviders || [])
+      setSpeech2TextProviders(data.speech2TextProviders || [])
+      setTtsProviders(data.ttsProviders || [])
     }
   }, [data, form])
 

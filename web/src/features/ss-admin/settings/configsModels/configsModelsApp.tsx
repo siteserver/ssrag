@@ -333,7 +333,7 @@ const ConfigsModelsApp: React.FC = () => {
                       return null
                     }
                     return (
-                      <>
+                      <div key={model_type}>
                         <Divider className='m-0'>
                           {getModelTypeDisplayName(model_type)}模型
                         </Divider>
@@ -399,7 +399,7 @@ const ConfigsModelsApp: React.FC = () => {
                             </div>
                           ))}
                         </div>
-                      </>
+                      </div>
                     )
                   })}
                 </div>

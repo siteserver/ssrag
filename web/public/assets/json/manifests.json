@@ -18030,8 +18030,6 @@
                   "provider/ollama.yaml"
               ]
           },
-          "type": "plugin",
-          "version": "0.0.6",
           "model": {
               "background": "#F9FAFB",
               "configurate_methods": [
@@ -18041,7 +18039,8 @@
                   "python": {
                       "model_sources": [
                           "models/llm/llm.py",
-                          "models/text_embedding/text_embedding.py"
+                          "models/text_embedding/text_embedding.py",
+                          "models/rerank/rerank.py"
                       ],
                       "provider_source": "provider/ollama.py"
                   }
@@ -18052,7 +18051,7 @@
                       "zh_Hans": "如何集成 Ollama"
                   },
                   "url": {
-                      "en_US": null
+                      "en_US": "https://ssrag.com/docs/getting-started/models/ollama.html"
                   }
               },
               "icon_large": {
@@ -18064,7 +18063,8 @@
               "label": {
                   "en_US": "Ollama"
               },
-              "model_credential_schema": {
+              "provider": "ollama",
+              "provider_credential_schema": {
                   "credential_form_schemas": [
                       {
                           "label": {
@@ -18078,136 +18078,6 @@
                           "required": true,
                           "type": "text-input",
                           "variable": "base_url"
-                      },
-                      {
-                          "default": "chat",
-                          "label": {
-                              "en_US": "Completion mode",
-                              "zh_Hans": "模型类型"
-                          },
-                          "options": [
-                              {
-                                  "label": {
-                                      "en_US": "Completion",
-                                      "zh_Hans": "补全"
-                                  },
-                                  "value": "completion"
-                              },
-                              {
-                                  "label": {
-                                      "en_US": "Chat",
-                                      "zh_Hans": "对话"
-                                  },
-                                  "value": "chat"
-                              }
-                          ],
-                          "placeholder": {
-                              "en_US": "Select completion mode",
-                              "zh_Hans": "选择对话类型"
-                          },
-                          "required": true,
-                          "show_on": [
-                              {
-                                  "value": "llm",
-                                  "variable": "__model_type"
-                              }
-                          ],
-                          "type": "select",
-                          "variable": "mode"
-                      },
-                      {
-                          "default": "4096",
-                          "label": {
-                              "en_US": "Model context size",
-                              "zh_Hans": "模型上下文长度"
-                          },
-                          "placeholder": {
-                              "en_US": "Enter your Model context size",
-                              "zh_Hans": "在此输入您的模型上下文长度"
-                          },
-                          "required": true,
-                          "type": "text-input",
-                          "variable": "context_size"
-                      },
-                      {
-                          "default": "4096",
-                          "label": {
-                              "en_US": "Upper bound for max tokens",
-                              "zh_Hans": "最大 token 上限"
-                          },
-                          "required": true,
-                          "show_on": [
-                              {
-                                  "value": "llm",
-                                  "variable": "__model_type"
-                              }
-                          ],
-                          "type": "text-input",
-                          "variable": "max_tokens"
-                      },
-                      {
-                          "default": "false",
-                          "label": {
-                              "en_US": "Vision support",
-                              "zh_Hans": "是否支持 Vision"
-                          },
-                          "options": [
-                              {
-                                  "label": {
-                                      "en_US": "Yes",
-                                      "zh_Hans": "是"
-                                  },
-                                  "value": "true"
-                              },
-                              {
-                                  "label": {
-                                      "en_US": "No",
-                                      "zh_Hans": "否"
-                                  },
-                                  "value": "false"
-                              }
-                          ],
-                          "required": false,
-                          "show_on": [
-                              {
-                                  "value": "llm",
-                                  "variable": "__model_type"
-                              }
-                          ],
-                          "type": "radio",
-                          "variable": "vision_support"
-                      },
-                      {
-                          "default": "false",
-                          "label": {
-                              "en_US": "Function call support",
-                              "zh_Hans": "是否支持函数调用"
-                          },
-                          "options": [
-                              {
-                                  "label": {
-                                      "en_US": "Yes",
-                                      "zh_Hans": "是"
-                                  },
-                                  "value": "true"
-                              },
-                              {
-                                  "label": {
-                                      "en_US": "No",
-                                      "zh_Hans": "否"
-                                  },
-                                  "value": "false"
-                              }
-                          ],
-                          "required": false,
-                          "show_on": [
-                              {
-                                  "value": "llm",
-                                  "variable": "__model_type"
-                              }
-                          ],
-                          "type": "radio",
-                          "variable": "function_call_support"
                       }
                   ],
                   "model": {
@@ -18221,10 +18091,10 @@
                       }
                   }
               },
-              "provider": "ollama",
               "supported_model_types": [
                   "llm",
-                  "text-embedding"
+                  "text-embedding",
+                  "rerank"
               ],
               "models": []
           }

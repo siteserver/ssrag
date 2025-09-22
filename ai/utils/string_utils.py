@@ -150,7 +150,7 @@ def extract_markdown_code(text: str, code_type: str) -> str:
 def extract_provider_model_id(provider_model_id: str) -> tuple[str, str]:
     if not provider_model_id or ":" not in provider_model_id:
         return "", ""
-    provider_id, model_id = provider_model_id.split(":")
+    provider_id, model_id = provider_model_id.split(":", 1)
     if not provider_id or not model_id:
         return "", ""
     return provider_id, model_id

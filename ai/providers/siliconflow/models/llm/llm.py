@@ -2,6 +2,7 @@ from extensions import LLMBase
 from dto import Message, ModelCredentials
 from fastapi.responses import StreamingResponse
 import httpx
+from utils import string_utils
 
 
 class LLM(LLMBase):
@@ -66,9 +67,10 @@ class LLM(LLMBase):
                 {"role": msg.role, "content": msg.content} for msg in messages
             ],
             "stream": True,
-            "enable_thinking": thinking,
             "response_format": {"type": "text"},
         }
+        if "deepseek" not in self.model_id.lower():
+            payload_submit["enable_thinking"] = thinking
         if payload is not None:
             payload_submit.update(payload)
 

@@ -7,7 +7,11 @@ from configs import app_configs
 class LLMFactory:
     @staticmethod
     def create(model_credentials: ModelCredentials) -> LLMBase:
-        if model_credentials.providerId == ProviderType.SILICONFLOW:
+        if model_credentials.providerId == ProviderType.OLLAMA:
+            from providers.ollama.models.llm.llm import LLM as OllamaLLM
+
+            return OllamaLLM(model_credentials)
+        elif model_credentials.providerId == ProviderType.SILICONFLOW:
             #     LLM = importlib.import_module("providers.siliconflow.models.llm.llm").LLM
             #     return LLM(model_credentials)
             from providers.siliconflow.models.llm.llm import LLM as SiliconflowLLM

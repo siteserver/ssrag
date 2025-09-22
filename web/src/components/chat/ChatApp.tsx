@@ -355,7 +355,8 @@ const ChatApp: React.FC<{
             return
           }
           const data = JSON.parse(chunk.data)
-          const delta = data?.choices[0].delta
+          const delta = data.choices[0].delta
+          // data: {"choices": [{"delta": {"content": "", "reasoning_content": "."}}]}
 
           if (delta.reasoning_content || delta.content) {
             if (delta.reasoning_content) {

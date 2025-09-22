@@ -8,5 +8,3 @@ name: ollama
 plugins:
   models:
     - provider/ollama.yaml
-type: plugin
-version: 0.0.6
