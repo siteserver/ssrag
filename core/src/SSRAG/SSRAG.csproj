@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AsyncKeyedLock" Version="7.1.8" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.41" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.115.5" />
     <PackageReference Include="Dapper" Version="2.0.123" />

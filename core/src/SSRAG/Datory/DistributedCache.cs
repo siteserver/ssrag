@@ -4,6 +4,7 @@ using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Collections.Generic;
+using AsyncKeyedLock;
 using SSRAG.Datory.Utils;
 
 namespace SSRAG.Datory
@@ -13,7 +14,7 @@ namespace SSRAG.Datory
         private readonly string _prefix;
         private readonly MemoryCache _memoryCache;
         private readonly Lazy<ConnectionMultiplexer> _lazyConnection;
-        private static readonly ConcurrentDictionary<string, SemaphoreSlim> _locks = new();
+        private static readonly AsyncKeyedLocker<string> _locks = new();
 
         public DistributedCache(string connectionString)
         {
