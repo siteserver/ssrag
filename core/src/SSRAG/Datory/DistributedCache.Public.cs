@@ -39,42 +39,33 @@ namespace SSRAG.Datory
 
             // 2. 获取或创建锁，防止缓存击穿
             var lockKey = $"lock:{key}";
-            var semaphore = _locks.GetOrAdd(lockKey, _ => new SemaphoreSlim(1, 1));
+            using var _ = await _locks.LockAsync(lockKey).ConfigureAwait(false);
 
-            await semaphore.WaitAsync();
-            try
+            // 3. 再次检查本地缓存（可能在等待期间已被其他线程填充）
+            if (_memoryCache.TryGetValue(key, out value))
             {
-                // 3. 再次检查本地缓存（可能在等待期间已被其他线程填充）
-                if (_memoryCache.TryGetValue(key, out value))
-                {
-                    return value;
-                }
-
-                // 4. 从Redis获取
-
-                var redisValue = await StringGetAsync(key);
-                if (!string.IsNullOrEmpty(redisValue))
-                {
-                    value = TranslateUtils.JsonDeserialize<T>(redisValue);
-                    _memoryCache.Set(key, value, TimeSpan.FromMinutes(Constants.DefaultMemoryExpireMinutes));
-                    return value;
-                }
-
-                // 5. 如果Redis中也没有，则调用工厂方法生成数据
-                value = await factory();
-                if (value == null) return default;
-
-                // 6. 同时写入本地缓存和Redis
-                _memoryCache.Set(key, value, TimeSpan.FromMinutes(Constants.DefaultMemoryExpireMinutes));
-                await StringSetAsync(key, TranslateUtils.JsonSerialize(value));
-
                 return value;
             }
-            finally
+
+            // 4. 从Redis获取
+
+            var redisValue = await StringGetAsync(key);
+            if (!string.IsNullOrEmpty(redisValue))
             {
-                semaphore.Release();
-                _locks.TryRemove(lockKey, out _);
+                value = TranslateUtils.JsonDeserialize<T>(redisValue);
+                _memoryCache.Set(key, value, TimeSpan.FromMinutes(Constants.DefaultMemoryExpireMinutes));
+                return value;
             }
+
+            // 5. 如果Redis中也没有，则调用工厂方法生成数据
+            value = await factory();
+            if (value == null) return default;
+
+            // 6. 同时写入本地缓存和Redis
+            _memoryCache.Set(key, value, TimeSpan.FromMinutes(Constants.DefaultMemoryExpireMinutes));
+            await StringSetAsync(key, TranslateUtils.JsonSerialize(value));
+
+            return value;
         }
 
         public async Task RemoveAsync(string key)
@@ -103,33 +94,24 @@ namespace SSRAG.Datory
 
             // 2. 获取或创建锁，防止缓存击穿
             var lockKey = $"lock:{key}";
-            var semaphore = _locks.GetOrAdd(lockKey, _ => new SemaphoreSlim(1, 1));
+            using var _ = await _locks.LockAsync(lockKey).ConfigureAwait(false);
 
-            await semaphore.WaitAsync();
-            try
+            // 3. 再次检查本地缓存（可能在等待期间已被其他线程填充）
+            if (_memoryCache.TryGetValue(key, out value))
             {
-                // 3. 再次检查本地缓存（可能在等待期间已被其他线程填充）
-                if (_memoryCache.TryGetValue(key, out value))
-                {
-                    return value;
-                }
-
-                // 4. 从Redis获取
-                var redisValue = await StringGetAsync(key);
-                if (!string.IsNullOrEmpty(redisValue))
-                {
-                    value = redisValue;
-                    _memoryCache.Set(key, value, TimeSpan.FromMinutes(Constants.DefaultMemoryExpireMinutes));
-                    return value;
-                }
-
-                return string.Empty;
+                return value;
             }
-            finally
+
+            // 4. 从Redis获取
+            var redisValue = await StringGetAsync(key);
+            if (!string.IsNullOrEmpty(redisValue))
             {
-                semaphore.Release();
-                _locks.TryRemove(lockKey, out _);
+                value = redisValue;
+                _memoryCache.Set(key, value, TimeSpan.FromMinutes(Constants.DefaultMemoryExpireMinutes));
+                return value;
             }
+
+            return string.Empty;
         }
 
         public async Task<bool> SetStringAsync(string key, string value, int minutes = 0)
